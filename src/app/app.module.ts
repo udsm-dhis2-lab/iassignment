@@ -11,6 +11,7 @@ import { effects } from './store/effects';
 import {FormsModule} from '@angular/forms';
 import * as fromSharedComponents from './shared/components';
 import * as fromSharedLoaders from './shared/loaders';
+import {RoutingModule} from './app.routes';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import * as fromSharedLoaders from './shared/loaders';
   imports: [
     BrowserModule,
     FormsModule,
+    RoutingModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot(effects)

@@ -1,0 +1,23 @@
+.nav-borders{
+  border: gray 1px solid;
+}
+
+.nav-color{
+  background-color: #f8f9fa !important;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.selection-block{
+  position: relative;
+}
+.btn-features{
+  width: 100%;
+  /*background-color: white;*/
+}
+.data-menu-collapse{
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+

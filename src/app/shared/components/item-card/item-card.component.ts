@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-item-card',
@@ -11,9 +12,13 @@ export class ItemCardComponent implements OnInit {
   @Input() summary;
   @Input() imageLink;
   @Input() link;
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  toggleNavigation(e, link) {
+    this.router.navigate(['/', link]);
   }
 
 }

@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {DataAssignmentsRoutingModule} from './data-assignments-routing.module';
+import {MetaDataAssignComponent} from './pages/meta-data-assign/meta-data-assign.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    DataAssignmentsRoutingModule
   ],
-  declarations: []
+  declarations: [MetaDataAssignComponent]
 })
 export class DataAssignmentsModule { }

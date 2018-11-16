@@ -12,24 +12,5 @@ import {getAssignmentLoadedState, getAssignmentLoadingState, getAssignmentPageEn
 })
 export class AppComponent implements OnInit {
 
-  assignmentPageLoading$: Observable<any>;
-  assignmentPageLoaded$: Observable<any>;
-  assignmentPageEntities$: Observable<any>;
-  assignmentPageState$: Observable<any>;
-
-  constructor(private store: Store<AppState>) {
-
-    this.assignmentPageLoading$ = this.store.select(getAssignmentLoadingState);
-    this.assignmentPageLoaded$ = this.store.select(getAssignmentLoadedState);
-    this.assignmentPageEntities$ = this.store.select(getAssignmentPageEntities);
-    this.assignmentPageState$ = this.store.select(getAssignmentPageState);
-
-
-    // minor delay for the loaders to appear
-    setTimeout(() => {
-      this.store.dispatch(new LoadAssignmentsPages());
-      }, 3000);
-  }
-
   ngOnInit() {}
 }

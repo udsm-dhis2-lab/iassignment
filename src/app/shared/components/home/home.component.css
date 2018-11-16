@@ -1,0 +1,15 @@
+.portfolio-item {
+  margin-bottom: 30px;
+}
+
+.pagination {
+  margin-bottom: 30px;
+}
+
+.search-field{
+  width: 70%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3%;
+}

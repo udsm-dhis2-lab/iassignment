@@ -1,7 +1,7 @@
 
 export const assignmentPageConfig: any[] = [
   {id: 'data-assignments', header: 'Data Assignments',
-    summary: 'Make easy assigning of meta-data within DHIS2.', link: '', imageLink: 'fa-cubes' },
+    summary: 'Make easy assigning of meta-data within DHIS2.', link: 'data', imageLink: 'fa-cubes' },
   {id: 'dataSet-group-assignments', header: 'DataSet Groups',
     summary: 'Providing quick allocating of dataSets into groups.', link: '', imageLink: 'fa-cube' },
   {id: 'report-assignments', header: 'Report Access',

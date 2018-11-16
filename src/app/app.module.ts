@@ -17,7 +17,7 @@ import {RoutingModule} from './app.routes';
   declarations: [
     AppComponent,
     fromSharedComponents.sharedComponents,
-    fromSharedLoaders.sharedLoaders,
+    fromSharedLoaders.sharedLoaders
   ],
   imports: [
     BrowserModule,

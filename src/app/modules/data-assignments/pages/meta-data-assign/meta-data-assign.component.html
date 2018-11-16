@@ -66,14 +66,20 @@
   </div>
 </div>
 
+<div class="container-fluid my-4">
 <div class="card">
-  <table class="table table-bordered table-hover table-sm text-sm">
-    <tr>
-      <th *ngFor="let i of [1,2,4,5,6,7,8]"> <app-progressive-loader></app-progressive-loader> </th>
-    </tr>
+    <table class="table table-bordered table-hover table-sm text-sm">
+      <tr>
+        <th *ngFor="let i of [1,2,4,5,6,7,8]" style="height: 60px">
+          <app-progressive-loader [height]="'60px'"></app-progressive-loader>
+        </th>
+      </tr>
 
-    <tr *ngFor="let i of [1,2,4,5,6,7,8,9,10,11,12,13,14,15]">
-      <td *ngFor="let i of [1,2,4,5,6,7,8]"> <app-progressive-loader></app-progressive-loader> </td>
-    </tr>
-  </table>
+      <tr *ngFor="let i of [1,2,4,5,6,7,8,9,10,11,12,13,14,15]">
+        <td *ngFor="let i of [1,2,4,5,6,7,8]">
+          <app-progressive-loader></app-progressive-loader>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>

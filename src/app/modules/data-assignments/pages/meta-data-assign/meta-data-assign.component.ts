@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MetaDataAssignComponent implements OnInit {
 
+  percent = 0;
   constructor() { }
 
   ngOnInit() {
+    setInterval(() => {
+      this.percent += 7;
+    }, 3000);
   }
 
 }

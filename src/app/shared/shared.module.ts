@@ -8,6 +8,8 @@ import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {DragulaService} from 'ng2-dragula';
 import {services} from './services';
+import {pipes} from './pipes';
+import {NgPipesModule} from 'ngx-pipes';
 
 @NgModule({
   imports: [
@@ -15,10 +17,11 @@ import {services} from './services';
     FormsModule,
     HttpModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    NgPipesModule
   ],
-  declarations: [...sharedComponents, ...sharedLoaders],
-  exports: [...sharedComponents, ...sharedLoaders],
+  declarations: [...sharedComponents, ...sharedLoaders, ...pipes],
+  exports: [...sharedComponents, ...sharedLoaders, ...pipes],
   providers: [DragulaService, ...services]
 })
 export class SharedModule {}

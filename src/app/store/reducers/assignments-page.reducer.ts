@@ -30,7 +30,7 @@ export function reducer(
     }
 
     case AssignmentsPageActionTypes.AddAssignmentsPages: {
-      return adapter.addMany(action.payload, {...state, loaded: true, loading: false});
+      return  {...state, entities: action.payload, loaded: true, loading: false};
     }
 
     case AssignmentsPageActionTypes.UpsertAssignmentsPages: {

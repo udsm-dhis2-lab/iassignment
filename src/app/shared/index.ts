@@ -9,7 +9,8 @@ import {MenuModule} from './modules/menu/menu.module';
 export const sharedModules: any[] = [
   SharedModule, DataFilterModule,
   LayoutModule, OrgUnitFilterModule,
-  MenuModule, NgxPaginationModule
+  MenuModule, NgxPaginationModule,
+
 ];
 export * from './shared.module';
 

@@ -6,6 +6,8 @@ import {sharedLoaders} from './loaders';
 import {sharedComponents} from './components';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
+import {DragulaService} from 'ng2-dragula';
+import {services} from './services';
 
 @NgModule({
   imports: [
@@ -17,6 +19,6 @@ import {HttpClientModule} from '@angular/common/http';
   ],
   declarations: [...sharedComponents, ...sharedLoaders],
   exports: [...sharedComponents, ...sharedLoaders],
-  providers: []
+  providers: [DragulaService, ...services]
 })
 export class SharedModule {}

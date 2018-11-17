@@ -111,10 +111,10 @@
 
 <div class="data-filter-btns">
   <div>
-    <button class="btn btn-outline-secondary btn-sm" (click)="close($event)"><i class="fa fa-times"></i>Close</button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="close($event)"><i class="fa fa-times"></i> Close</button>
     <button
-      class="btn btn-outline-secondary btn-sm"
+      class="btn btn-outline-secondary btn-sm mx-2"
       [disabled]="(selectedItems$ | async).length === 0"
-      (click)="updateSelectedToTable()"><i class="fa fa-refresh"></i>Update</button>
+      (click)="updateSelectedToTable()"><i class="fa fa-refresh"></i> Update</button>
   </div>
 </div>

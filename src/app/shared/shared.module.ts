@@ -5,12 +5,14 @@ import { HttpModule } from '@angular/http';
 import {sharedLoaders} from './loaders';
 import {sharedComponents} from './components';
 import {RouterModule} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     RouterModule
   ],
   declarations: [...sharedComponents, ...sharedLoaders],

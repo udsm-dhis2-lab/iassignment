@@ -8,13 +8,19 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import {metaReducers, reducers} from './store/reducers';
 import { effects } from './store/effects';
+import {FormsModule} from '@angular/forms';
+import {RoutingModule} from './app.routes';
+import {sharedModules} from './shared';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    RoutingModule,
+    ...sharedModules,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot(effects)

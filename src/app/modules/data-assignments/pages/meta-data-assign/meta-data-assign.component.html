@@ -1,0 +1,102 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light my-2 nav-color">
+    <a class="navbar-brand" href="#" routerLink="/">
+      <img src="./assets/icons/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      Data Assignment's
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <form class="form-inline my-2 my-lg-0 ml-auto meta-search">
+        <!--<div class="btn-group">-->
+          <input class="form-control mr-sm-2" style="width: 80%;"
+                 type="search" placeholder="Search..." aria-label="Search">
+          <button class="btn btn-outline-secondary btn-sm my-2 my-sm-0 mx-2 mx-sm-2"
+                  type="submit" routerLink="/">
+            <i class="fa fa-home" aria-hidden="true" style="font-size: 170%;"></i>
+          </button>
+        <!--</div>-->
+
+      </form>
+    </div>
+  </nav>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <div class="selection-block">
+            <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
+                    data-toggle="collapse" data-target="#selectOrgunit" aria-expanded="false" aria-controls="selectOrgunit">
+              Select Orgunit
+            </button>
+            <div class="collapse data-menu-collapse" id="selectOrgunit">
+              <div class="card card-body">
+                <app-org-unit-filter></app-org-unit-filter>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-4">
+          <div class="selection-block">
+            <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
+                    data-toggle="collapse" data-target="#selectData" aria-expanded="false" aria-controls="selectData">
+              Select Data
+            </button>
+            <div class="collapse data-menu-collapse" id="selectData">
+              <div class="card card-body">
+                <app-data-filter></app-data-filter>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-4">
+          <div class="selection-block">
+            <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
+                    data-toggle="collapse" data-target="#changeLayout" aria-expanded="false" aria-controls="changeLayout">
+              Layout Design
+            </button>
+            <div class="collapse data-menu-collapse" id="changeLayout">
+              <div class="card card-body">
+                <app-layout></app-layout>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid my-4">
+
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated"
+         role="progressbar" [attr.aria-valuenow]="percent" aria-valuemin="0"
+         aria-valuemax="100" [ngStyle]="{'width': ''+ percent +'%'}"></div>
+  </div>
+
+<div class="card my-4">
+    <table class="table table-bordered table-hover table-sm text-sm">
+      <tr>
+        <th *ngFor="let i of [1,2,4,5,6,7,8]" style="height: 60px">
+          <app-progressive-loader [height]="'60px'"></app-progressive-loader>
+        </th>
+      </tr>
+
+      <tr *ngFor="let i of [1,2,4,5,6,7,8,9,10,11,12,13,14,15]">
+        <td *ngFor="let i of [1,2,4,5,6,7,8]">
+          <app-progressive-loader></app-progressive-loader>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

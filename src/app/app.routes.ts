@@ -1,0 +1,34 @@
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+import {AppComponent} from './app.component';
+import {DataAssignmentsModule} from './modules/data-assignments/data-assignments.module';
+import {NgModule} from '@angular/core';
+import {HomeComponent} from './shared/components/home/home.component';
+import {DataAssignmentsRoutingModule} from './modules/data-assignments/data-assignments-routing.module';
+import {MetaDataAssignComponent} from './modules/data-assignments/pages/meta-data-assign/meta-data-assign.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'data',
+    loadChildren: './modules/data-assignments/data-assignments.module#DataAssignmentsModule'
+  }
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      preloadingStrategy: PreloadAllModules
+    })
+  ],
+  exports: [RouterModule]
+})
+export class RoutingModule {}

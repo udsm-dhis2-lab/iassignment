@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~angular-tree-component/dist/angular-tree-component.css';
+.logo-picture{
+  width: 5%;
+}
+.centerfy-contents{
+  margin-right: auto;
+  margin-left: auto;
+}
+.on-mobile-block{}
+.on-mobile-my{}
+.meta-search{
+  width: 30%;
+}
+@media only screen and (max-width: 900px) {
+  .on-mobile-block{
+    display: block;
+  }
+  .on-mobile-my{
+    margin-top: 2%;
+  }
+  .meta-search{
+    width: 100%;
+  }
+}

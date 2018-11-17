@@ -1,0 +1,29 @@
+.card:hover {
+  -webkit-transform: scale(1.03);
+  transform: scale(1.03);
+  transition: 0.7s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.icon-holder{
+  height: 100px;
+  text-align: center;
+}
+
+.icon-holder:hover{
+  /*height: 100px;*/
+  text-align: center;
+  background-color: #dddddd;
+}
+
+.card:hover > .icon-holder{
+  height: 100px;
+  text-align: center;
+  background-color: #dddddd;
+}
+
+.icon-size{
+  font-size: 90px;
+  margin-top: 3%;
+}
+

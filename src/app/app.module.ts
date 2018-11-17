@@ -11,6 +11,7 @@ import { effects } from './store/effects';
 import {FormsModule} from '@angular/forms';
 import {RoutingModule} from './app.routes';
 import {sharedModules} from './shared';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {sharedModules} from './shared';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     RoutingModule,
     ...sharedModules,

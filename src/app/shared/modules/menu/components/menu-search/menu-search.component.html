@@ -1,0 +1,42 @@
+<div id="menu-search-container" appClickOutside (clickOutside)="reduceSearch()">
+  <div class="menu-search-icon">
+    <svg class="" viewBox="0 0 24 24"
+         style="display: inline-block; color: rgba(0, 0, 0, 0.87); fill: white; height: 24px; width: 24px; user-select: none; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; padding: 0px;">
+      <path
+        d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+    </svg>
+  </div>
+  <div>
+    <input type="text" id="menu-search-input" placeholder="Search Apps" [attr.size]="searchWidth"
+           (focus)="widdenSearch($event)" [(ngModel)]="filteredApp" (ngModelChange)="updateMenuModules()"/>
+    <span class="underline"></span>
+  </div>
+  <div id="menu-toggle-link">
+    <a (click)="toggleSearch($event)">
+      <svg class="menu-toggle-icon" viewBox="0 0 24 24">
+        <path
+          d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"></path>
+      </svg>
+    </a>
+  </div>
+
+  <div id="menu-list-block" [@slide] *ngIf="showApps">
+    <div *ngIf="(apps | filterByName: filteredApp).length !== 0" id="menu-inner-list-block">
+      <a *ngFor="let app of  apps | filterByName:filteredApp" [href]="app.defaultAction" class="app-menu-btn"
+         title="{{ app.description }}">
+        <div class="app-menu-inner-block">
+          <img alt="" [src]="app.icon">
+          <div class="app-menu-name">{{app.displayName}}</div>
+        </div>
+      </a>
+    </div>
+    <div id="menu-inner-list-block-no-match" *ngIf="(apps | filterByName: filteredApp).length == 0">
+      <p>No match found!</p>
+    </div>
+    <div id="menu-app-management-block">
+      <a [href]="rootUrl + 'dhis-web-menu-management/'" id="app-management-btn">
+        Manage my Apps
+      </a>
+    </div>
+  </div>
+</div>

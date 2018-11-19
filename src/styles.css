@@ -21,5 +21,9 @@
   }
   .meta-search{
     width: 100%;
+    display: -webkit-box;
+  }
+  .input-search{
+    width: 65% !important;
   }
 }

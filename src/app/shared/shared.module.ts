@@ -9,7 +9,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {DragulaService} from 'ng2-dragula';
 import {services} from './services';
 import {NgPipesModule} from 'ngx-pipes';
-import { ProgressBarComponent } from './loaders/progress-bar/progress-bar.component';
 
 @NgModule({
   imports: [

@@ -51,6 +51,8 @@ export class AssignmentDataFiltersEffects {
           assignmentArray.push({
             id: orgunit.id + '-' + form.id,
             orgunitId: orgunit.id,
+            orgunitName: orgunit.name,
+            formName: form.name,
             formId: form.id,
             isProcessing: false,
             isAssigned: (form.organisationUnits.filter(e => e.id === orgunit.id).length > 0) ? true : false
@@ -64,6 +66,8 @@ export class AssignmentDataFiltersEffects {
             assignmentArray.push({
               id: childOrgunit.id + '-' + form.id,
               orgunitId: childOrgunit.id,
+              orgunitName: childOrgunit.name,
+              formName: form.name,
               formId: form.id,
               isProcessing: false,
               isAssigned: (form.organisationUnits.filter(e => e.id === childOrgunit.id).length > 0) ? true : false
@@ -75,6 +79,8 @@ export class AssignmentDataFiltersEffects {
         assignmentArray.push({
           id: selectedOrgunits[0].id + '-' + form.id,
           orgunitId: selectedOrgunits[0].id,
+          orgunitName: selectedOrgunits[0].name,
+          formName: form.name,
           formId: form.id,
           isProcessing: false,
           isAssigned: (form.organisationUnits.filter(e => e.id === selectedOrgunits[0].id).length > 0) ? true : false

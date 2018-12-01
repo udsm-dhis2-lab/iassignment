@@ -93,18 +93,34 @@
           <app-progressive-loader [height]="'60px'"></app-progressive-loader>
         </th>
       </tr>
-      <!--table row head for the loading animation-->
+      <!--end of table row head for the loading animation-->
+
       <tr *ngIf="(selectedData$ | async).length > 0">
         <th>Organisation unit</th>
         <th *ngFor="let form of ((selectedData$ | async))"> {{form.name}}</th>
       </tr>
 
 
+      <tbody *ngIf="((selectedOgunits$ | async).length < 1)">
       <tr *ngFor="let i of [1,2,4,5,6,7,8,9,10,11,12,13,14,15]">
         <td *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length + 1: 8)">
           <app-progressive-loader></app-progressive-loader>
         </td>
       </tr>
+      </tbody>
+
+      <tbody *ngIf="((selectedOgunits$ | async).length > 0)">
+      <tr *ngFor="let orgunit of ((selectedOgunits$ | async))">
+        <td> {{orgunit.name}}</td>
+        <td *ngFor="let form of ((selectedData$ | async))">
+        <app-assignemt-input
+          [assignmentObject]="(assignmentFiltersEntities$ | async)[orgunit.id + '-' + form.id]"
+        ></app-assignemt-input>
+
+        </td>
+      </tr>
+      </tbody>
+
     </table>
   </div>
 </div>

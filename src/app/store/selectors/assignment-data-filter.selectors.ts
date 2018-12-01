@@ -9,7 +9,14 @@ export const getAssingmentDataFilterSelectedData = createSelector(
 
 export const getAssingmentDataFilterSelectedOrgunit = createSelector(
   fromMainReducer.getAssignmentDataFilter,
-  fromAssignmentDataFilters.getselectedOrgunitsState
+  fromAssignmentDataFilters.getselectedOrgunitsState,
+  // (selectedOrgunits) => {
+  //   if (selectedOrgunits.length > 1) {
+  //     return selectedOrgunits;
+  //   } else {
+  //    return selectedOrgunits[0].children;
+  //   }
+  // }
 );
 
 export const getAssingmentDataFilterEntities = createSelector(

@@ -26,4 +26,8 @@
   .input-search{
     width: 65% !important;
   }
+  .table-card{
+    overflow-x: scroll;
+    display: block;
+  }
 }

@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
     // minor delay for the loaders to appear
     setTimeout(() => {
       this.store.dispatch(new LoadAssignmentsPages());
-    }, 3000);
+    }, 2000);
   }
 
 

@@ -24,3 +24,12 @@
   width: 73%;
 }
 
+thead tr th:nth-child(n+2),
+tbody tr td:nth-child(n+2){
+  width: 10em;
+  /*min-width: 4em;*/
+  max-width: 10em;
+  word-break: normal;
+  padding: 0 2px 1px 2px;
+  text-align: center;
+}

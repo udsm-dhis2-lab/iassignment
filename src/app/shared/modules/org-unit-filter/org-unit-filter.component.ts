@@ -48,7 +48,7 @@ export class OrgUnitFilterComponent implements OnInit, OnDestroy {
     level: null,
     loading: true,
     loading_message: 'Loading Organisation units...',
-    multiple: false,
+    multiple: true,
     multiple_key: 'none', // can be control or shift
     placeholder: 'Select Organisation Unit'
   };

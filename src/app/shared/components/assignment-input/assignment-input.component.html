@@ -1,0 +1,12 @@
+<div style="height: 29px;margin-top: 3%;">
+  <img *ngIf="assignmentObject.isAssigned && !assignmentObject.isProcessing"
+       class="circular-checkbox" src="./assets/icons/tick.png" alt=""
+       (click)="saveAssignmentData(assignmentObject,$event, 'remove')"
+       title="{{assignmentObject.orgunitName + ',' + assignmentObject.formName}}" >
+  <img *ngIf="assignmentObject.isProcessing" class="circular-checkbox"
+       src="./assets/icons/yellow.png" alt=""  title="Saving on process" >
+  <img *ngIf="!assignmentObject.isAssigned && !assignmentObject.isProcessing"
+       class="circular-checkbox" src="./assets/icons/cross.png" alt=""
+       (click)="saveAssignmentData(assignmentObject,$event, 'add')"
+       title="{{assignmentObject.orgunitName + ',' + assignmentObject.formName}}" >
+</div>

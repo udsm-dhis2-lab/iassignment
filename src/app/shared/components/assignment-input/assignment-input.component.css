@@ -1,0 +1,10 @@
+.circular-checkbox{
+  width: 25px;
+  height: 25px;
+}
+
+.circular-checkbox:hover{
+  width: 28px;
+  height: 28px;
+}
+

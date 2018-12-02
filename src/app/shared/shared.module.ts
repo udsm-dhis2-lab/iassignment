@@ -9,6 +9,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {DragulaService} from 'ng2-dragula';
 import {services} from './services';
 import {NgPipesModule} from 'ngx-pipes';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import {NgPipesModule} from 'ngx-pipes';
     HttpModule,
     HttpClientModule,
     RouterModule,
-    NgPipesModule
+    NgPipesModule,
+    NgxPaginationModule
   ],
   declarations: [...sharedComponents, ...sharedLoaders],
   exports: [...sharedComponents, ...sharedLoaders],

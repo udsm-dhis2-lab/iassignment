@@ -18,6 +18,8 @@ export class MetaDataAssignComponent implements OnInit {
   selectedData$: Observable<any>;
   assignmentFiltersEntities$: Observable<any>;
   searchText = '';
+  page = 1;
+  itemsPerPage = 10;
   constructor(private store: Store<AppState>) {
     this.selectedData$ = this.store.select
       (fromAssingmentFiltersSelectors.getAssingmentDataFilterSelectedData);
@@ -48,6 +50,14 @@ export class MetaDataAssignComponent implements OnInit {
 
   getArrayOfnItems(items) {
     return Array.apply(null, {length: items}).map(Number.call, Number);
+  }
+
+  onCurrentPageUpdate(e) {
+    this.page = e;
+  }
+
+  onUpdatePageSize(e) {
+    this.itemsPerPage = e;
   }
 
 }

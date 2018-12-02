@@ -4,17 +4,20 @@ import {AppState} from '../../../../store/reducers';
 import {AddAssignmentDataFiltersData, AddAssignmentDataFiltersOrgunits} from '../../../../store/actions/assignment-data-filters.actions';
 import {Observable} from 'rxjs';
 import * as fromAssingmentFiltersSelectors from '../../../../store/selectors/assignment-data-filter.selectors';
+import {FilterByPipe} from 'ngx-pipes';
 
 @Component({
   selector: 'app-meta-data-assign',
   templateUrl: './meta-data-assign.component.html',
-  styleUrls: ['./meta-data-assign.component.css']
+  styleUrls: ['./meta-data-assign.component.css'],
+  providers: [FilterByPipe]
 })
 export class MetaDataAssignComponent implements OnInit {
   showOrgUnitFilter: boolean;
   selectedOgunits$: Observable<any>;
   selectedData$: Observable<any>;
   assignmentFiltersEntities$: Observable<any>;
+  searchText = '';
   constructor(private store: Store<AppState>) {
     this.selectedData$ = this.store.select
       (fromAssingmentFiltersSelectors.getAssingmentDataFilterSelectedData);
@@ -25,6 +28,13 @@ export class MetaDataAssignComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  searchingItems(e) {
+    if (e) {
+      e.stopPropagation();
+    }
+    this.searchText = e ? e.target.value.trim() : this.searchText;
+  }
 
   updateOrgUnit(e) {
     if (e.items.length > 0) {

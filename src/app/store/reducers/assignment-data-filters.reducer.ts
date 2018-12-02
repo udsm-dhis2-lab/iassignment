@@ -1,6 +1,10 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { AssignmentDataFilters } from '../models/assignment-data-filters.model';
-import { AssignmentDataFiltersActions, AssignmentDataFiltersActionTypes } from '../actions/assignment-data-filters.actions';
+import {
+  AssignmentDataFiltersActions,
+  AssignmentDataFiltersActionTypes,
+  RemovingAssignmentDataFilters
+} from '../actions/assignment-data-filters.actions';
 
 export interface State extends EntityState<AssignmentDataFilters> {
   // additional entities state properties
@@ -43,7 +47,11 @@ export function reducer(
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilters: {
-      return adapter.updateOne(action.payload.assignmentDataFilters, state);
+      const stateEntities = {...state.entities};
+      stateEntities[action.payload.assignmentObject.id] = action.payload.assignmentObject;
+      return {...state,
+        entities : stateEntities,
+        selectedData: action.payload.selectedData};
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilterss: {
@@ -54,16 +62,20 @@ export function reducer(
       return adapter.removeOne(action.payload.id, state);
     }
 
-    case AssignmentDataFiltersActionTypes.DeleteAssignmentDataFilterss: {
-      return adapter.removeMany(action.payload.ids, state);
+    case AssignmentDataFiltersActionTypes.AddingAssignmentDataFilters: {
+      return state;
     }
 
     case AssignmentDataFiltersActionTypes.LoadAssignmentDataFilterss: {
       return adapter.addAll(action.payload.assignmentDataFilterss, state);
     }
 
-    case AssignmentDataFiltersActionTypes.ClearAssignmentDataFilterss: {
-      return adapter.removeAll(state);
+    case AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters: {
+      const stateEntities = {...state.entities};
+      stateEntities[action.payload.assignmentObject.id] = action.payload.assignmentObject;
+      return {...state,
+        entities : stateEntities,
+        selectedData: action.payload.selectedData};
     }
 
     default: {

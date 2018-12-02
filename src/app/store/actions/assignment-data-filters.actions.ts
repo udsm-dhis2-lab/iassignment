@@ -11,8 +11,8 @@ export enum AssignmentDataFiltersActionTypes {
   UpdateAssignmentDataFilters = '[AssignmentDataFilters] Update AssignmentDataFilters',
   UpdateAssignmentDataFilterss = '[AssignmentDataFilters] Update AssignmentDataFilterss',
   DeleteAssignmentDataFilters = '[AssignmentDataFilters] Delete AssignmentDataFilters',
-  DeleteAssignmentDataFilterss = '[AssignmentDataFilters] Delete AssignmentDataFilterss',
-  ClearAssignmentDataFilterss = '[AssignmentDataFilters] Clear AssignmentDataFilterss'
+  AddingAssignmentDataFilters = '[AssignmentDataFilters] Adding AssignmentDataFilters',
+  RemovingAssignmentDataFilters = '[AssignmentDataFilters] Removing AssignmentDataFilters'
 }
 
 export class LoadAssignmentDataFilterss implements Action {
@@ -48,7 +48,7 @@ export class UpsertAssignmentDataFilterss implements Action {
 export class UpdateAssignmentDataFilters implements Action {
   readonly type = AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilters;
 
-  constructor(public payload: { assignmentDataFilters: Update<AssignmentDataFilters> }) {}
+  constructor(public payload: any) {}
 }
 
 export class UpdateAssignmentDataFilterss implements Action {
@@ -63,14 +63,16 @@ export class DeleteAssignmentDataFilters implements Action {
   constructor(public payload: { id: string }) {}
 }
 
-export class DeleteAssignmentDataFilterss implements Action {
-  readonly type = AssignmentDataFiltersActionTypes.DeleteAssignmentDataFilterss;
+export class AddingAssignmentDataFilters implements Action {
+  readonly type = AssignmentDataFiltersActionTypes.AddingAssignmentDataFilters;
 
-  constructor(public payload: { ids: string[] }) {}
+  constructor(public payload: any) {}
 }
 
-export class ClearAssignmentDataFilterss implements Action {
-  readonly type = AssignmentDataFiltersActionTypes.ClearAssignmentDataFilterss;
+export class RemovingAssignmentDataFilters implements Action {
+  readonly type = AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters;
+
+  constructor(public payload: any) {}
 }
 
 export type AssignmentDataFiltersActions =
@@ -82,5 +84,5 @@ export type AssignmentDataFiltersActions =
  | UpdateAssignmentDataFilters
  | UpdateAssignmentDataFilterss
  | DeleteAssignmentDataFilters
- | DeleteAssignmentDataFilterss
- | ClearAssignmentDataFilterss;
+ | AddingAssignmentDataFilters
+ | RemovingAssignmentDataFilters;

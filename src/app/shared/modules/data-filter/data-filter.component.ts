@@ -10,6 +10,9 @@ import { DataFilterService } from './services/data-filter.service';
 import * as _ from 'lodash';
 import { DATA_FILTER_OPTIONS } from './data-filter.model';
 import {Observable, of, Subscription} from 'rxjs';
+import {AddAssignmentDataFiltersData} from '../../../store/actions/assignment-data-filters.actions';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/reducers';
 
 @Component({
   selector: 'app-data-filter',
@@ -66,7 +69,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   programsFromServer = [];
 
 
-  constructor(private dataFilterService: DataFilterService) {
+  constructor(private dataFilterService: DataFilterService,
+              private store: Store<AppState>) {
     this.dataFilterOptions = DATA_FILTER_OPTIONS;
     this.showGroups = false;
     this.need_groups = true;
@@ -110,6 +114,9 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         dataSets.formType = 'dataSets';
         this.availableItems.push(dataSets);
       });
+        // this function to update Store with initial data
+      this.autoCollectItems(this.dataSetsFromServer);
+        // End of function to update Store with initial data
       this.programsFromServer.forEach((programs) => {
         programs.formType = 'programs';
         this.availableItems.push(programs);
@@ -120,6 +127,13 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
 
   // MyOwn functions working for me only
+
+  autoCollectItems(dataSets) {
+    const initCollectedItems = dataSets.slice(0, 5);
+    this.store.dispatch(new AddAssignmentDataFiltersData(initCollectedItems));
+    this._selectedItems = initCollectedItems;
+    this.selectedItems$ = of(this._selectedItems);
+  }
 
   toggleDataFilterOption(toggledOption, event) {
     event.stopPropagation();

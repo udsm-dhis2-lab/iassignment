@@ -12,6 +12,9 @@
 .meta-search{
   width: 30%;
 }
+.pagination-margin-left{
+  margin-right: 20%;
+}
 @media only screen and (max-width: 900px) {
   .on-mobile-block{
     display: block;
@@ -25,5 +28,9 @@
   }
   .input-search{
     width: 65% !important;
+  }
+  .table-card{
+    overflow-x: scroll;
+    display: block;
   }
 }

@@ -17,6 +17,9 @@ import { OrgUnitService } from './org-unit.service';
 import { MultiselectComponent } from './multiselect/multiselect.component';
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
+import {AddAssignmentDataFiltersOrgunits} from '../../../store/actions/assignment-data-filters.actions';
+import {AppState} from '../../../store/reducers';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-org-unit-filter',
@@ -86,7 +89,8 @@ export class OrgUnitFilterComponent implements OnInit, OnDestroy {
 
   constructor(
     private orgunitService: OrgUnitService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private store: Store<AppState>
   ) {
     if (!this.orgUnitTreeConfig.hasOwnProperty('multiple_key')) {
       this.orgUnitTreeConfig.multiple_key = 'none';
@@ -201,6 +205,19 @@ export class OrgUnitFilterComponent implements OnInit, OnDestroy {
               this.orgunitService.userOrgUnits = this.orgunitService.getUserOrgUnits(
                 userOrgunit
               );
+
+              this.orgunitService.userOrgUnits.forEach((orgunit: any) => {
+                orgunit.children.sort((a, b) => {
+                  return a.name.localeCompare(b.name);
+                });
+              });
+
+              this.orgunitService.userOrgUnits.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+              });
+                // dispatching action for loading orgunits to store
+              this.store.dispatch(new AddAssignmentDataFiltersOrgunits(this.orgunitService.userOrgUnits));
+
               if (
                 this.orgUnitModel.selectionMode === 'orgUnit' &&
                 this.orgUnitModel.selectedOrgUnits.length === 0

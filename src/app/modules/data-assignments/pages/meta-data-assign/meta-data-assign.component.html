@@ -99,7 +99,15 @@
 
       <tr *ngIf="(selectedData$ | async).length > 0">
         <th>Organisation unit</th>
-        <th *ngFor="let form of ((selectedData$ | async))"> {{form.name}}</th>
+        <th *ngFor="let form of ((selectedData$ | async))" class="assignment-table-header">
+          {{form.name}}
+
+          <div class="quick-assignment-holder">
+            <img class="circular-checkbox" src="./assets/icons/tick.png" alt="" title="Assign all orgunits to {{form.name}}">
+            <img class="circular-checkbox mx-2" src="./assets/icons/cross.png" alt="" title="Remove all orgunits to {{form.name}}">
+          </div>
+
+        </th>
       </tr>
 
 

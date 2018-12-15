@@ -34,6 +34,47 @@ tbody tr td:nth-child(n+2){
   text-align: center;
 }
 
-/*.show {*/
+.assignment-table-header{
+  position: relative;
+  opacity: 1;
   /*display: block;*/
-/*}*/
+  /*width: 100%;*/
+  /*height: auto;*/
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.quick-assignment-holder {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  display: inline-flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.small-btn-width{
+  /*width: 20%;*/
+}
+
+.circular-checkbox{
+  width: 35px;
+  height: 35px;
+  z-index: 10;
+}
+
+.circular-checkbox:hover{
+  width: 40px;
+  height: 40px;
+}
+
+th:hover .assignment-table-header {
+  opacity: 0.3;
+}
+
+th:hover .quick-assignment-holder {
+  opacity: 1;
+}

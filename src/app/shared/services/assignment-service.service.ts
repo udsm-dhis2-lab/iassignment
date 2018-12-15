@@ -21,4 +21,15 @@ export class AssignmentServiceService {
       }));
   }
 
+  makeAssignmentDataForAll(assignmentObject, payload): Observable<any> {
+    const url = `${assignmentObject.formType}/${assignmentObject.id}/organisationUnits.json`;
+    return this.httpClient.post(url, payload)
+      .pipe(retryWhen(() => {
+        return interval(5000).pipe(
+          flatMap(count => count === 3 ?
+            throwError('Failed to add assignment to server, please check your internet connection') : of(count))
+        );
+      }));
+  }
+
 }

@@ -42,8 +42,8 @@ export function reducer(
       return adapter.addMany(action.payload, state);
     }
 
-    case AssignmentDataFiltersActionTypes.UpsertAssignmentDataFilterss: {
-      return adapter.upsertMany(action.payload.assignmentDataFilterss, state);
+    case AssignmentDataFiltersActionTypes.AssignAllData: {
+      return state;
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilters: {
@@ -55,11 +55,11 @@ export function reducer(
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilterss: {
-      return adapter.updateMany(action.payload.assignmentDataFilterss, state);
+      return adapter.upsertMany(action.payload, state);
     }
 
-    case AssignmentDataFiltersActionTypes.DeleteAssignmentDataFilters: {
-      return adapter.removeOne(action.payload.id, state);
+    case AssignmentDataFiltersActionTypes.RemoveAssignAllData: {
+      return state;
     }
 
     case AssignmentDataFiltersActionTypes.AddingAssignmentDataFilters: {

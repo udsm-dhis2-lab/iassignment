@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../store/reducers';
-import {AddAssignmentDataFiltersData, AddAssignmentDataFiltersOrgunits} from '../../../../store/actions/assignment-data-filters.actions';
+import {
+  AddAssignmentDataFiltersData,
+  AddAssignmentDataFiltersOrgunits,
+  AssignAllData, RemoveAssignAllData
+} from '../../../../store/actions/assignment-data-filters.actions';
 import {Observable} from 'rxjs';
 import * as fromAssingmentFiltersSelectors from '../../../../store/selectors/assignment-data-filter.selectors';
 import {FilterByPipe} from 'ngx-pipes';
@@ -54,7 +58,6 @@ export class MetaDataAssignComponent implements OnInit {
     this.selectedOrgunitToggle.aria_expanded = false;
     this.selectedOrgunitToggle.display_div = false;
     this.selectedOrgunitToggle.btn_class = true;
-
   }
 
   updateData(e) {
@@ -71,6 +74,14 @@ export class MetaDataAssignComponent implements OnInit {
 
   onUpdatePageSize(e) {
     this.itemsPerPage = e;
+  }
+
+  assignAll(form) {
+    this.store.dispatch(new AssignAllData(form));
+  }
+
+  removeAll(form) {
+    this.store.dispatch(new RemoveAssignAllData(form));
   }
 
 }

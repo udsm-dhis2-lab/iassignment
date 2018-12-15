@@ -103,8 +103,10 @@
           {{form.name}}
 
           <div class="quick-assignment-holder">
-            <img class="circular-checkbox" src="./assets/icons/tick.png" alt="" title="Assign all orgunits to {{form.name}}">
-            <img class="circular-checkbox mx-2" src="./assets/icons/cross.png" alt="" title="Remove all orgunits to {{form.name}}">
+            <img class="circular-checkbox" src="./assets/icons/tick.png" alt=""
+                 title="Assign all orgunits to {{form.name}}" (click)="assignAll(form)">
+            <img class="circular-checkbox mx-2" src="./assets/icons/cross.png" alt=""
+                 title="Remove all orgunits to {{form.name}}" (click)="removeAll(form)">
           </div>
 
         </th>

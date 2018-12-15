@@ -7,10 +7,10 @@ export enum AssignmentDataFiltersActionTypes {
   AddAssignmentDataFiltersOrgunits = '[AssignmentDataFilters] Add AssignmentDataFilters orgunits',
   UpsertAssignmentDataFilters = '[AssignmentDataFilters] Upsert AssignmentDataFilters',
   AddAssignmentDataFiltersData = '[AssignmentDataFilters] Add AssignmentDataFilters Data',
-  UpsertAssignmentDataFilterss = '[AssignmentDataFilters] Upsert AssignmentDataFilterss',
+  AssignAllData = '[AssignmentDataFilters] Assign All Data',
   UpdateAssignmentDataFilters = '[AssignmentDataFilters] Update AssignmentDataFilters',
   UpdateAssignmentDataFilterss = '[AssignmentDataFilters] Update AssignmentDataFilterss',
-  DeleteAssignmentDataFilters = '[AssignmentDataFilters] Delete AssignmentDataFilters',
+  RemoveAssignAllData = '[AssignmentDataFilters] Remove All Data',
   AddingAssignmentDataFilters = '[AssignmentDataFilters] Adding AssignmentDataFilters',
   RemovingAssignmentDataFilters = '[AssignmentDataFilters] Removing AssignmentDataFilters'
 }
@@ -39,10 +39,10 @@ export class AddAssignmentDataFiltersData implements Action {
   constructor(public payload: any) {}
 }
 
-export class UpsertAssignmentDataFilterss implements Action {
-  readonly type = AssignmentDataFiltersActionTypes.UpsertAssignmentDataFilterss;
+export class AssignAllData implements Action {
+  readonly type = AssignmentDataFiltersActionTypes.AssignAllData;
 
-  constructor(public payload: { assignmentDataFilterss: AssignmentDataFilters[] }) {}
+  constructor(public payload: any) {}
 }
 
 export class UpdateAssignmentDataFilters implements Action {
@@ -54,13 +54,13 @@ export class UpdateAssignmentDataFilters implements Action {
 export class UpdateAssignmentDataFilterss implements Action {
   readonly type = AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilterss;
 
-  constructor(public payload: { assignmentDataFilterss: Update<AssignmentDataFilters>[] }) {}
+  constructor(public payload: any) {}
 }
 
-export class DeleteAssignmentDataFilters implements Action {
-  readonly type = AssignmentDataFiltersActionTypes.DeleteAssignmentDataFilters;
+export class RemoveAssignAllData implements Action {
+  readonly type = AssignmentDataFiltersActionTypes.RemoveAssignAllData;
 
-  constructor(public payload: { id: string }) {}
+  constructor(public payload: any) {}
 }
 
 export class AddingAssignmentDataFilters implements Action {
@@ -80,9 +80,9 @@ export type AssignmentDataFiltersActions =
  | AddAssignmentDataFiltersOrgunits
  | UpsertAssignmentDataFilters
  | AddAssignmentDataFiltersData
- | UpsertAssignmentDataFilterss
+ | AssignAllData
  | UpdateAssignmentDataFilters
  | UpdateAssignmentDataFilterss
- | DeleteAssignmentDataFilters
+ | RemoveAssignAllData
  | AddingAssignmentDataFilters
  | RemovingAssignmentDataFilters;

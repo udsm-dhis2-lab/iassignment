@@ -3,20 +3,22 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
 import {AppState} from '../reducers';
 import {
-  AssignmentDataFiltersActionTypes, RemovingAssignmentDataFilters,
-  UpdateAssignmentDataFilters,
+  AssignmentDataFiltersActionTypes, RemoveAssignAllData, RemovingAssignmentDataFilters,
+  UpdateAssignmentDataFilters, UpdateAssignmentDataFilterss,
   UpsertAssignmentDataFilters
 } from '../actions/assignment-data-filters.actions';
 import * as fromAssignmentActions from '../actions/assignment-data-filters.actions';
 import {map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import * as fromAssignmentDataFilterSelectors from '../selectors/assignment-data-filter.selectors';
 import {AssignmentServiceService} from '../../shared/services/assignment-service.service';
+import * as fromAssignmentHelper from '../../shared/helpers/assignment-helper';
 
 @Injectable()
 export class AssignmentDataFiltersEffects {
   payloadToAssignment: any;
   currentAssignmentPayload: any;
   selectedData: any;
+  selectedOrgunits: any;
   constructor(
     private store: Store<AppState>,
     private actions$: Actions,
@@ -33,7 +35,8 @@ export class AssignmentDataFiltersEffects {
     tap(([action, selectedOrgunit, selectedData]:
            [fromAssignmentActions.AddAssignmentDataFiltersOrgunits, any, any]) => {
       if (selectedData.length > 0) {
-        this.generateDataAssignments(action.payload, selectedData);
+        const assignmentArray = fromAssignmentHelper.generateDataAssignments(action.payload, selectedData);
+        this.store.dispatch(new UpsertAssignmentDataFilters(assignmentArray));
       }
     })
   );
@@ -48,8 +51,10 @@ export class AssignmentDataFiltersEffects {
       (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData)),
     tap(([action, selectedOrgunit, selectedData]:
            [fromAssignmentActions.AddAssignmentDataFiltersData, any, any]) => {
+      this.selectedOrgunits = selectedOrgunit;
       if (selectedOrgunit.length > 0) {
-        this.generateDataAssignments(selectedOrgunit, action.payload);
+        const assignmentArray = fromAssignmentHelper.generateDataAssignments(selectedOrgunit, action.payload);
+        this.store.dispatch(new UpsertAssignmentDataFilters(assignmentArray));
       }
     })
   );
@@ -116,54 +121,75 @@ export class AssignmentDataFiltersEffects {
     })
   );
 
-  generateDataAssignments(selectedOrgunits, selectedData) {
-    const assignmentArray = [];
-    if (selectedOrgunits.length > 1) {
-      selectedOrgunits.forEach((orgunit: any) => {
-        selectedData.forEach((form: any) => {
-          assignmentArray.push({
-            id: orgunit.id + '-' + form.id,
-            orgunitId: orgunit.id,
-            orgunitName: orgunit.name,
-            formName: form.name,
-            formType: form.formType,
-            formId: form.id,
-            isProcessing: false,
-            isAssigned: (form.organisationUnits.filter(e => e.id === orgunit.id).length > 0) ? true : false
-          });
-        });
+  @Effect()
+  assigningAllData$ = this.actions$.pipe(
+    ofType(AssignmentDataFiltersActionTypes.AssignAllData),
+    withLatestFrom(this.store.select
+    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+      this.store.select
+      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    map(([action, selectedData, displayingOrgunits]: [fromAssignmentActions.AssignAllData, any, any]) => {
+      this.selectedData = selectedData;
+      this.selectedOrgunits = displayingOrgunits;
+      const orgunitArray = [];
+        displayingOrgunits.map(orgunit => orgunitArray.push({id: orgunit.id}));
+      this.payloadToAssignment = {
+        additions: orgunitArray,
+        deletions: [ ]
+      };
+      this.currentAssignmentPayload = action.payload ? action.payload : {};
+    }),
+    switchMap(() =>
+      this.assignmentService.makeAssignmentDataForAll
+      (this.currentAssignmentPayload, this.payloadToAssignment)),
+    map((response: any) => {
+      let assignmentArray = [];
+      this.selectedData.forEach((form: any) => {
+        if (form.id === this.currentAssignmentPayload.id) {
+          form.organisationUnits =
+            fromAssignmentHelper.removeDuplicates
+            ([...form.organisationUnits, ...this.payloadToAssignment.additions], 'id');
+          assignmentArray = fromAssignmentHelper.generateDataAssignments(this.selectedOrgunits, this.selectedData);
+        }
       });
-    } else {
-      if (selectedOrgunits[0].children) {
-        selectedOrgunits[0].children.forEach((childOrgunit: any) => {
-          selectedData.forEach((form: any) => {
-            assignmentArray.push({
-              id: childOrgunit.id + '-' + form.id,
-              orgunitId: childOrgunit.id,
-              orgunitName: childOrgunit.name,
-              formName: form.name,
-              formType: form.formType,
-              formId: form.id,
-              isProcessing: false,
-              isAssigned: (form.organisationUnits.filter(e => e.id === childOrgunit.id).length > 0) ? true : false
-            });
-          });
-        });
-      } else {
-        selectedData.forEach((form: any) => {
-        assignmentArray.push({
-          id: selectedOrgunits[0].id + '-' + form.id,
-          orgunitId: selectedOrgunits[0].id,
-          orgunitName: selectedOrgunits[0].name,
-          formName: form.name,
-          formType: form.formType,
-          formId: form.id,
-          isProcessing: false,
-          isAssigned: (form.organisationUnits.filter(e => e.id === selectedOrgunits[0].id).length > 0) ? true : false
-        });
-        });
-      }
-    }
-    this.store.dispatch(new UpsertAssignmentDataFilters(assignmentArray));
-  }
+      return new UpdateAssignmentDataFilterss(assignmentArray);
+    })
+  );
+
+  @Effect()
+  removingingAllData$ = this.actions$.pipe(
+    ofType(AssignmentDataFiltersActionTypes.RemoveAssignAllData),
+    withLatestFrom(this.store.select
+      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+      this.store.select
+      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    map(([action, selectedData, displayingOrgunits]: [fromAssignmentActions.AssignAllData, any, any]) => {
+      this.selectedData = selectedData;
+      this.selectedOrgunits = displayingOrgunits;
+      const orgunitArray = [];
+      displayingOrgunits.map(orgunit => orgunitArray.push({id: orgunit.id}));
+      this.payloadToAssignment = {
+        additions: [],
+        deletions: orgunitArray
+      };
+      this.currentAssignmentPayload = action.payload ? action.payload : {};
+    }),
+    switchMap(() =>
+      this.assignmentService.makeAssignmentDataForAll
+      (this.currentAssignmentPayload, this.payloadToAssignment)),
+    map((response: any) => {
+      let assignmentArray = [];
+      this.selectedData.forEach((form: any) => {
+        if (form.id === this.currentAssignmentPayload.id) {
+          const removalArrayItems = this.payloadToAssignment.deletions;
+          const newOrgunitArray = fromAssignmentHelper.removeArrayObjects
+          (form.organisationUnits, removalArrayItems, 'id');
+          form.organisationUnits = newOrgunitArray;
+          assignmentArray = fromAssignmentHelper.generateDataAssignments(this.selectedOrgunits, this.selectedData);
+        }
+      });
+      return new UpdateAssignmentDataFilterss(assignmentArray);
+    })
+  );
+
 }

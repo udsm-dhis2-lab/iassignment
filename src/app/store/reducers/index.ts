@@ -21,7 +21,7 @@ export const reducers: ActionReducerMap<AppState> = {
 };
 
 export const getAssignmentPage = (state: AppState) => state.assignmentsPage;
-export const getAssignmentDataFilter = (state: AppState) => state.assignmentDataFilters
+export const getAssignmentDataFilter = (state: AppState) => state.assignmentDataFilters;
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];

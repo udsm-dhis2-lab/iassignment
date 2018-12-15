@@ -31,14 +31,16 @@
 
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
+            <!--[ngClass]="{'collapsed': selectedOrgunitToggle.btn_class}"-->
             <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
                     data-toggle="collapse" data-target="#selectOrgunit" aria-expanded="false" aria-controls="selectOrgunit">
               Select Orgunit
             </button>
+            <!--[ngClass]="{'show': selectedOrgunitToggle.display_div}"-->
             <div class="collapse data-menu-collapse" id="selectOrgunit">
               <div class="card card-body">
                 <app-org-unit-filter
-                  (onOrgUnitClose)="showOrgUnitFilter = false"
+                  (onOrgUnitClose)="onOrgunitFilterClose($event)"
                   (onOrgUnitUpdate)="updateOrgUnit($event)"
                 ></app-org-unit-filter>
               </div>

@@ -20,7 +20,9 @@ export class MetaDataAssignComponent implements OnInit {
   searchText = '';
   page = 1;
   itemsPerPage = 10;
+  selectedOrgunitToggle: any;
   constructor(private store: Store<AppState>) {
+    this.selectedOrgunitToggle = {aria_expanded: true, btn_class: true, display_div: false};
     this.selectedData$ = this.store.select
       (fromAssingmentFiltersSelectors.getAssingmentDataFilterSelectedData);
     this.selectedOgunits$ = this.store.select
@@ -39,9 +41,20 @@ export class MetaDataAssignComponent implements OnInit {
   }
 
   updateOrgUnit(e) {
+    this.selectedOrgunitToggle.aria_expanded = false;
+    this.selectedOrgunitToggle.display_div = false;
+    this.selectedOrgunitToggle.btn_class = true;
+
     if (e.items.length > 0) {
       this.store.dispatch(new AddAssignmentDataFiltersOrgunits(e.items));
     }
+  }
+
+  onOrgunitFilterClose(e) {
+    this.selectedOrgunitToggle.aria_expanded = false;
+    this.selectedOrgunitToggle.display_div = false;
+    this.selectedOrgunitToggle.btn_class = true;
+
   }
 
   updateData(e) {

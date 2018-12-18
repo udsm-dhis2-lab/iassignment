@@ -26,17 +26,10 @@ export class HomeComponent implements OnInit {
   searchText = '';
 
   constructor(private store: Store<AppState>) {
-
     this.assignmentPageLoading$ = this.store.select(getAssignmentLoadingState);
     this.assignmentPageLoaded$ = this.store.select(getAssignmentLoadedState);
     this.assignmentPageEntities$ = this.store.select(getAssignmentPageEntities);
     this.assignmentPageState$ = this.store.select(getAssignmentPageState);
-
-
-    // minor delay for the loaders to appear
-    setTimeout(() => {
-      this.store.dispatch(new LoadAssignmentsPages());
-    }, 2000);
   }
 
 

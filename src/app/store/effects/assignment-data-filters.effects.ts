@@ -4,25 +4,29 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../reducers';
 import {
   AssignmentDataFiltersActionTypes, RemoveAssignAllData, RemovingAssignmentDataFilters,
-  UpdateAssignmentDataFilters, UpdateAssignmentDataFilterss,
+  UpdateAssignmentDataFilters, UpdateAssignmentDataFilterss, UploadOfflineAssignmentDataFilters,
   UpsertAssignmentDataFilters
 } from '../actions/assignment-data-filters.actions';
 import * as fromAssignmentActions from '../actions/assignment-data-filters.actions';
-import {map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, map, mergeMap, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import * as fromAssignmentDataFilterSelectors from '../selectors/assignment-data-filter.selectors';
 import {AssignmentServiceService} from '../../shared/services/assignment-service.service';
 import * as fromAssignmentHelper from '../../shared/helpers/assignment-helper';
+import {LocalStorageService, OFFLINE_DATA} from '../../shared/services/indexDB/local-storage.service';
+import {of} from 'rxjs';
 
 @Injectable()
 export class AssignmentDataFiltersEffects {
   payloadToAssignment: any;
   currentAssignmentPayload: any;
+  assignmentUploadPayload: any;
   selectedData: any;
   selectedOrgunits: any;
   constructor(
     private store: Store<AppState>,
     private actions$: Actions,
-    private assignmentService: AssignmentServiceService) {}
+    private assignmentService: AssignmentServiceService,
+    private localStorage: LocalStorageService) {}
 
   @Effect({dispatch: false})
   loadingAssignmentsOrgunits$ = this.actions$.pipe(
@@ -190,6 +194,41 @@ export class AssignmentDataFiltersEffects {
       });
       return new UpdateAssignmentDataFilterss(assignmentArray);
     })
+  );
+
+  @Effect({dispatch: false})
+  uploadingOfflineAssignments$ = this.actions$.pipe(
+    ofType(AssignmentDataFiltersActionTypes.UploadOfflineAssignmentDataFilters),
+    mergeMap(() => this.localStorage.getAll(OFFLINE_DATA)),
+    map((offlineData: any) => {
+      const assignmentUploadPayload = [];
+      if (offlineData.length > 0) {
+        offlineData.forEach((data: any) => {
+          if (data.isAssigned) {
+            // make object for deletion
+            assignmentUploadPayload.push({
+              ...data,
+              assignmentPayload: {
+                additions: [ ],
+                deletions: [ { id: data.orgunitId ? data.orgunitId : '' } ]
+              }
+            });
+          } else {
+            // make object for addition
+            assignmentUploadPayload.push({
+              ...data,
+              assignmentPayload: {
+                additions: [{id: data.orgunitId ? data.orgunitId : ''}],
+                deletions: []
+              }
+            });
+          }
+        });
+      }
+      this.assignmentUploadPayload = assignmentUploadPayload;
+    }),
+    switchMap(() => this.assignmentService.assignOfflineAssignments(this.assignmentUploadPayload)),
+    catchError(error => of())
   );
 
 }

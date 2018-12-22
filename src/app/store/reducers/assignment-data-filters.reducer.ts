@@ -3,7 +3,7 @@ import { AssignmentDataFilters } from '../models/assignment-data-filters.model';
 import {
   AssignmentDataFiltersActions,
   AssignmentDataFiltersActionTypes,
-  RemovingAssignmentDataFilters
+  RemovingAssignmentDataFilters, UploadOfflineAssignmentDataFilters
 } from '../actions/assignment-data-filters.actions';
 
 export interface State extends EntityState<AssignmentDataFilters> {
@@ -63,6 +63,10 @@ export function reducer(
     }
 
     case AssignmentDataFiltersActionTypes.AddingAssignmentDataFilters: {
+      return state;
+    }
+
+    case AssignmentDataFiltersActionTypes.UploadOfflineAssignmentDataFilters: {
       return state;
     }
 

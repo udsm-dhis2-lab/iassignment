@@ -9,7 +9,7 @@ import {MetaDataAssignComponent} from './modules/data-assignments/pages/meta-dat
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'data',
     pathMatch: 'full'
   },
   {

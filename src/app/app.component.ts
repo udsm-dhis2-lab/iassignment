@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {LocalStorageService} from './shared/services/indexDB/local-storage.service';
+import {UploadOfflineAssignmentDataFilters} from './store/actions/assignment-data-filters.actions';
 import {AppState} from './store/reducers';
 import {Store} from '@ngrx/store';
-import {LoadAssignmentsPages} from './store/actions/assignments-page.actions';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +11,11 @@ import {LoadAssignmentsPages} from './store/actions/assignments-page.actions';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private store: Store<AppState>) {
-    // minor delay for the loaders to appear
-    setTimeout(() => {
-      this.store.dispatch(new LoadAssignmentsPages());
-    }, 2000);
+  constructor(private localStorage: LocalStorageService,
+              private store: Store<AppState>) {
+      // initiate indexDB localStorage
+    this.localStorage.initiateStoreObjects();
+   // this.store.dispatch(new UploadOfflineAssignmentDataFilters());
   }
 
   ngOnInit() {}

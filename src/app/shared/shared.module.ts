@@ -10,6 +10,7 @@ import {DragulaService} from 'ng2-dragula';
 import {services} from './services';
 import {NgPipesModule} from 'ngx-pipes';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { NotificationComponent } from './components/notification/notification.component';
 
 @NgModule({
   imports: [

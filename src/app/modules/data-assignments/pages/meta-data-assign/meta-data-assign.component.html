@@ -15,10 +15,6 @@
         <!--<div class="btn-group">-->
           <input class="form-control mr-sm-2 mx-2 my-2 input-search"
                  type="search" placeholder="Search..." aria-label="Search" (keyup)="searchingItems($event)">
-          <button class="btn btn-outline-secondary btn-sm my-2 my-sm-0 mx-1 mx-sm-1"
-                  type="submit" routerLink="/">
-            <i class="fa fa-home" aria-hidden="true" style="font-size: 170%;"></i> Home
-          </button>
         <!--</div>-->
 
       </form>
@@ -84,8 +80,6 @@
 </div>
 
 <div class="container-fluid my-4">
-
-
 
 <div class="card my-4 table-card">
     <table class="table table-bordered table-hover table-sm text-sm">
@@ -161,3 +155,10 @@
 
 
 </div>
+<app-notification
+  [notificationProperties]="showNotificationContents.notificationProperties"
+  [isSuccessful]="showNotificationContents.isSuccessful"
+  [isError]="showNotificationContents.isError"
+  [isOffline]="showNotificationContents.isOffline"
+  [uploadOffline]="showNotificationContents.uploadOffline"
+></app-notification>

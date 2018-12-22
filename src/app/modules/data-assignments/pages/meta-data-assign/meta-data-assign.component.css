@@ -21,7 +21,7 @@
   z-index: 10;
 }
 .input-search{
-  width: 73%;
+  width: 100%;
 }
 
 thead tr th:nth-child(n+2),
@@ -78,3 +78,4 @@ th:hover .assignment-table-header {
 th:hover .quick-assignment-holder {
   opacity: 1;
 }
+

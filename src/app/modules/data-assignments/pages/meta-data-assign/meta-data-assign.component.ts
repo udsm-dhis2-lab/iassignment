@@ -25,6 +25,8 @@ export class MetaDataAssignComponent implements OnInit {
   page = 1;
   itemsPerPage = 10;
   selectedOrgunitToggle: any;
+  showNotificationContents: any;
+  showNotificationPopup: boolean;
   constructor(private store: Store<AppState>) {
     this.selectedOrgunitToggle = {aria_expanded: true, btn_class: true, display_div: false};
     this.selectedData$ = this.store.select
@@ -82,6 +84,21 @@ export class MetaDataAssignComponent implements OnInit {
 
   removeAll(form) {
     this.store.dispatch(new RemoveAssignAllData(form));
+  }
+
+  showNotification(notificationProperties?: any, isSuccessful?: boolean,
+                   isError?: boolean, isOffline?: boolean, uploadOffline?: boolean ) {
+    this.showNotificationContents = {
+      notificationProperties: notificationProperties,
+      isSuccessful: isSuccessful ? isSuccessful : false,
+      isError: isError ? isError : false,
+      isOffline: isOffline ? isOffline : false,
+      uploadOffline: uploadOffline ? uploadOffline : false
+    };
+    this.showNotificationPopup = true;
+    setTimeout(() => {
+      this.showNotificationPopup = false;
+    }, 3000);
   }
 
 }

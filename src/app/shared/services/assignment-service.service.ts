@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {NgxDhis2HttpClientService} from 'ngx-dhis2-http-client';
-import {interval, Observable, of, throwError} from 'rxjs';
-import {flatMap, retryWhen} from 'rxjs/operators';
+import {from, interval, Observable, of, throwError} from 'rxjs';
+import {flatMap, mergeMap, retryWhen} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +30,16 @@ export class AssignmentServiceService {
             throwError('Failed to add assignment to server, please check your internet connection') : of(count))
         );
       }));
+  }
+
+  assignOfflineAssignments(offlinePayload: any[]): Observable<any> {
+    return from(offlinePayload).pipe(
+      mergeMap((payload, index) => {
+        const url = `${payload.formType}/${payload.formId}/organisationUnits.json`;
+        return <Observable<any>>
+          this.httpClient.post(url, payload.assignmentPayload).pipe();
+      })
+    );
   }
 
 }

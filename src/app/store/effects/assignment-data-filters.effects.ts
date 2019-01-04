@@ -89,8 +89,13 @@ export class AssignmentDataFiltersEffects {
               form.organisationUnits.concat(this.payloadToAssignment.additions);
           }
         });
-        return new UpdateAssignmentDataFilters(
-          {assignmentObject: this.currentAssignmentPayload, selectedData: this.selectedData});
+        const notificationStatus =
+          this.currentAssignmentPayload.formName +
+          ' successful assigned to ' + this.currentAssignmentPayload.orgunitName;
+      return new UpdateAssignmentDataFilters(
+          {assignmentObject: this.currentAssignmentPayload,
+            selectedData: this.selectedData,
+            notificationStatus: notificationStatus});
     })
   );
 
@@ -120,8 +125,13 @@ export class AssignmentDataFiltersEffects {
           form.organisationUnits = form.organisationUnits.filter(obj => !toDelete.has(obj.id));
         }
       });
+      const notificationStatus =
+        this.currentAssignmentPayload.formName +
+        ' removed from ' + this.currentAssignmentPayload.orgunitName;
       return new UpdateAssignmentDataFilters(
-        {assignmentObject: this.currentAssignmentPayload, selectedData: this.selectedData});
+        {assignmentObject: this.currentAssignmentPayload,
+          selectedData: this.selectedData,
+          notificationStatus: notificationStatus});
     })
   );
 
@@ -156,7 +166,11 @@ export class AssignmentDataFiltersEffects {
           assignmentArray = fromAssignmentHelper.generateDataAssignments(this.selectedOrgunits, this.selectedData);
         }
       });
-      return new UpdateAssignmentDataFilterss(assignmentArray);
+      return new UpdateAssignmentDataFilterss({
+        assignmentArray: assignmentArray,
+        notificationStatus: this.currentAssignmentPayload.name +
+        ' successful assigned all selected facilities'
+      });
     })
   );
 
@@ -192,7 +206,11 @@ export class AssignmentDataFiltersEffects {
           assignmentArray = fromAssignmentHelper.generateDataAssignments(this.selectedOrgunits, this.selectedData);
         }
       });
-      return new UpdateAssignmentDataFilterss(assignmentArray);
+      return new UpdateAssignmentDataFilterss({
+        assignmentArray: assignmentArray,
+        notificationStatus: this.currentAssignmentPayload.name +
+        ' removed from all selected facilities'
+      });
     })
   );
 

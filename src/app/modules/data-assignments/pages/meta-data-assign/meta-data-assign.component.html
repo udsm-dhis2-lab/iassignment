@@ -155,10 +155,14 @@
 
 
 </div>
-<app-notification
-  [notificationProperties]="showNotificationContents.notificationProperties"
-  [isSuccessful]="showNotificationContents.isSuccessful"
-  [isError]="showNotificationContents.isError"
-  [isOffline]="showNotificationContents.isOffline"
-  [uploadOffline]="showNotificationContents.uploadOffline"
-></app-notification>
+
+<div *ngIf="showNotificationPopup && showNotificationContents.notificationProperties">
+  <app-notification
+    [notificationProperties]="showNotificationContents.notificationProperties"
+    [isSuccessful]="showNotificationContents.isSuccessful"
+    [isError]="showNotificationContents.isError"
+    [isOffline]="showNotificationContents.isOffline"
+    [uploadOffline]="showNotificationContents.uploadOffline"
+    [showNotification]="showNotificationPopup"
+  ></app-notification>
+</div>

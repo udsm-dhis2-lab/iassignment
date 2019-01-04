@@ -11,6 +11,7 @@ export interface State extends EntityState<AssignmentDataFilters> {
   selectedOrgunits: any;
   orgunitTodisplay: any;
   selectedData: any;
+  notificationStatus: string;
 }
 
 export const adapter: EntityAdapter<AssignmentDataFilters> = createEntityAdapter<AssignmentDataFilters>();
@@ -19,7 +20,8 @@ export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   selectedOrgunits: [],
   orgunitTodisplay: [],
-  selectedData: []
+  selectedData: [],
+  notificationStatus: ''
 });
 
 export function reducer(
@@ -51,11 +53,12 @@ export function reducer(
       stateEntities[action.payload.assignmentObject.id] = action.payload.assignmentObject;
       return {...state,
         entities : stateEntities,
+        notificationStatus: action.payload.notificationStatus,
         selectedData: action.payload.selectedData};
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilterss: {
-      return adapter.upsertMany(action.payload, state);
+      return adapter.upsertMany(action.payload.assignmentArray, {...state, notificationStatus: action.payload.notificationStatus});
     }
 
     case AssignmentDataFiltersActionTypes.RemoveAssignAllData: {
@@ -75,11 +78,7 @@ export function reducer(
     }
 
     case AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters: {
-      const stateEntities = {...state.entities};
-      stateEntities[action.payload.assignmentObject.id] = action.payload.assignmentObject;
-      return {...state,
-        entities : stateEntities,
-        selectedData: action.payload.selectedData};
+      return state;
     }
 
     default: {
@@ -98,3 +97,4 @@ export const {
 export const getAssignmentEntitiesState = (state: State) => state.entities;
 export const getselectedOrgunitsState = (state: State) => state.orgunitTodisplay;
 export const getselectedDataState = (state: State) => state.selectedData;
+export const getAssingmentNotificationState = (state: State) => state.notificationStatus;

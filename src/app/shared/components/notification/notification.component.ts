@@ -12,16 +12,15 @@ export class NotificationComponent implements OnInit {
   @Input() isOffline: any;
   @Input() isError: any;
   @Input() uploadOffline: any;
-
-  showNotification: boolean;
+  @Input() showNotification: any;
 
   constructor() {
-    setTimeout(() => {
-      this.showNotification = true;
-      setTimeout(() => {
-        this.showNotification = false;
-      }, 5000);
-    }, 5000);
+    // setTimeout(() => {
+    //   this.showNotification = true;
+    //   setTimeout(() => {
+    //     this.showNotification = false;
+    //   }, 5000);
+    // }, 5000);
   }
 
   ngOnInit() {

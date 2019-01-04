@@ -35,6 +35,9 @@ export class MetaDataAssignComponent implements OnInit {
     (fromAssingmentFiltersSelectors.getAssingmentDataFilterSelectedOrgunit);
     this.assignmentFiltersEntities$ = this.store.select
     (fromAssingmentFiltersSelectors.getAssingmentDataFilterEntities);
+    this.store.select(fromAssingmentFiltersSelectors.getAssingmentNotification).subscribe((notification: any) => {
+      this.showNotification(notification, true);
+    });
   }
 
   ngOnInit() {}

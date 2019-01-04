@@ -2,7 +2,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { AssignmentDataFilters } from '../models/assignment-data-filters.model';
 import {
   AssignmentDataFiltersActions,
-  AssignmentDataFiltersActionTypes,
+  AssignmentDataFiltersActionTypes, AssignmentNotification,
   RemovingAssignmentDataFilters, UploadOfflineAssignmentDataFilters
 } from '../actions/assignment-data-filters.actions';
 
@@ -79,6 +79,10 @@ export function reducer(
 
     case AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters: {
       return state;
+    }
+
+    case AssignmentDataFiltersActionTypes.AssignmentNotification: {
+      return {...state, notificationStatus: action.payload};
     }
 
     default: {

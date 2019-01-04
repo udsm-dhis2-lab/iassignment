@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
 import {AppState} from '../reducers';
 import {
-  AssignmentDataFiltersActionTypes, RemoveAssignAllData, RemovingAssignmentDataFilters,
+  AssignmentDataFiltersActionTypes, AssignmentNotification, RemoveAssignAllData, RemovingAssignmentDataFilters,
   UpdateAssignmentDataFilters, UpdateAssignmentDataFilterss, UploadOfflineAssignmentDataFilters,
   UpsertAssignmentDataFilters
 } from '../actions/assignment-data-filters.actions';
@@ -135,7 +135,7 @@ export class AssignmentDataFiltersEffects {
     })
   );
 
-  @Effect()
+  @Effect({dispatch: false})
   assigningAllData$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AssignAllData),
     withLatestFrom(this.store.select
@@ -171,10 +171,11 @@ export class AssignmentDataFiltersEffects {
         notificationStatus: this.currentAssignmentPayload.name +
         ' successful assigned all selected facilities'
       });
-    })
+    }),
+    catchError(error => of(this.store.dispatch(new AssignmentNotification(error))))
   );
 
-  @Effect()
+  @Effect({dispatch: false})
   removingingAllData$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.RemoveAssignAllData),
     withLatestFrom(this.store.select
@@ -211,7 +212,8 @@ export class AssignmentDataFiltersEffects {
         notificationStatus: this.currentAssignmentPayload.name +
         ' removed from all selected facilities'
       });
-    })
+    }),
+    catchError(error => of(this.store.dispatch(new AssignmentNotification(error))))
   );
 
   @Effect({dispatch: false})

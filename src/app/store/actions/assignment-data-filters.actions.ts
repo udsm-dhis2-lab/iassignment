@@ -13,7 +13,8 @@ export enum AssignmentDataFiltersActionTypes {
   RemoveAssignAllData = '[AssignmentDataFilters] Remove All Data',
   AddingAssignmentDataFilters = '[AssignmentDataFilters] Adding AssignmentDataFilters',
   RemovingAssignmentDataFilters = '[AssignmentDataFilters] Removing AssignmentDataFilters',
-  UploadOfflineAssignmentDataFilters = '[AssignmentDataFilters] Uploading Offline Assignment Data'
+  UploadOfflineAssignmentDataFilters = '[AssignmentDataFilters] Uploading Offline Assignment Data',
+  AssignmentNotification = '[AssignmentDataFilters] Assignment Notification'
 }
 
 export class LoadAssignmentDataFilterss implements Action {
@@ -82,6 +83,12 @@ export class RemovingAssignmentDataFilters implements Action {
   constructor(public payload: any) {}
 }
 
+export class AssignmentNotification implements Action {
+  readonly type = AssignmentDataFiltersActionTypes.AssignmentNotification;
+
+  constructor(public payload: any) {}
+}
+
 export type AssignmentDataFiltersActions =
  LoadAssignmentDataFilterss
  | AddAssignmentDataFiltersOrgunits
@@ -93,4 +100,5 @@ export type AssignmentDataFiltersActions =
  | UpdateAssignmentDataFilterss
  | RemoveAssignAllData
  | AddingAssignmentDataFilters
- | RemovingAssignmentDataFilters;
+ | RemovingAssignmentDataFilters
+ | AssignmentNotification;

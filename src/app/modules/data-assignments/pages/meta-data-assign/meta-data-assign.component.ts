@@ -35,8 +35,15 @@ export class MetaDataAssignComponent implements OnInit {
     (fromAssingmentFiltersSelectors.getAssingmentDataFilterSelectedOrgunit);
     this.assignmentFiltersEntities$ = this.store.select
     (fromAssingmentFiltersSelectors.getAssingmentDataFilterEntities);
-    this.store.select(fromAssingmentFiltersSelectors.getAssingmentNotification).subscribe((notification: any) => {
-      this.showNotification(notification, true);
+    this.store.select(fromAssingmentFiltersSelectors.getAssingmentNotification)
+      .subscribe((notification: string) => {
+        if (notification.includes('successful') || notification.includes('removed')) {
+          this.showNotification(notification, true);
+        } else if (notification.includes('Error') || notification.includes('Fail')) {
+          this.showNotification(notification, false, true);
+        } else if (notification.includes('Offline')) {
+          this.showNotification(notification, false, false, true);
+        }
     });
   }
 
@@ -89,7 +96,7 @@ export class MetaDataAssignComponent implements OnInit {
     this.store.dispatch(new RemoveAssignAllData(form));
   }
 
-  showNotification(notificationProperties?: any, isSuccessful?: boolean,
+  showNotification(notificationProperties: any, isSuccessful?: boolean,
                    isError?: boolean, isOffline?: boolean, uploadOffline?: boolean ) {
     this.showNotificationContents = {
       notificationProperties: notificationProperties,

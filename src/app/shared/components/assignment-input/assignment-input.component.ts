@@ -1,7 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AppState} from '../../../store/reducers';
 import {Store} from '@ngrx/store';
-import {AddingAssignmentDataFilters, RemovingAssignmentDataFilters} from '../../../store/actions/assignment-data-filters.actions';
+import {
+  AddingAssignmentDataFilters,
+  AssignmentNotification,
+  RemovingAssignmentDataFilters
+} from '../../../store/actions/assignment-data-filters.actions';
 import {LocalStorageService, OFFLINE_DATA} from '../../services/indexDB/local-storage.service';
 
 @Component({
@@ -31,7 +35,11 @@ export class AssignmentInputComponent implements OnInit {
     } else {
       // this indicates that your offline
       assignmentObject.isProcessing = true;
-      this.localStorage.add(OFFLINE_DATA, assignmentObject).subscribe();
+      this.localStorage.add(OFFLINE_DATA, assignmentObject).subscribe((response: any) => {
+        const notification = assignmentObject.formName +
+          ' assignment to ' + assignmentObject.orgunitName + ' is Offline stored';
+        this.store.dispatch(new AssignmentNotification(notification));
+      });
     }
   }
 }

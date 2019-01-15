@@ -25,54 +25,65 @@
     <div class="card-body">
       <div class="row">
 
+        <!--Orgunit-filter button card-->
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
-            <!--[ngClass]="{'collapsed': selectedOrgunitToggle.btn_class}"-->
+            <!--[ngClass]="{'collapsed': orgunitToggle.btn_class}"-->
+            <!--data-toggle="collapse" data-target="#selectOrgunit" aria-expanded="false" aria-controls="selectOrgunit"-->
             <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
-                    data-toggle="collapse" data-target="#selectOrgunit" aria-expanded="false" aria-controls="selectOrgunit">
+                    (click)="openOrgunit($event)">
               Select Orgunit
             </button>
-            <!--[ngClass]="{'show': selectedOrgunitToggle.display_div}"-->
-            <div class="collapse data-menu-collapse" id="selectOrgunit">
+            <!--[ngClass]="{'show': orgunitToggle.display_div}"-->
+            <div class="collapse data-menu-collapse animated zoomIn" id="selectOrgunit" [ngStyle]="{'display': orgunitToggle}">
               <div class="card card-body">
                 <app-org-unit-filter
-                  (onOrgUnitClose)="onOrgunitFilterClose($event)"
+                  (onOrgUnitClose)="closeFilter($event)"
                   (onOrgUnitUpdate)="updateOrgUnit($event)"
                 ></app-org-unit-filter>
               </div>
             </div>
           </div>
         </div>
+        <!--End of Orgunit-filter button card-->
 
+        <!--Data-filter button card-->
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
             <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
-                    data-toggle="collapse" data-target="#selectData" aria-expanded="false" aria-controls="selectData">
+                    (click)="openDataFilter($event)">
               Select Data
             </button>
-            <div class="collapse data-menu-collapse" id="selectData">
+            <div class="collapse data-menu-collapse animated zoomIn" id="selectData" [ngStyle]="{'display': dataToggle}">
               <div class="card card-body">
                 <app-data-filter
                   (updatedListToTable)="updateData($event)"
+                  (onDataFilterClose)="closeFilter($event)"
                 ></app-data-filter>
               </div>
             </div>
           </div>
         </div>
+        <!--End of Data-filter button card-->
 
+        <!--Layout-filter button card-->
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
             <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
-                    data-toggle="collapse" data-target="#changeLayout" aria-expanded="false" aria-controls="changeLayout">
+                    (click)="openLayoutFilter($event)">
               Layout Design
             </button>
-            <div class="collapse data-menu-collapse" id="changeLayout">
+            <div class="collapse data-menu-collapse animated zoomIn" id="changeLayout" [ngStyle]="{'display': layoutToggle}">
               <div class="card card-body">
-                <app-layout></app-layout>
+                <app-layout
+                  (onLayoutUpdate)="updateLayout($event)"
+                  (onLayoutClose)="closeFilter($event)"
+                ></app-layout>
               </div>
             </div>
           </div>
         </div>
+        <!--End of Layout-filter button card-->
 
       </div>
     </div>
@@ -121,7 +132,7 @@
       <tr *ngFor="let orgunit of ((selectedOgunits$ | async) |
       filterBy: ['name'] : searchText |
       paginate: {itemsPerPage: itemsPerPage, currentPage: page })">
-        <td> {{orgunit.name}} </td>
+        <td class="animated fadeInLeft"> {{orgunit.name}} </td>
         <td *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length + 1: 7)">
           <app-progressive-loader></app-progressive-loader>
         </td>
@@ -135,7 +146,7 @@
       filterBy: ['name'] : searchText |
       paginate: {itemsPerPage: itemsPerPage, currentPage: page })">
         <td> {{orgunit.name}} </td>
-        <td *ngFor="let form of ((selectedData$ | async))">
+        <td class="animated fadeInRight" *ngFor="let form of ((selectedData$ | async))">
         <app-assignemt-input
           [assignmentObject]="(assignmentFiltersEntities$ | async)[orgunit.id + '-' + form.id]"
         ></app-assignemt-input>
@@ -164,8 +175,6 @@
 
     </table>
   </div>
-
-
 
 </div>
 

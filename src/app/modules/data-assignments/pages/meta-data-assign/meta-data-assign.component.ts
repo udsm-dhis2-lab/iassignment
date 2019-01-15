@@ -24,11 +24,15 @@ export class MetaDataAssignComponent implements OnInit {
   searchText = '';
   page = 1;
   itemsPerPage = 10;
-  selectedOrgunitToggle: any;
+  orgunitToggle: any;
+  dataToggle: any;
+  layoutToggle: any;
   showNotificationContents: any;
   showNotificationPopup: boolean;
   constructor(private store: Store<AppState>) {
-    this.selectedOrgunitToggle = {aria_expanded: true, btn_class: true, display_div: false};
+    this.orgunitToggle = 'none';
+    this.dataToggle = 'none';
+    this.layoutToggle = 'none';
     this.selectedData$ = this.store.select
       (fromAssingmentFiltersSelectors.getAssingmentDataFilterSelectedData);
     this.selectedOgunits$ = this.store.select
@@ -57,23 +61,52 @@ export class MetaDataAssignComponent implements OnInit {
   }
 
   updateOrgUnit(e) {
-    this.selectedOrgunitToggle.aria_expanded = false;
-    this.selectedOrgunitToggle.display_div = false;
-    this.selectedOrgunitToggle.btn_class = true;
-
     if (e.items.length > 0) {
       this.store.dispatch(new AddAssignmentDataFiltersOrgunits(e.items));
     }
+      // close orgunit-component view
+   this.closeFilter(e);
   }
 
-  onOrgunitFilterClose(e) {
-    this.selectedOrgunitToggle.aria_expanded = false;
-    this.selectedOrgunitToggle.display_div = false;
-    this.selectedOrgunitToggle.btn_class = true;
+  openOrgunit(e) {
+    if (this.orgunitToggle === 'block') {
+      this.orgunitToggle = 'none';
+    } else if (this.orgunitToggle === 'none') {
+      this.orgunitToggle = 'block';
+    }
+  }
+
+  closeFilter(e) {
+    this.orgunitToggle = 'none';
+    this.dataToggle = 'none';
+    // this.orgunitToggle = 'none';
+  }
+
+  openDataFilter(e) {
+    if (this.dataToggle === 'block') {
+      this.dataToggle = 'none';
+    } else if (this.dataToggle === 'none') {
+      this.dataToggle = 'block';
+    }
   }
 
   updateData(e) {
     this.store.dispatch(new AddAssignmentDataFiltersData(e));
+    // close filter-component view
+    this.closeFilter(e);
+  }
+
+  openLayoutFilter(e) {
+    if (this.layoutToggle === 'block') {
+      this.layoutToggle = 'none';
+    } else if (this.layoutToggle === 'none') {
+      this.layoutToggle = 'block';
+    }
+  }
+
+  updateLayout(e) {
+    // close filter-component view
+    this.closeFilter(e);
   }
 
   getArrayOfnItems(items) {

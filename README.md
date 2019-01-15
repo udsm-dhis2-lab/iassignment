@@ -4,7 +4,7 @@
 A utility tool custom built for DHIS2 environment tasks on assigning various metadata including organisation units, data sets, programs etc. Aiming in simplifying the activity of assigning multiple metadata at once.   
 
 ### Prerequisites
->- Java JDK v8 or later
+>- Java JDK v8 or later 
 >- Node Js v8 or later
 >- Angular CLI v6 or later
 

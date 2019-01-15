@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {NgxDhis2HttpClientService} from 'ngx-dhis2-http-client';
 import {from, interval, Observable, of, throwError} from 'rxjs';
-import {flatMap, mergeMap, retryWhen} from 'rxjs/operators';
+import {flatMap, map, mergeMap, retryWhen} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

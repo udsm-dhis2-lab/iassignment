@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {INITIAL_LAYOUT_MODEL} from './model/layout-model';
 import {DragulaService} from 'ng2-dragula';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -21,6 +22,7 @@ export class LayoutComponent implements OnInit {
   columnName: string;
   rowName: string;
   msg = '';
+  subs = new Subscription();
 
 
   constructor(private dragula: DragulaService) {
@@ -29,7 +31,6 @@ export class LayoutComponent implements OnInit {
       ou: 'assets/icons/tree.png',
       pe: 'assets/icons/period.png'
     };
-
     this.dimensions = {
       filterDimension: [],
       columnDimension: [],
@@ -37,6 +38,14 @@ export class LayoutComponent implements OnInit {
     };
     this.columnName = 'Column dimensions';
     this.rowName = 'Row dimensions';
+    dragula.createGroup('bag-one', {
+      removeOnSpill: true
+    });
+    // this.subs.add(this.dragula.drop('bag-one')
+    //   .subscribe((response: any) => {
+    //     console.log(response);
+    //   })
+    // );
   }
 
   ngOnInit() {
@@ -46,19 +55,34 @@ export class LayoutComponent implements OnInit {
       this.columnName = 'Series dimensions';
     }
 
-    // this.dragula
-    //   .drop
-    //   .subscribe(value => {
-    //     setTimeout(() => {
-    //       if (this.columns.length < 1) {
-    //         this.rows = [...this.layoutModel.columns];
-    //         this.columns = [...this.layoutModel.rows];
-    //       } else if (this.rows.length < 1) {
-    //         this.columns = [...this.layoutModel.columns];
-    //         this.rows = [...this.layoutModel.rows];
-    //       }
-    //     }, 1000);
-    //   });
+    this.dragula
+      .dropModel().subscribe((response: any) => {
+        // now filter the sourceModel and targetModel from response
+        console.log(response);
+        console.log(response.sourceModel, response.targetModel);
+        console.log(JSON.stringify(this.layoutModel));
+
+        // setTimeout(() => {
+        //   if (this.columns.length < 1) {
+        //     this.rows = [...this.layoutModel.columns];
+        //     this.columns = [...this.layoutModel.rows];
+        //   } else if (this.rows.length < 1) {
+        //     this.columns = [...this.layoutModel.columns];
+        //     this.rows = [...this.layoutModel.rows];
+        //   }
+        // }, 1000);
+    });
+      // .subscribe(value => {
+      //   setTimeout(() => {
+      //     if (this.columns.length < 1) {
+      //       this.rows = [...this.layoutModel.columns];
+      //       this.columns = [...this.layoutModel.rows];
+      //     } else if (this.rows.length < 1) {
+      //       this.columns = [...this.layoutModel.columns];
+      //       this.rows = [...this.layoutModel.rows];
+      //     }
+      //   }, 1000);
+      // });
   }
 
 
@@ -74,6 +98,11 @@ export class LayoutComponent implements OnInit {
       columns: this.columns,
       rows: this.rows
     });
+    // console.log(JSON.stringify({
+    //   filters: this.filters,
+    //   columns: this.columns,
+    //   rows: this.rows
+    // }))
   }
 
   close() {

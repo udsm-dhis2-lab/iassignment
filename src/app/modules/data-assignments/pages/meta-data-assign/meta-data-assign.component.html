@@ -106,7 +106,7 @@
         </th>
       </tr>
 
-
+        <!--Table body with loading animations-->
       <tbody *ngIf="((selectedOgunits$ | async).length < 1)">
       <tr *ngFor="let i of [1,2,4,5,6,7,8,9,10,11,12,13,14,15]">
         <td *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length + 1: 8)">
@@ -114,20 +114,37 @@
         </td>
       </tr>
       </tbody>
+      <!--End of Table body with loading animations-->
 
-      <tbody *ngIf="((selectedOgunits$ | async).length > 0)">
+      <!--Table body with loading animations for unloaded dataSets-->
+      <tbody *ngIf="((selectedOgunits$ | async).length > 0 && (selectedData$ | async).length < 1)">
       <tr *ngFor="let orgunit of ((selectedOgunits$ | async) |
       filterBy: ['name'] : searchText |
       paginate: {itemsPerPage: itemsPerPage, currentPage: page })">
-        <td> {{orgunit.name}}</td>
+        <td> {{orgunit.name}} </td>
+        <td *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length + 1: 7)">
+          <app-progressive-loader></app-progressive-loader>
+        </td>
+      </tr>
+      </tbody>
+      <!--End of Table body with loading animations for unloaded dataSets-->
+
+      <!--Assignment table body-->
+      <tbody *ngIf="((selectedOgunits$ | async).length > 0 && (selectedData$ | async).length > 0)">
+      <tr *ngFor="let orgunit of ((selectedOgunits$ | async) |
+      filterBy: ['name'] : searchText |
+      paginate: {itemsPerPage: itemsPerPage, currentPage: page })">
+        <td> {{orgunit.name}} </td>
         <td *ngFor="let form of ((selectedData$ | async))">
         <app-assignemt-input
           [assignmentObject]="(assignmentFiltersEntities$ | async)[orgunit.id + '-' + form.id]"
         ></app-assignemt-input>
-
         </td>
       </tr>
       </tbody>
+      <!--End of Assignment table body-->
+
+      <!--Footer for Assignment Table-->
       <tfoot  *ngIf="((selectedOgunits$ | async).length > 0)">
       <tr  *ngIf="((selectedOgunits$ | async).length > 0)">
         <td [attr.colspan]="(selectedData$ | async).length + 1"
@@ -143,13 +160,9 @@
         </td>
       </tr>
       </tfoot>
+      <!--End of Footer for Assignment Table-->
 
     </table>
-
-  <!--<div>-->
-    <!--<pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event"></pagination-controls>-->
-  <!--</div>-->
-
   </div>
 
 

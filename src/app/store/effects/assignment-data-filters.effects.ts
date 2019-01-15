@@ -135,42 +135,97 @@ export class AssignmentDataFiltersEffects {
     })
   );
 
+  // @Effect({dispatch: false})
+  // assigningAllData$ = this.actions$.pipe(
+  //   ofType(AssignmentDataFiltersActionTypes.AssignAllData),
+  //   withLatestFrom(this.store.select
+  //   (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+  //     this.store.select
+  //     (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+  //   switchMap(([action, selectedData, displayingOrgunits]: [fromAssignmentActions.AssignAllData, any, any]) =>
+  //     this.assignmentService.makeAssignmentDataForAll
+  //     (action.payload ? action.payload : {}, {
+  //       additions: displayingOrgunits.map(orgunit => { return {id: orgunit.id}; }),
+  //       deletions: [ ]
+  //     }).pipe(map((response: any) => {
+  //         let assignmentArray = [];
+  //         selectedData.forEach((form: any) => {
+  //           if (form.id === response.assignmentObject.id) {
+  //             form.organisationUnits =
+  //               fromAssignmentHelper.removeDuplicates
+  //               ([...form.organisationUnits, ...response.payload.additions], 'id');
+  //             assignmentArray = fromAssignmentHelper.generateDataAssignments(displayingOrgunits, selectedData);
+  //           }
+  //         });
+  //         return new UpdateAssignmentDataFilterss({
+  //           assignmentArray: assignmentArray,
+  //           notificationStatus: action.payload.name +
+  //           ' successful assigned all selected facilities'
+  //         });
+  //       }),
+  //       catchError(error => of(this.store.dispatch(new AssignmentNotification(error))))))
+  //
+  // );
+
   @Effect({dispatch: false})
   assigningAllData$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AssignAllData),
     withLatestFrom(this.store.select
-    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
       this.store.select
       (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
     map(([action, selectedData, displayingOrgunits]: [fromAssignmentActions.AssignAllData, any, any]) => {
       this.selectedData = selectedData;
       this.selectedOrgunits = displayingOrgunits;
+      this.currentAssignmentPayload = action.payload ? action.payload : {};
       const orgunitArray = [];
-        displayingOrgunits.map(orgunit => orgunitArray.push({id: orgunit.id}));
+      const storeEntityUpdate = [];
+      displayingOrgunits.forEach((orgunit: any) => {
+        orgunitArray.push({id: action.payload.id});
+        storeEntityUpdate.push({
+          id: orgunit.id + '-' + action.payload.id,
+          orgunitId: orgunit.id,
+          orgunitName: orgunit.name,
+          formName: action.payload.name,
+          formType: action.payload.formType,
+          formId: action.payload.id,
+          isProcessing: true,
+          isAssigned: false
+        });
+      });
+      this.store.dispatch(new UpdateAssignmentDataFilterss({
+        assignmentArray: storeEntityUpdate,
+        notificationStatus: 'Offline: Processing selected data for assignment'
+      }));
       this.payloadToAssignment = {
         additions: orgunitArray,
         deletions: [ ]
       };
-      this.currentAssignmentPayload = action.payload ? action.payload : {};
+
     }),
     switchMap(() =>
       this.assignmentService.makeAssignmentDataForAll
       (this.currentAssignmentPayload, this.payloadToAssignment)),
     map((response: any) => {
-      let assignmentArray = [];
-      this.selectedData.forEach((form: any) => {
-        if (form.id === this.currentAssignmentPayload.id) {
-          form.organisationUnits =
-            fromAssignmentHelper.removeDuplicates
-            ([...form.organisationUnits, ...this.payloadToAssignment.additions], 'id');
-          assignmentArray = fromAssignmentHelper.generateDataAssignments(this.selectedOrgunits, this.selectedData);
-        }
+      const storeEntityUpdate = [];
+      this.selectedOrgunits.forEach((orgunit: any) => {
+        // orgunitArray.push({id: action.payload.id});
+        storeEntityUpdate.push({
+          id: orgunit.id + '-' + this.currentAssignmentPayload.id,
+          orgunitId: orgunit.id,
+          orgunitName: orgunit.name,
+          formName: this.currentAssignmentPayload.name,
+          formType: this.currentAssignmentPayload.formType,
+          formId: this.currentAssignmentPayload.id,
+          isProcessing: false,
+          isAssigned: true
+        });
       });
-      return new UpdateAssignmentDataFilterss({
-        assignmentArray: assignmentArray,
+      this.store.dispatch(new UpdateAssignmentDataFilterss({
+        assignmentArray: storeEntityUpdate,
         notificationStatus: this.currentAssignmentPayload.name +
         ' successful assigned all selected facilities'
-      });
+      }));
     }),
     catchError(error => of(this.store.dispatch(new AssignmentNotification(error))))
   );
@@ -185,33 +240,54 @@ export class AssignmentDataFiltersEffects {
     map(([action, selectedData, displayingOrgunits]: [fromAssignmentActions.AssignAllData, any, any]) => {
       this.selectedData = selectedData;
       this.selectedOrgunits = displayingOrgunits;
+      this.currentAssignmentPayload = action.payload ? action.payload : {};
       const orgunitArray = [];
-      displayingOrgunits.map(orgunit => orgunitArray.push({id: orgunit.id}));
+      const storeEntityUpdate = [];
+      displayingOrgunits.forEach((orgunit: any) => {
+        orgunitArray.push({id: action.payload.id});
+        storeEntityUpdate.push({
+          id: orgunit.id + '-' + action.payload.id,
+          orgunitId: orgunit.id,
+          orgunitName: orgunit.name,
+          formName: action.payload.name,
+          formType: action.payload.formType,
+          formId: action.payload.id,
+          isProcessing: true,
+          isAssigned: false
+        });
+      });
+      this.store.dispatch(new UpdateAssignmentDataFilterss({
+        assignmentArray: storeEntityUpdate,
+        notificationStatus: 'Offline: Processing selected data for assignment'
+      }));
       this.payloadToAssignment = {
         additions: [],
         deletions: orgunitArray
       };
-      this.currentAssignmentPayload = action.payload ? action.payload : {};
     }),
     switchMap(() =>
       this.assignmentService.makeAssignmentDataForAll
       (this.currentAssignmentPayload, this.payloadToAssignment)),
     map((response: any) => {
-      let assignmentArray = [];
-      this.selectedData.forEach((form: any) => {
-        if (form.id === this.currentAssignmentPayload.id) {
-          const removalArrayItems = this.payloadToAssignment.deletions;
-          const newOrgunitArray = fromAssignmentHelper.removeArrayObjects
-          (form.organisationUnits, removalArrayItems, 'id');
-          form.organisationUnits = newOrgunitArray;
-          assignmentArray = fromAssignmentHelper.generateDataAssignments(this.selectedOrgunits, this.selectedData);
-        }
+      const storeEntityUpdate = [];
+      this.selectedOrgunits.forEach((orgunit: any) => {
+        // orgunitArray.push({id: action.payload.id});
+        storeEntityUpdate.push({
+          id: orgunit.id + '-' + this.currentAssignmentPayload.id,
+          orgunitId: orgunit.id,
+          orgunitName: orgunit.name,
+          formName: this.currentAssignmentPayload.name,
+          formType: this.currentAssignmentPayload.formType,
+          formId: this.currentAssignmentPayload.id,
+          isProcessing: false,
+          isAssigned: false
+        });
       });
-      return new UpdateAssignmentDataFilterss({
-        assignmentArray: assignmentArray,
+      this.store.dispatch(new UpdateAssignmentDataFilterss({
+        assignmentArray: storeEntityUpdate,
         notificationStatus: this.currentAssignmentPayload.name +
         ' removed from all selected facilities'
-      });
+      }));
     }),
     catchError(error => of(this.store.dispatch(new AssignmentNotification(error))))
   );

@@ -79,7 +79,7 @@ export class MetaDataAssignComponent implements OnInit {
   closeFilter(e) {
     this.orgunitToggle = 'none';
     this.dataToggle = 'none';
-    // this.orgunitToggle = 'none';
+    this.layoutToggle = 'none';
   }
 
   openDataFilter(e) {
@@ -107,6 +107,7 @@ export class MetaDataAssignComponent implements OnInit {
   updateLayout(e) {
     // close filter-component view
     this.closeFilter(e);
+    this.showNotification('Layout feature is currently unavailable', false, false, true);
   }
 
   getArrayOfnItems(items) {

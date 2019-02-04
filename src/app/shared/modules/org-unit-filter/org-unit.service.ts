@@ -25,10 +25,14 @@ export class OrgUnitService {
         const userInfoCall: Observable<any> =
           priority === false
             ? this.http.get(
-                'me.json?fields=dataViewOrganisationUnits[id,name,level],organisationUnits[id,name,level,children[id,name,children[id,name,children[id,name]]]]'
+                'me.json?fields=dataViewOrganisationUnits[id,name,level]' +
+                ',organisationUnits[id,name,level,dataSets,programs,children[id,name,dataSets,programs,' +
+                'children[id,name,dataSets,programs,children[id,name,dataSets,programs]]]]'
               )
             : this.http.get(
-                'me.json?fields=organisationUnits[id,name,level,parent[id,name],children[id,name,parent[id,name],children[id,name,parent[id,name],children[id,name]]]]'
+                'me.json?fields=organisationUnits[id,name,level,dataSets,programs,parent[id,name],' +
+                'children[id,name,dataSets,programs,parent[id,name],children[id,name,dataSets,programs,' +
+                'parent[id,name],children[id,name,dataSets,programs]]]]'
               );
 
         userInfoCall.subscribe(
@@ -87,21 +91,6 @@ export class OrgUnitService {
       )
       .pipe(catchError(() => of(null)));
   }
-
-  // getOrgunitById(id) {
-  //   // TODO: Need to find ways to know exact number of children level
-  //   return this.http
-  //     .get(
-  //       'organisationUnits/' +
-  //         id +
-  //         '.json?fields=id,name,level,children[id,name,level,ancestors[id,level,name,children[id,name,level]],children[id,name,level,ancestors[id,name,level,children[id,name]],children[id,name,level,ancestors[id,name,level,children[id,name]],children[id,name,level,ancestors[id,name,level,children[id,name,level]],children[]]]],ancestors[id,name,level,children[id,name,level],code],parent[id,name],' +
-  //         'dataSets[id,categoryCombo[*,categoryOptionCombos[*]],name,periodType,dataElements[id,name,valueType,attributeValues' +
-  //         '[value,attribute[id,name,optionSet[options[id,name,code]]]]],attributeValues[value,attribute[id,name]]],' +
-  //         'dataSets[id,name,periodType,openFuturePeriods,dataElements[id,name,valueType,attributeValues[value,attribute' +
-  //         '[id,name,optionSet[options[id,name,code]]]],optionSet[id,name,options[id,name,code]]]]'
-  //     )
-  //     .pipe(catchError(() => of(null)));
-  // }
 
   getCurrentOrgUnitAncestors(id) {
     return this.http.get(

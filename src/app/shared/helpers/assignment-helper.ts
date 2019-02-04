@@ -11,6 +11,8 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
           formName: form.name,
           formType: form.formType,
           formId: form.id,
+          dataSetsCount: orgunit.dataSets ? orgunit.dataSets.length : 0,
+          programsCount: orgunit.programs ? orgunit.programs.length : 0,
           isProcessing: false,
           isAssigned: (form.organisationUnits.filter(e => e.id === orgunit.id).length > 0) ? true : false
         });
@@ -27,6 +29,8 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
             formName: form.name,
             formType: form.formType,
             formId: form.id,
+            dataSetsCount: childOrgunit.dataSets ? childOrgunit.dataSets.length : 0,
+            programsCount: childOrgunit.programs ? childOrgunit.programs.length : 0,
             isProcessing: false,
             isAssigned: (form.organisationUnits.filter(e => e.id === childOrgunit.id).length > 0) ? true : false
           });
@@ -41,6 +45,8 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
           formName: form.name,
           formType: form.formType,
           formId: form.id,
+          dataSetsCount: selectedOrgunits[0].dataSets ? selectedOrgunits[0].dataSets.length : 0,
+          programsCount: selectedOrgunits[0].programs ? selectedOrgunits[0].programs.length : 0,
           isProcessing: false,
           isAssigned: (form.organisationUnits.filter(e => e.id === selectedOrgunits[0].id).length > 0) ? true : false
         });

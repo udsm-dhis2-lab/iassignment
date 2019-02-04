@@ -24,8 +24,8 @@
   width: 100%;
 }
 
-thead tr th:nth-child(n+2),
-tbody tr td:nth-child(n+2){
+thead tr th:nth-child(n+4),
+tbody tr td:nth-child(n+4){
   width: 10em;
   /*min-width: 4em;*/
   max-width: 10em;
@@ -39,7 +39,7 @@ tbody tr td:nth-child(n+2){
   opacity: 1;
   /*display: block;*/
   /*width: 100%;*/
-  /*height: auto;*/
+  text-align: center;
   transition: .5s ease;
   backface-visibility: hidden;
 }
@@ -79,3 +79,8 @@ th:hover .quick-assignment-holder {
   opacity: 1;
 }
 
+.back-grey {
+  background-color: #f7f7f7;
+  width: 6em;
+  text-align: center;
+}

@@ -89,12 +89,20 @@ export class AssignmentDataFiltersEffects {
               form.organisationUnits.concat(this.payloadToAssignment.additions);
           }
         });
+        const orgunitsCollections = fromAssignmentHelper.getOrgunitsCollections(this.selectedOrgunits);
+        orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
+          if (orgunit.id === this.currentAssignmentPayload.orgunitId) {
+            orgunit[this.currentAssignmentPayload.formType].push({id: this.currentAssignmentPayload.formId});
+          }
+        });
         const notificationStatus =
           this.currentAssignmentPayload.formName +
           ' successful assigned to ' + this.currentAssignmentPayload.orgunitName;
       return new UpdateAssignmentDataFilters(
-          {assignmentObject: this.currentAssignmentPayload,
+          { assignmentObject: this.currentAssignmentPayload,
             selectedData: this.selectedData,
+            orgunitTodisplay: orgunitsCollections.orgunitTodisplay,
+            selectedOrgunits: orgunitsCollections.selectedOrgunits,
             notificationStatus: notificationStatus});
     })
   );
@@ -131,7 +139,9 @@ export class AssignmentDataFiltersEffects {
       return new UpdateAssignmentDataFilters(
         {assignmentObject: this.currentAssignmentPayload,
           selectedData: this.selectedData,
-          notificationStatus: notificationStatus});
+          notificationStatus: notificationStatus
+          
+        });
     })
   );
 

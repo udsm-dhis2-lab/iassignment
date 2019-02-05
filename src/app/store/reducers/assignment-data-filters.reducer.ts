@@ -54,7 +54,10 @@ export function reducer(
       return {...state,
         entities : stateEntities,
         notificationStatus: action.payload.notificationStatus,
-        selectedData: action.payload.selectedData};
+        selectedData: action.payload.selectedData,
+        selectedOrgunits: action.payload.selectedOrgunits,
+        orgunitTodisplay: action.payload.orgunitTodisplay,
+      };
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilterss: {

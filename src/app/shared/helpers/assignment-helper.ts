@@ -56,6 +56,15 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
   return assignmentArray;
 }
 
+export function getOrgunitsCollections(selectedOrgunits: any[]) {
+  return {
+    selectedOrgunits: selectedOrgunits,
+    orgunitTodisplay: (selectedOrgunits.length > 1) ?
+    selectedOrgunits : selectedOrgunits[0].children
+  };
+}
+
+
 export function removeArrayObjects(sourceArray, toRemoveObjects, keyUsed) {
   for (var i = sourceArray.length - 1; i >= 0; i--) {
     for (var j = 0; j < toRemoveObjects.length; j++) {

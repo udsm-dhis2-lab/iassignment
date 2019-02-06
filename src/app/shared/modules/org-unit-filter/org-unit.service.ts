@@ -82,8 +82,9 @@ export class OrgUnitService {
       .get(
         'organisationUnits/' +
           id +
-          '.json?fields=id,name,level,children[id,name,parent[id,name],level,children[id,name,level,parent[id,name],' +
-          'children[id,parent[id,name],name,level]]],ancestors[id,name,level,code],parent[id,name,level],' +
+          '.json?fields=id,name,level,dataSets,programs,children[id,name,dataSets,programs,parent[id,name],' +
+          'level,children[id,name,dataSets,programs,level,parent[id,name],' +
+          'children[id,parent[id,name],name,level,dataSets,programs]]],ancestors[id,name,level,code],parent[id,name,level],' +
           'dataSets[id,categoryCombo[*,categoryOptionCombos[*]],name,periodType,dataElements[id,name,valueType,attributeValues' +
           '[value,attribute[id,name,optionSet[options[id,name,code]]]]],attributeValues[value,attribute[id,name]]],' +
           'dataSets[id,name,periodType,openFuturePeriods,dataElements[id,name,valueType,attributeValues[value,attribute' +
@@ -96,7 +97,10 @@ export class OrgUnitService {
     return this.http.get(
       'organisationUnits/' +
         id +
-        '.json?fields=ancestors[id,name,level,children[id,name,level,ancestors[id,name,level,children[id,name,level,ancestors[]]]]]'
+        '.json?fields=ancestors[id,name,dataSets,programs,level,' +
+        'children[id,name,dataSets,programs,level,ancestors' +
+        '[id,name,dataSets,programs,level,children' +
+        '[id,name,level,dataSets,programs,ancestors[]]]]]'
     );
   }
 
@@ -165,7 +169,7 @@ export class OrgUnitService {
     for (let i = 1; i < level + 1; i++) {
       childrenLevels = childrenLevels.replace(
         '[]',
-        '[id,name,level,ancestors[id,name,level],parent[id,name],children[]]'
+        '[id,name,level,dataSets,programs,ancestors[id,name,level],parent[id,name],children[]]'
       );
     }
     let new_string = childrenLevels.substring(1);
@@ -182,7 +186,7 @@ export class OrgUnitService {
       } else {
         this.http
           .get(
-            'organisationUnitLevels.json?fields=id,name,level,children[id,name]&order=level:asc'
+            'organisationUnitLevels.json?fields=id,name,level,dataSets,programs,children[id,name,dataSets,programs]&order=level:asc'
           )
           .subscribe(
             (levels: any[]) => {
@@ -259,10 +263,12 @@ export class OrgUnitService {
       } else {
         this.http
           .get(
-            'organisationUnits.json?fields=id,name,level,children[id,name,children[id,name,level,children[id,name,level]]&' +
-              'filter=id:in:[' +
-              orgunits.join(',') +
-              ']&paging=false'
+            'organisationUnits.json?fields=id,name,level,dataSets,' +
+            'programs,children[id,name,dataSets,programs,children[id,name,dataSets,programs,level,' +
+            'children[id,name,dataSets,programs,level]]&' +
+            'filter=id:in:[' +
+            orgunits.join(',') +
+            ']&paging=false'
           )
           .subscribe(
             (nodes: any) => {

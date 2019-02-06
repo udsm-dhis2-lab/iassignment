@@ -11,6 +11,8 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
           formName: form.name,
           formType: form.formType,
           formId: form.id,
+          dataSetsCount: orgunit.dataSets ? orgunit.dataSets.length : 0,
+          programsCount: orgunit.programs ? orgunit.programs.length : 0,
           isProcessing: false,
           isAssigned: (form.organisationUnits.filter(e => e.id === orgunit.id).length > 0) ? true : false
         });
@@ -27,6 +29,8 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
             formName: form.name,
             formType: form.formType,
             formId: form.id,
+            dataSetsCount: childOrgunit.dataSets ? childOrgunit.dataSets.length : 0,
+            programsCount: childOrgunit.programs ? childOrgunit.programs.length : 0,
             isProcessing: false,
             isAssigned: (form.organisationUnits.filter(e => e.id === childOrgunit.id).length > 0) ? true : false
           });
@@ -41,6 +45,8 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
           formName: form.name,
           formType: form.formType,
           formId: form.id,
+          dataSetsCount: selectedOrgunits[0].dataSets ? selectedOrgunits[0].dataSets.length : 0,
+          programsCount: selectedOrgunits[0].programs ? selectedOrgunits[0].programs.length : 0,
           isProcessing: false,
           isAssigned: (form.organisationUnits.filter(e => e.id === selectedOrgunits[0].id).length > 0) ? true : false
         });
@@ -50,7 +56,52 @@ export function generateDataAssignments(selectedOrgunits, selectedData) {
   return assignmentArray;
 }
 
-export function removeArrayObjects(sourceArray, toRemoveObjects, keyUsed) {
+export function getOrgunitsCollections(selectedOrgunits: any[]) {
+  return {
+    selectedOrgunits: selectedOrgunits,
+    orgunitTodisplay: (selectedOrgunits.length > 1) ?
+    selectedOrgunits : selectedOrgunits[0].children
+  };
+}
+
+export function updateSelectedOrgunitdataAssigned(selectedOrgunits, currentAssignmentPayload, action) {
+  const orgunitsCollections = getOrgunitsCollections(selectedOrgunits);
+
+  if (action === 'add') {
+    orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
+      if (orgunit.id === currentAssignmentPayload.orgunitId) {
+        orgunit[currentAssignmentPayload.formType].push({id: currentAssignmentPayload.formId});
+      }
+    });
+  } else if (action === 'remove') {
+    orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
+      if (orgunit.id === currentAssignmentPayload.orgunitId) {
+        orgunit[currentAssignmentPayload.formType] =
+        removeArrayObjects(orgunit[currentAssignmentPayload.formType],
+          [{id: currentAssignmentPayload.formId}], 'id');
+      }
+    });
+  }
+  return orgunitsCollections;
+}
+
+export function updateOrgunitsOnBulkAssignments(selectedOrgunits, currentAssignmentPayload, action) {
+  // const orgunitsCollections = selectedOrgunits;
+  if (action === 'addAll') {
+    selectedOrgunits.forEach((orgunit: any) => {
+        orgunit[currentAssignmentPayload.formType].push({id: currentAssignmentPayload.id});
+    });
+  } else if (action === 'removeAll') {
+    selectedOrgunits.forEach((orgunit: any) => {
+        orgunit[currentAssignmentPayload.formType] =
+        removeArrayObjects(orgunit[currentAssignmentPayload.formType],
+          [{id: currentAssignmentPayload.id}], 'id');
+    });
+  }
+  return selectedOrgunits;
+}
+
+export function removeArrayObjects(sourceArray: any[], toRemoveObjects: any[], keyUsed: string) {
   for (var i = sourceArray.length - 1; i >= 0; i--) {
     for (var j = 0; j < toRemoveObjects.length; j++) {
       if (sourceArray[i] && (sourceArray[i][keyUsed] === toRemoveObjects[j][keyUsed])) {

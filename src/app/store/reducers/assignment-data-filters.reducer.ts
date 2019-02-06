@@ -55,13 +55,17 @@ export function reducer(
         entities : stateEntities,
         notificationStatus: action.payload.notificationStatus,
         selectedData: action.payload.selectedData,
-        selectedOrgunits: action.payload.selectedOrgunits,
+        // selectedOrgunits: action.payload.selectedOrgunits,
         orgunitTodisplay: action.payload.orgunitTodisplay,
       };
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilterss: {
-      return adapter.upsertMany(action.payload.assignmentArray, {...state, notificationStatus: action.payload.notificationStatus});
+      return adapter.upsertMany(action.payload.assignmentArray, {
+        ...state,
+        // selectedOrgunits: action.payload.selectedOrgunits,
+        orgunitTodisplay: action.payload.orgunitTodisplay,
+        notificationStatus: action.payload.notificationStatus});
     }
 
     case AssignmentDataFiltersActionTypes.RemoveAssignAllData: {

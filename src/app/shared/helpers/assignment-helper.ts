@@ -85,6 +85,22 @@ export function updateSelectedOrgunitdataAssigned(selectedOrgunits, currentAssig
   return orgunitsCollections;
 }
 
+export function updateOrgunitsOnBulkAssignments(selectedOrgunits, currentAssignmentPayload, action) {
+  // const orgunitsCollections = selectedOrgunits;
+  if (action === 'addAll') {
+    selectedOrgunits.forEach((orgunit: any) => {
+        orgunit[currentAssignmentPayload.formType].push({id: currentAssignmentPayload.id});
+    });
+  } else if (action === 'removeAll') {
+    selectedOrgunits.forEach((orgunit: any) => {
+        orgunit[currentAssignmentPayload.formType] =
+        removeArrayObjects(orgunit[currentAssignmentPayload.formType],
+          [{id: currentAssignmentPayload.id}], 'id');
+    });
+  }
+  return selectedOrgunits;
+}
+
 export function removeArrayObjects(sourceArray: any[], toRemoveObjects: any[], keyUsed: string) {
   for (var i = sourceArray.length - 1; i >= 0; i--) {
     for (var j = 0; j < toRemoveObjects.length; j++) {

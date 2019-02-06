@@ -81,8 +81,8 @@ export class AssignmentDataFiltersEffects {
       this.currentAssignmentPayload = action.payload ? action.payload : {};
     }),
     switchMap(() =>
-      this.assignmentService.makeAssignmentData
-      (this.currentAssignmentPayload, this.payloadToAssignment)),
+      this.assignmentService
+      .makeAssignmentData(this.currentAssignmentPayload, this.payloadToAssignment)),
     map((response: any) => {
       this.currentAssignmentPayload.isAssigned = true;
       this.currentAssignmentPayload.isProcessing = false;
@@ -110,10 +110,10 @@ export class AssignmentDataFiltersEffects {
   @Effect()
   removingAssignmentProp$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters),
-    withLatestFrom(this.store.select
-    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
-    this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    withLatestFrom(this.store.select(fromAssignmentDataFilterSelectors
+      .getAssingmentDataFilterSelectedData),
+    this.store.select(fromAssignmentDataFilterSelectors
+      .getAssingmentDataFilterSelectedOrgunit)),
     map(([action, selectedData, selectedOrgunit]:
            [fromAssignmentActions.RemovingAssignmentDataFilters, any, any]) => {
       this.selectedData = selectedData;
@@ -125,8 +125,8 @@ export class AssignmentDataFiltersEffects {
       this.currentAssignmentPayload = action.payload ? action.payload : {};
     }),
     switchMap(() =>
-      this.assignmentService.makeAssignmentData
-      (this.currentAssignmentPayload, this.payloadToAssignment)),
+      this.assignmentService
+      .makeAssignmentData(this.currentAssignmentPayload, this.payloadToAssignment)),
     map((response: any) => {
       this.currentAssignmentPayload.isAssigned = false;
       this.currentAssignmentPayload.isProcessing = false;
@@ -146,7 +146,7 @@ export class AssignmentDataFiltersEffects {
           selectedData: this.selectedData,
           notificationStatus: notificationStatus,
           orgunitTodisplay: orgunitsCollections.orgunitTodisplay,
-            selectedOrgunits: orgunitsCollections.selectedOrgunits,
+          selectedOrgunits: orgunitsCollections.selectedOrgunits,
         });
     })
   );
@@ -211,6 +211,7 @@ export class AssignmentDataFiltersEffects {
       });
       this.store.dispatch(new UpdateAssignmentDataFilterss({
         assignmentArray: storeEntityUpdate,
+        orgunitTodisplay: displayingOrgunits,
         notificationStatus: 'Offline: Processing selected data for assignment'
       }));
       this.payloadToAssignment = {
@@ -220,8 +221,8 @@ export class AssignmentDataFiltersEffects {
 
     }),
     switchMap(() =>
-      this.assignmentService.makeAssignmentDataForAll
-      (this.currentAssignmentPayload, this.payloadToAssignment)),
+      this.assignmentService
+      .makeAssignmentDataForAll(this.currentAssignmentPayload, this.payloadToAssignment)),
     map((response: any) => {
       const storeEntityUpdate = [];
       this.selectedOrgunits.forEach((orgunit: any) => {
@@ -237,8 +238,12 @@ export class AssignmentDataFiltersEffects {
           isAssigned: true
         });
       });
+      const orgunitsCollections = fromAssignmentHelper
+      .updateOrgunitsOnBulkAssignments(this.selectedOrgunits, this.currentAssignmentPayload, 'addAll');
       this.store.dispatch(new UpdateAssignmentDataFilterss({
         assignmentArray: storeEntityUpdate,
+        orgunitTodisplay: orgunitsCollections,
+        // selectedOrgunits: orgunitsCollections,
         notificationStatus: this.currentAssignmentPayload.name +
         ' successful assigned all selected facilities'
       }));
@@ -274,6 +279,7 @@ export class AssignmentDataFiltersEffects {
       });
       this.store.dispatch(new UpdateAssignmentDataFilterss({
         assignmentArray: storeEntityUpdate,
+        orgunitTodisplay: displayingOrgunits,
         notificationStatus: 'Offline: Processing selected data for assignment'
       }));
       this.payloadToAssignment = {
@@ -299,8 +305,12 @@ export class AssignmentDataFiltersEffects {
           isAssigned: false
         });
       });
+      const orgunitsCollections = fromAssignmentHelper
+      .updateOrgunitsOnBulkAssignments(this.selectedOrgunits, this.currentAssignmentPayload, 'removeAll');
       this.store.dispatch(new UpdateAssignmentDataFilterss({
         assignmentArray: storeEntityUpdate,
+        orgunitTodisplay: orgunitsCollections,
+        // selectedOrgunits: orgunitsCollections,
         notificationStatus: this.currentAssignmentPayload.name +
         ' removed from all selected facilities'
       }));

@@ -67,10 +67,13 @@ export class AssignmentDataFiltersEffects {
   addingAssignmentProp$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AddingAssignmentDataFilters),
     withLatestFrom(this.store.select
-    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData)),
-    map(([action, selectedData]:
-           [fromAssignmentActions.AddingAssignmentDataFilters, any]) => {
+    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+    this.store.select
+      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    map(([action, selectedData, selectedOrgunit]:
+           [fromAssignmentActions.AddingAssignmentDataFilters, any, any]) => {
       this.selectedData = selectedData;
+      this.selectedOrgunits = selectedOrgunit;
       this.payloadToAssignment = {
         additions: [ { id: action.payload ? action.payload.orgunitId : '' } ],
         deletions: [ ]
@@ -89,12 +92,9 @@ export class AssignmentDataFiltersEffects {
               form.organisationUnits.concat(this.payloadToAssignment.additions);
           }
         });
-        const orgunitsCollections = fromAssignmentHelper.getOrgunitsCollections(this.selectedOrgunits);
-        orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
-          if (orgunit.id === this.currentAssignmentPayload.orgunitId) {
-            orgunit[this.currentAssignmentPayload.formType].push({id: this.currentAssignmentPayload.formId});
-          }
-        });
+        // console.log(JSON.stringify(this.selectedOrgunits));
+        const orgunitsCollections = fromAssignmentHelper
+        .updateSelectedOrgunitdataAssigned(this.selectedOrgunits, this.currentAssignmentPayload, 'add');
         const notificationStatus =
           this.currentAssignmentPayload.formName +
           ' successful assigned to ' + this.currentAssignmentPayload.orgunitName;
@@ -111,10 +111,13 @@ export class AssignmentDataFiltersEffects {
   removingAssignmentProp$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters),
     withLatestFrom(this.store.select
-    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData)),
-    map(([action, selectedData]:
-           [fromAssignmentActions.RemovingAssignmentDataFilters, any]) => {
+    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+    this.store.select
+      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    map(([action, selectedData, selectedOrgunit]:
+           [fromAssignmentActions.RemovingAssignmentDataFilters, any, any]) => {
       this.selectedData = selectedData;
+      this.selectedOrgunits = selectedOrgunit;
       this.payloadToAssignment = {
         additions: [ ],
         deletions: [ { id: action.payload ? action.payload.orgunitId : '' } ]
@@ -133,14 +136,17 @@ export class AssignmentDataFiltersEffects {
           form.organisationUnits = form.organisationUnits.filter(obj => !toDelete.has(obj.id));
         }
       });
+      const orgunitsCollections = fromAssignmentHelper
+      .updateSelectedOrgunitdataAssigned(this.selectedOrgunits, this.currentAssignmentPayload, 'remove');
       const notificationStatus =
         this.currentAssignmentPayload.formName +
         ' removed from ' + this.currentAssignmentPayload.orgunitName;
       return new UpdateAssignmentDataFilters(
         {assignmentObject: this.currentAssignmentPayload,
           selectedData: this.selectedData,
-          notificationStatus: notificationStatus
-          
+          notificationStatus: notificationStatus,
+          orgunitTodisplay: orgunitsCollections.orgunitTodisplay,
+            selectedOrgunits: orgunitsCollections.selectedOrgunits,
         });
     })
   );

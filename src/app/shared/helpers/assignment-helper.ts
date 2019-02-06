@@ -64,8 +64,28 @@ export function getOrgunitsCollections(selectedOrgunits: any[]) {
   };
 }
 
+export function updateSelectedOrgunitdataAssigned(selectedOrgunits, currentAssignmentPayload, action) {
+  const orgunitsCollections = getOrgunitsCollections(selectedOrgunits);
 
-export function removeArrayObjects(sourceArray, toRemoveObjects, keyUsed) {
+  if (action === 'add') {
+    orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
+      if (orgunit.id === currentAssignmentPayload.orgunitId) {
+        orgunit[currentAssignmentPayload.formType].push({id: currentAssignmentPayload.formId});
+      }
+    });
+  } else if (action === 'remove') {
+    orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
+      if (orgunit.id === currentAssignmentPayload.orgunitId) {
+        orgunit[currentAssignmentPayload.formType] =
+        removeArrayObjects(orgunit[currentAssignmentPayload.formType],
+          [{id: currentAssignmentPayload.formId}], 'id');
+      }
+    });
+  }
+  return orgunitsCollections;
+}
+
+export function removeArrayObjects(sourceArray: any[], toRemoveObjects: any[], keyUsed: string) {
   for (var i = sourceArray.length - 1; i >= 0; i--) {
     for (var j = 0; j < toRemoveObjects.length; j++) {
       if (sourceArray[i] && (sourceArray[i][keyUsed] === toRemoveObjects[j][keyUsed])) {

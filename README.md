@@ -1,5 +1,5 @@
 
-# INTERACTIVE ASSIGNMENTS[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome) [![Greenkeeper badge](https://badges.greenkeeper.io/interactive-apps/iassignments.svg)](https://greenkeeper.io/)
+# INTERACTIVE ASSIGNMENTS[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome) [![Greenkeeper badge](https://badges.greenkeeper.io/interactive-apps/iassignments.svg)](https://greenkeeper.io/)  [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/interactive-apps/iassignments/maintainability)  [![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/interactive-apps/iassignments/test_coverage)
 
 A utility tool custom built for DHIS2 environment tasks on assigning various metadata including organisation units, data sets, programs etc. Aiming in simplifying the activity of assigning multiple metadata at once.   
 

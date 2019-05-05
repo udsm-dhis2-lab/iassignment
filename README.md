@@ -12,7 +12,7 @@ A utility tool custom built for DHIS2 environment tasks on assigning various met
 
 > * Clone the repository from Git
 ```angularjs
-git clone https://github.com/hisptz/iassignments.git
+git clone https://github.com/interactive-apps/iassignments.git
 ```
 > * Unzip the repository and open it. Execute the following npm command to install the application to your computer.
 ```angularjs

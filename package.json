@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-lib": "ng build --prod iassignments",
+    "build-lib-dev": "npm run build-lib && cd dist/iassignments && npm pack && cd ../../ && npm install dist/iassignments/*.tgz",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

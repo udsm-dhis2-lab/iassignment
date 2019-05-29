@@ -1,4 +1,5 @@
-[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome) [![Greenkeeper badge](https://badges.greenkeeper.io/interactive-apps/iassignments.svg)](https://greenkeeper.io/)  [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/interactive-apps/iassignments/maintainability)  [![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/interactive-apps/iassignments/test_coverage)
+[![Build Status](https://travis-ci.org/interactive-apps/iassignments.svg?branch=master)](https://travis-ci.org/interactive-apps/iassignments)
+[![Greenkeeper badge](https://badges.greenkeeper.io/interactive-apps/iassignments.svg)](https://greenkeeper.io/)  [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/interactive-apps/iassignments/maintainability)  [![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/interactive-apps/iassignments/test_coverage)
 
 # INTERACTIVE ASSIGNMENTS
 

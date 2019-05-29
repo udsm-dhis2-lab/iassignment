@@ -28,7 +28,7 @@ cache:
     - ./node_modules
 
 install:
-  - pushd $ TRAVIS_BUILD_DIR
+  - pushd $TRAVIS_BUILD_DIR
   - npm install
 
 script:

@@ -32,10 +32,8 @@ export class AssignmentDataFiltersEffects {
   loadingAssignmentsOrgunits$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AddAssignmentDataFiltersOrgunits),
     withLatestFrom(
-      this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit),
-      this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData)),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData)),
     tap(([action, selectedOrgunit, selectedData]:
            [fromAssignmentActions.AddAssignmentDataFiltersOrgunits, any, any]) => {
       if (selectedData.length > 0) {
@@ -49,10 +47,8 @@ export class AssignmentDataFiltersEffects {
   loadingAssignmentsData$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AddAssignmentDataFiltersData),
     withLatestFrom(
-      this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit),
-      this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData)),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData)),
     tap(([action, selectedOrgunit, selectedData]:
            [fromAssignmentActions.AddAssignmentDataFiltersData, any, any]) => {
       this.selectedOrgunits = selectedOrgunit;
@@ -66,10 +62,9 @@ export class AssignmentDataFiltersEffects {
   @Effect()
   addingAssignmentProp$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AddingAssignmentDataFilters),
-    withLatestFrom(this.store.select
-    (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
-    this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    withLatestFrom(
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
     map(([action, selectedData, selectedOrgunit]:
            [fromAssignmentActions.AddingAssignmentDataFilters, any, any]) => {
       this.selectedData = selectedData;
@@ -110,10 +105,9 @@ export class AssignmentDataFiltersEffects {
   @Effect()
   removingAssignmentProp$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters),
-    withLatestFrom(this.store.select(fromAssignmentDataFilterSelectors
-      .getAssingmentDataFilterSelectedData),
-    this.store.select(fromAssignmentDataFilterSelectors
-      .getAssingmentDataFilterSelectedOrgunit)),
+    withLatestFrom(
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
     map(([action, selectedData, selectedOrgunit]:
            [fromAssignmentActions.RemovingAssignmentDataFilters, any, any]) => {
       this.selectedData = selectedData;
@@ -186,10 +180,9 @@ export class AssignmentDataFiltersEffects {
   @Effect({dispatch: false})
   assigningAllData$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AssignAllData),
-    withLatestFrom(this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
-      this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    withLatestFrom(
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
     map(([action, selectedData, displayingOrgunits]: [fromAssignmentActions.AssignAllData, any, any]) => {
       this.selectedData = selectedData;
       this.selectedOrgunits = displayingOrgunits;
@@ -254,10 +247,9 @@ export class AssignmentDataFiltersEffects {
   @Effect({dispatch: false})
   removingingAllData$ = this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.RemoveAssignAllData),
-    withLatestFrom(this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
-      this.store.select
-      (fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
+    withLatestFrom(
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
+      this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit)),
     map(([action, selectedData, displayingOrgunits]: [fromAssignmentActions.AssignAllData, any, any]) => {
       this.selectedData = selectedData;
       this.selectedOrgunits = displayingOrgunits;

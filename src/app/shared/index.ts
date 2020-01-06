@@ -12,7 +12,6 @@ export const sharedModules: any[] = [
   LayoutModule, OrgUnitFilterModule,
   MenuModule, NgxPaginationModule,
   NgPipesModule
-
 ];
 export * from './shared.module';
 

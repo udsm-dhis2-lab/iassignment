@@ -124,3 +124,19 @@ export function removeDuplicates(originalArray, key) {
   }
   return newArray;
 }
+
+
+
+export function removeArrayObjectsInAnotherArray(sourceArray: any[], toRemoveObjects: any[], key1Used: string, key2Used: string) {
+  for (var i = sourceArray.length - 1; i >= 0; i--) {
+    for (var j = 0; j < toRemoveObjects.length; j++) {
+      if (sourceArray[i] &&
+        (sourceArray[i][key1Used] === toRemoveObjects[j][key1Used]) &&
+        (sourceArray[i][key2Used] === toRemoveObjects[j][key2Used])) {
+          sourceArray[i].description = '-TO-DELETE-';
+        sourceArray.splice(i, 1);
+      }
+    }
+  }
+  return sourceArray;
+}

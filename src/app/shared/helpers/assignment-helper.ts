@@ -146,3 +146,10 @@ export function getAnalyticsProperties(analytics) {
   const metaDataItems = analytics.metaData.items ? analytics.metaData.items : analytics.metaData.names;
   return {metaData, metaDataItems};
 }
+
+export function sortAlphabetical(sourceArray: any[], keyToSort: string) {
+  sourceArray.sort(function(a, b) {
+    return a[keyToSort].localeCompare(b[keyToSort]);
+  });
+  return sourceArray;
+}

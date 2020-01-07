@@ -47,6 +47,7 @@ export class AssignmentDataFiltersEffects {
             analyticsProperties.metaDataItems[ou].name : analyticsProperties.metaDataItems[ou];
             return {id: ou, name: ouName };
           });
+          selectedOrgunits = fromHelpers.sortAlphabetical(selectedOrgunits, 'name');
             // Now add analytics orgunits to store
           this.store.dispatch(new AddAssignmentDataFiltersOrgunits(selectedOrgunits));
         });

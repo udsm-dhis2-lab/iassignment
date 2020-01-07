@@ -69,7 +69,7 @@
         <!--Layout-filter button card-->
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
-            <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
+            <button disabled class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
                     (click)="openLayoutFilter($event)">
               Layout Design
             </button>
@@ -184,6 +184,26 @@
       <!--End of Footer for Assignment Table-->
 
     </table>
+  </div>
+
+  <div class="card my-2" *ngIf="((selectedOgunits$ | async).length > 0 && (selectedData$ | async).length > 0)">
+    <div class="card-body">
+      <div class="row w-100 ml-0 mr-0">
+        <div class="col-sm d-flex justify-content-center">
+          <img class="circular-checkbox-key" src="./assets/icons/tick.png" alt="">
+          <label class="ml-2"> Form/Program is already assigned</label>
+        </div>
+        <div class="col-sm d-flex justify-content-center">
+          <img class="circular-checkbox-key" src="./assets/icons/yellow.png" alt="">
+          <label class="ml-2"> Processing Form/Program assignment request</label>
+        </div>
+        <div class="col-sm d-flex justify-content-center">
+          <img class="circular-checkbox-key" src="./assets/icons/cross.png" alt="">
+          <label class="ml-2"> Form/Program is not assigned</label>
+        </div>
+      </div>
+    </div>
+    
   </div>
 
 </div>

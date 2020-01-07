@@ -93,7 +93,7 @@
 <div class="container-fluid my-4">
 
 <div class="card my-4 table-card">
-    <table class="table table-bordered table-hover table-sm text-sm">
+    <table class="table table-bordered table-hover table-sm text-sm mb-0">
       <!--table row head for the loading animation-->
       <tr *ngIf="(selectedData$ | async).length < 1">
         <th *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length : 8)" style="height: 60px">
@@ -172,7 +172,7 @@
         style="padding-top: 1% !important;">
           <app-pagination
             [itemsPerPage]="itemsPerPage"
-            [pageInterval]="10"
+            [pageInterval]="15"
             [currentPage]="page"
             [dataArray]="(selectedOgunits$ | async)"
             (changeCurrentPage)="onCurrentPageUpdate($event)"

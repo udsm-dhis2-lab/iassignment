@@ -23,7 +23,7 @@ export class MetaDataAssignComponent implements OnInit {
   assignmentFiltersEntities$: Observable<any>;
   searchText = '';
   page = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 15;
   orgunitToggle: any;
   dataToggle: any;
   layoutToggle: any;

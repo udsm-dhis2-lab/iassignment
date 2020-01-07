@@ -4,13 +4,13 @@
   </div>
   <div *ngIf="dataArray">
     <div class="row px-2">
-      <div style="width:80px;padding-top: 2%;">
+      <div style="width:80px;">
         <select
           class="custom-select text-sm"
           id="paginationInput"
           (change)="onSetItemsPerPage($event)"
         >
-          <option value="10"> 10 </option>
+          <option value="18"> 13 </option>
           <option value="25"> 25 </option>
           <option value="50"> 50 </option>
           <option value="{{maxSize}}"> View All</option>

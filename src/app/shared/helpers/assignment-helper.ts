@@ -68,13 +68,13 @@ export function updateSelectedOrgunitdataAssigned(selectedOrgunits, currentAssig
   const orgunitsCollections = getOrgunitsCollections(selectedOrgunits);
 
   if (action === 'add') {
-    orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
+    (orgunitsCollections.orgunitTodisplay || []).forEach((orgunit: any) => {
       if (orgunit.id === currentAssignmentPayload.orgunitId) {
         orgunit[currentAssignmentPayload.formType].push({id: currentAssignmentPayload.formId});
       }
     });
   } else if (action === 'remove') {
-    orgunitsCollections.orgunitTodisplay.forEach((orgunit: any) => {
+    (orgunitsCollections.orgunitTodisplay || []).forEach((orgunit: any) => {
       if (orgunit.id === currentAssignmentPayload.orgunitId) {
         orgunit[currentAssignmentPayload.formType] =
         removeArrayObjects(orgunit[currentAssignmentPayload.formType],

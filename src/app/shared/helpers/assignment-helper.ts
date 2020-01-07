@@ -140,3 +140,9 @@ export function removeArrayObjectsInAnotherArray(sourceArray: any[], toRemoveObj
   }
   return sourceArray;
 }
+
+export function getAnalyticsProperties(analytics) {
+  const metaData = analytics.metaData.dimensions ? analytics.metaData.dimensions : analytics.metaData;
+  const metaDataItems = analytics.metaData.items ? analytics.metaData.items : analytics.metaData.names;
+  return {metaData, metaDataItems};
+}

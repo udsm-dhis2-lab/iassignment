@@ -29,6 +29,11 @@ export function reducer(
   action: AssignmentDataFiltersActions
 ): State {
   switch (action.type) {
+
+    case AssignmentDataFiltersActionTypes.TriggerAssignmentDataFiltersOrgunits: {
+      return { ...state, selectedOrgunits: [] , orgunitTodisplay: [] };
+    }
+
     case AssignmentDataFiltersActionTypes.AddAssignmentDataFiltersOrgunits: {
       return {...state,
         selectedOrgunits: action.payload,

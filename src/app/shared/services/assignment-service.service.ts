@@ -42,4 +42,11 @@ export class AssignmentServiceService {
     );
   }
 
+  getAnalyticsOrgunits(ouOpttions: string, selectedOrgunits: any[]): Observable<any> {
+    const ouString = selectedOrgunits.map(ou => ou.id).join(';');
+    const url = 'analytics?dimension=pe:LAST_QUARTER&filter=ou:' + ouOpttions + ouString +
+    '&displayProperty=NAME&skipData=true&includeMetadataDetails=true';
+    return this.httpClient.get(url);
+  }
+
 }

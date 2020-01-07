@@ -5,6 +5,7 @@ import { AssignmentDataFilters } from '../models/assignment-data-filters.model';
 export enum AssignmentDataFiltersActionTypes {
   LoadAssignmentDataFilterss = '[AssignmentDataFilters] Load AssignmentDataFilterss',
   AddAssignmentDataFiltersOrgunits = '[AssignmentDataFilters] Add AssignmentDataFilters orgunits',
+  TriggerAssignmentDataFiltersOrgunits = '[AssignmentDataFilters] Trigger AssignmentDataFilters orgunits',
   UpsertAssignmentDataFilters = '[AssignmentDataFilters] Upsert AssignmentDataFilters',
   AddAssignmentDataFiltersData = '[AssignmentDataFilters] Add AssignmentDataFilters Data',
   AssignAllData = '[AssignmentDataFilters] Assign All Data',
@@ -21,6 +22,12 @@ export class LoadAssignmentDataFilterss implements Action {
   readonly type = AssignmentDataFiltersActionTypes.LoadAssignmentDataFilterss;
 
   constructor(public payload: { assignmentDataFilterss: AssignmentDataFilters[] }) {}
+}
+
+export class TriggerAssignmentDataFiltersOrgunits implements Action {
+  readonly type = AssignmentDataFiltersActionTypes.TriggerAssignmentDataFiltersOrgunits;
+
+  constructor(public payload: any) {}
 }
 
 export class AddAssignmentDataFiltersOrgunits implements Action {
@@ -92,6 +99,7 @@ export class AssignmentNotification implements Action {
 export type AssignmentDataFiltersActions =
  LoadAssignmentDataFilterss
  | AddAssignmentDataFiltersOrgunits
+ | TriggerAssignmentDataFiltersOrgunits
  | UpsertAssignmentDataFilters
  | UploadOfflineAssignmentDataFilters
  | AddAssignmentDataFiltersData

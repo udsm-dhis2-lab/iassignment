@@ -5,7 +5,8 @@ import {AppState} from '../reducers';
 import {
   AssignmentDataFiltersActionTypes, AssignmentNotification, RemoveAssignAllData, RemovingAssignmentDataFilters,
   UpdateAssignmentDataFilters, UpdateAssignmentDataFilterss, UploadOfflineAssignmentDataFilters,
-  UpsertAssignmentDataFilters
+  UpsertAssignmentDataFilters,
+  AddAssignmentDataFiltersOrgunits
 } from '../actions/assignment-data-filters.actions';
 import * as fromAssignmentActions from '../actions/assignment-data-filters.actions';
 import {catchError, map, mergeMap, switchMap, tap, withLatestFrom} from 'rxjs/operators';
@@ -14,6 +15,7 @@ import {AssignmentServiceService} from '../../shared/services/assignment-service
 import * as fromAssignmentHelper from '../../shared/helpers/assignment-helper';
 import {LocalStorageService, OFFLINE_DATA} from '../../shared/services/indexDB/local-storage.service';
 import {of} from 'rxjs';
+import * as fromHelpers from '../../shared/helpers/assignment-helper';
 
 @Injectable()
 export class AssignmentDataFiltersEffects {
@@ -27,6 +29,33 @@ export class AssignmentDataFiltersEffects {
     private actions$: Actions,
     private assignmentService: AssignmentServiceService,
     private localStorage: LocalStorageService) {}
+
+  @Effect({dispatch: false})
+  triggerOrgunitsAdditional$ = this.actions$.pipe(
+    ofType(AssignmentDataFiltersActionTypes.TriggerAssignmentDataFiltersOrgunits),
+    map((action: fromAssignmentActions.TriggerAssignmentDataFiltersOrgunits) => {
+      const ouPayload = action.payload ? action.payload : [];
+      const filteredOUoptions = ouPayload.filter(item => item.id.includes('OU_') || item.id.includes('LEVEL'));
+      let selectedOrgunits = ouPayload.filter(item => !item.id.includes('OU_') || !item.id.includes('LEVEL'));
+      if (filteredOUoptions.length) {
+        // this means selections have additional options
+        const ouOptions =  filteredOUoptions.map(item => item.id).join(';');
+        this.assignmentService.getAnalyticsOrgunits(ouOptions, selectedOrgunits).subscribe(analytics => {
+          const analyticsProperties = fromHelpers.getAnalyticsProperties(analytics);
+          selectedOrgunits = (analyticsProperties.metaData.ou || []).map(ou => {
+            const ouName = analyticsProperties.metaDataItems[ou].name ?
+            analyticsProperties.metaDataItems[ou].name : analyticsProperties.metaDataItems[ou];
+            return {id: ou, name: ouName };
+          });
+            // Now add analytics orgunits to store
+          this.store.dispatch(new AddAssignmentDataFiltersOrgunits(selectedOrgunits));
+        });
+      } else {
+        // Now add orgunits to store
+        this.store.dispatch(new AddAssignmentDataFiltersOrgunits(selectedOrgunits));
+      }
+    })
+  );
 
   @Effect({dispatch: false})
   loadingAssignmentsOrgunits$ = this.actions$.pipe(

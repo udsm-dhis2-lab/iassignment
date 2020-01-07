@@ -4,7 +4,7 @@ import {AppState} from '../../../../store/reducers';
 import {
   AddAssignmentDataFiltersData,
   AddAssignmentDataFiltersOrgunits,
-  AssignAllData, RemoveAssignAllData
+  AssignAllData, RemoveAssignAllData, TriggerAssignmentDataFiltersOrgunits
 } from '../../../../store/actions/assignment-data-filters.actions';
 import {Observable} from 'rxjs';
 import * as fromAssingmentFiltersSelectors from '../../../../store/selectors/assignment-data-filter.selectors';
@@ -62,7 +62,7 @@ export class MetaDataAssignComponent implements OnInit {
 
   updateOrgUnit(e) {
     if (e.items.length > 0) {
-      this.store.dispatch(new AddAssignmentDataFiltersOrgunits(e.items));
+      this.store.dispatch(new TriggerAssignmentDataFiltersOrgunits(e.items));
     }
       // close orgunit-component view
    this.closeFilter(e);

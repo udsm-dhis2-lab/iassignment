@@ -24,8 +24,8 @@
   width: 100%;
 }
 
-thead tr th:nth-child(n+4),
-tbody tr td:nth-child(n+4){
+thead tr th:nth-child(n+2),
+tbody tr td:nth-child(n+2){
   width: 10em;
   /*min-width: 4em;*/
   max-width: 10em;

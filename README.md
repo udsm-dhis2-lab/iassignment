@@ -15,7 +15,7 @@ A utility tool custom built for DHIS2 environment tasks on assigning various met
 
 > * Clone the repository from Git
 ```bash
-$ git clone https://github.com/interactive-apps/iassignments.git
+$ git clone https://github.com/hisptz/iassignments.git
 ```
 > * Go into iassignements directory then xecute the following npm command to install the application to your computer.
 ```bash

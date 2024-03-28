@@ -18,7 +18,7 @@ export const routes: Routes = [
   },
   {
     path: 'data',
-    loadChildren: './modules/data-assignments/data-assignments.module#DataAssignmentsModule'
+    loadChildren: () => import('./modules/data-assignments/data-assignments.module').then(m => m.DataAssignmentsModule)
   }
 ];
 

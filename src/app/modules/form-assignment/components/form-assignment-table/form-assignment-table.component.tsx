@@ -43,7 +43,6 @@ import { FormAssigmentCell } from "./form-assignment-cell.component";
   styleUrls: ["./form-assignment-table.component.css"],
 })
 export class FormAssignmentTableComponent implements OnInit {
-  @Input() forms: CollectionForm[];
   formAssignmentService = inject(FormAssignmentService);
 
   #showOrgUnit: WritableSignal<boolean> = signal(false);
@@ -57,18 +56,37 @@ export class FormAssignmentTableComponent implements OnInit {
 
   async setAssignmentTable() {
     this.FormAssignmentTable = () => {
+      const [forms, setForms] = React.useState<CollectionForm[]>(null);
+      const [formHeaderSpan, setFormHeaderSpan] = React.useState<number>(1);
+      const [loadingForms, setLoadingForms] = React.useState<boolean>(true);
       const [data, setData] = React.useState<OrgUnitAssignmentResponse>(null);
-      const [loading, setLoading] = React.useState(true);
-      const formHeaderSpan = this.forms.length || 0;
+      const [loadingAssignments, setLoadingAssignments] = React.useState(false);
+
       React.useEffect(() => {
-        this.formAssignmentService.getAssignments().subscribe({
-          next: (data) => {
-            setData(data);
-            setLoading(false);
-          },
-          error: () => {},
-        });
-      }, []);
+        if (loadingForms) {
+          this.formAssignmentService.getForms().subscribe({
+            next: (forms) => {
+              setForms(forms);
+              setLoadingForms(false);
+              setFormHeaderSpan(forms.length || 1);
+            },
+            error: () => {},
+          });
+        }
+      }, [loadingForms]);
+
+      React.useEffect(() => {
+        if (forms) {
+          setLoadingAssignments(true);
+          this.formAssignmentService.getAssignments().subscribe({
+            next: (data) => {
+              setData(data);
+              setLoadingAssignments(false);
+            },
+            error: () => {},
+          });
+        }
+      }, [forms]);
 
       return (
         <Box width="calc(100vw - 240px)">
@@ -95,6 +113,7 @@ export class FormAssignmentTableComponent implements OnInit {
                   fixed
                   showFilter={false}
                   top="0"
+                  left="0"
                   colSpan={formHeaderSpan.toString()}
                   filter={<></>}
                   onFilterIconClick={() => {}}
@@ -113,30 +132,47 @@ export class FormAssignmentTableComponent implements OnInit {
                   <FormInput placeholder="Filter organisation unit in list" />
                 </DataTableCell>
 
-                {this.forms.map((form) => (
+                {loadingForms ? (
                   <DataTableCell
-                    key={form.id}
                     fixed
                     top="0"
                     bordered
-                    className="form-header-cell"
+                    colSpan={formHeaderSpan.toString()}
                   >
-                    <div className="form-label-container">
-                      <div className="form-label-icon">
-                        {form.type === "PROGRAM" ? (
-                          <IconDimensionEventDataItem16 />
-                        ) : (
-                          <IconDimensionDataSet16 />
-                        )}
-                      </div>
-                      <span className="form-label">{form.name}</span>
-                    </div>
+                    <CircularLoader small />
                   </DataTableCell>
-                ))}
+                ) : (
+                  <></>
+                )}
+
+                {!loadingForms && forms ? (
+                  forms.map((form) => (
+                    <DataTableCell
+                      key={form.id}
+                      fixed
+                      top="0"
+                      bordered
+                      className="form-header-cell"
+                    >
+                      <div className="form-label-container">
+                        <div className="form-label-icon">
+                          {form.type === "PROGRAM" ? (
+                            <IconDimensionEventDataItem16 />
+                          ) : (
+                            <IconDimensionDataSet16 />
+                          )}
+                        </div>
+                        <span className="form-label">{form.name}</span>
+                      </div>
+                    </DataTableCell>
+                  ))
+                ) : (
+                  <></>
+                )}
               </DataTableRow>
             </TableHead>
             <TableBody>
-              {loading ? (
+              {loadingAssignments ? (
                 <DataTableRow>
                   <TableCell colSpan={(formHeaderSpan + 1).toString()}>
                     <CircularLoader small />
@@ -146,7 +182,7 @@ export class FormAssignmentTableComponent implements OnInit {
                 <></>
               )}
 
-              {!loading && data?.orgUnitAssignments ? (
+              {!loadingAssignments && data?.orgUnitAssignments ? (
                 data.orgUnitAssignments.map((orgUnitAssignment) => {
                   return (
                     <DataTableRow key={orgUnitAssignment.id}>
@@ -154,7 +190,7 @@ export class FormAssignmentTableComponent implements OnInit {
                         {orgUnitAssignment.name}
                       </DataTableCell>
 
-                      {this.forms.map((form) => (
+                      {forms.map((form) => (
                         <FormAssigmentCell
                           key={`${orgUnitAssignment.id}.${form.id}`}
                           orgUnitAssignment={orgUnitAssignment}

@@ -38,7 +38,7 @@ import { ReactWrapperModule } from "@iapps/ng-dhis2-ui";
     EffectsModule.forRoot(effects),
     AppShellModule.forRoot({
       pwaEnabled: false,
-      isDevMode: true,
+      isDevMode: !environment.production,
     }),
   ],
   providers: [],

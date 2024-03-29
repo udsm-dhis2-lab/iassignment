@@ -4,9 +4,9 @@
   "description": "An interactive assignment app",
   "launch_path": "index.html",
   "icons": {
-    "16": "assets/icon/icon-16x16.png",
-    "48": "assets/icon/icon-48x48.png",
-    "128": "assets/icon/icon-128x128.png"
+    "16": "assets/icons/icon-16x16.png",
+    "48": "assets/icons/icon-48x48.png",
+    "128": "assets/icons/icon-128x128.png"
   },
   "developer": {
     "name": "UDSM DHIS2 Lab",

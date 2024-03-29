@@ -5,13 +5,5 @@
     Click table cell to assign or un-assign
   </p>
 
-  <!-- loading -->
-  <ng-container *ngIf="loadingForms()">
-    <ng-dhis2-ui-wrapper [component]="Loader"></ng-dhis2-ui-wrapper>
-  </ng-container>
-
-  <!-- assignment table -->
-  <ng-container *ngIf="forms$ | async as forms">
-    <app-form-assignment-table [forms]="forms"></app-form-assignment-table
-  ></ng-container>
+  <app-form-assignment-table></app-form-assignment-table>
 </div>

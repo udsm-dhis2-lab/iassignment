@@ -1,0 +1,12 @@
+<ng-container>
+  <ng-dhis2-ui-wrapper
+    *ngIf="FormAssignmentTable"
+    [component]="FormAssignmentTable"
+  ></ng-dhis2-ui-wrapper>
+  <ng-dhis2-ui-org-unit-selector-modal
+    class="org-unit-modal"
+    *ngIf="showOrgUnit$ | async"
+    (cancel)="onCloseOrgUnit()"
+    (confirm)="onSelectOrgUnit($event)"
+  ></ng-dhis2-ui-org-unit-selector-modal>
+</ng-container>

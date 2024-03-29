@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { ManifestService } from './manifest.service';
-import { catchError, flatMap } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { ManifestService } from "./manifest.service";
+import { catchError, flatMap } from "rxjs/operators";
 
 @Injectable()
 export class HttpClientService {
@@ -26,18 +26,18 @@ export class HttpClientService {
     return useExternalUrl
       ? this.httpClient
           .get(url)
-          .pipe(catchError(error => this._handleError(error)))
+          .pipe(catchError((error) => this._handleError(error)))
       : rootUrlPromise.pipe(
           flatMap((rootUrl: string) => {
             return this.httpClient
               .get(rootUrl + url)
-              .pipe(catchError(error => this._handleError(error)));
+              .pipe(catchError((error) => this._handleError(error)));
           })
         );
   }
 
   post(url: string, data: any, useRootUrl: boolean = false) {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       const rootUrlPromise = useRootUrl
         ? this._getRootUrl()
         : this._getApiRootUrl();
@@ -48,7 +48,7 @@ export class HttpClientService {
             observer.next(response);
             observer.complete();
           },
-          error => {
+          (error) => {
             console.log(this._handleError(error));
             observer.error(this._handleError(error));
           }
@@ -58,7 +58,7 @@ export class HttpClientService {
   }
 
   put(url: string, data: any, useRootUrl: boolean = false) {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       const rootUrlPromise = useRootUrl
         ? this._getRootUrl()
         : this._getApiRootUrl();
@@ -69,7 +69,7 @@ export class HttpClientService {
             observer.next(response);
             observer.complete();
           },
-          error => {
+          (error) => {
             console.log(this._handleError(error));
             observer.error(this._handleError(error));
           }
@@ -79,7 +79,7 @@ export class HttpClientService {
   }
 
   delete(url: string, useRootUrl: boolean = false) {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       const rootUrlPromise = useRootUrl
         ? this._getRootUrl()
         : this._getApiRootUrl();
@@ -90,7 +90,7 @@ export class HttpClientService {
             observer.next(response);
             observer.complete();
           },
-          error => {
+          (error) => {
             console.log(this._handleError(error));
             observer.error(this._handleError(error));
           }
@@ -108,7 +108,7 @@ export class HttpClientService {
       error = {
         message: err.error,
         status: err.status,
-        statusText: err.statusText
+        statusText: err.statusText,
       };
     } else {
       // The backend returned an unsuccessful response code.
@@ -116,7 +116,7 @@ export class HttpClientService {
       error = {
         message: err.error instanceof Object ? err.error.message : err.error,
         status: err.status,
-        statusText: err.statusText
+        statusText: err.statusText,
       };
     }
 
@@ -129,7 +129,7 @@ export class HttpClientService {
    * @private
    */
   private _getRootUrl(): Observable<string> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       if (this._apiRootUrl) {
         observer.next(this._apiRootUrl);
         observer.complete();
@@ -144,13 +144,13 @@ export class HttpClientService {
   }
 
   private _getApiRootUrl() {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       if (this._apiRootUrl) {
         observer.next(this._apiRootUrl);
         observer.complete();
       } else {
         this._getRootUrl().subscribe((rootUrl: string) => {
-          this._apiRootUrl = rootUrl + 'api/';
+          this._apiRootUrl = rootUrl + "api/";
           observer.next(this._apiRootUrl);
           observer.complete();
         });
@@ -159,13 +159,13 @@ export class HttpClientService {
   }
 
   private _getSystemInfo(): Observable<any> {
-    return Observable.create(observer => {
-      this.get('api/system/info', true).subscribe(
+    return Observable.create((observer) => {
+      this.get("api/system/info", true).subscribe(
         (systemInfo: any) => {
           observer.next(systemInfo);
           observer.complete();
         },
-        systemInfoError => {
+        (systemInfoError) => {
           console.warn(systemInfoError);
           observer.next(null);
           observer.complete();
@@ -179,9 +179,9 @@ export class HttpClientService {
    * @returns {Observable<string>}
    */
   private _getApiUrlSection(): Observable<string> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       this._getSystemInfo().subscribe((systemInfo: any) => {
-        let apiUrlSection = 'api/';
+        let apiUrlSection = "api/";
         const maxSupportedVersion = 2.25;
         const currentVersion = systemInfo
           ? systemInfo.version
@@ -189,8 +189,8 @@ export class HttpClientService {
         if (currentVersion > 2.24) {
           apiUrlSection +=
             currentVersion > maxSupportedVersion
-              ? this._getVersionDecimalPart(maxSupportedVersion) + '/'
-              : this._getVersionDecimalPart(currentVersion) + '/';
+              ? this._getVersionDecimalPart(maxSupportedVersion) + "/"
+              : this._getVersionDecimalPart(currentVersion) + "/";
         }
 
         observer.next(apiUrlSection);
@@ -200,6 +200,6 @@ export class HttpClientService {
   }
 
   private _getVersionDecimalPart(version: number) {
-    return version.toString().split('.')[1];
+    return version.toString().split(".")[1];
   }
 }

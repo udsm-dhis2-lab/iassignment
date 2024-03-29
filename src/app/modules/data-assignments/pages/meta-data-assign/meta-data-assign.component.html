@@ -1,22 +1,38 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-light bg-light my-2 nav-color">
     <a class="navbar-brand" href="#" routerLink="/">
-      <img src="./assets/icons/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <img
+        src="./assets/icons/logo.png"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
       Interactive Assignments
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <form class="form-inline my-2 my-lg-0 ml-auto meta-search">
         <!--<div class="btn-group">-->
-          <input class="form-control mr-sm-2 mx-2 my-2 input-search"
-                 type="search" placeholder="Search..." aria-label="Search" (keyup)="searchingItems($event)">
+        <input
+          class="form-control mr-sm-2 mx-2 my-2 input-search"
+          type="search"
+          placeholder="Search..."
+          aria-label="Search"
+          (keyup)="searchingItems($event)"
+        />
         <!--</div>-->
-
       </form>
     </div>
   </nav>
@@ -24,23 +40,28 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-
         <!--Orgunit-filter button card-->
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
             <!--[ngClass]="{'collapsed': orgunitToggle.btn_class}"-->
             <!--data-toggle="collapse" data-target="#selectOrgunit" aria-expanded="false" aria-controls="selectOrgunit"-->
-            <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
-                    (click)="openOrgunit($event)">
+            <button
+              class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
+              (click)="openOrgunit($event)"
+            >
               Select Orgunit
             </button>
             <!--[ngClass]="{'show': orgunitToggle.display_div}"-->
-            <div class="collapse data-menu-collapse animated zoomIn" id="selectOrgunit" [ngStyle]="{'display': orgunitToggle}">
+            <div
+              class="collapse data-menu-collapse animated zoomIn"
+              id="selectOrgunit"
+              [ngStyle]="{ display: orgunitToggle }"
+            >
               <div class="card card-body">
-                <app-org-unit-filter
+                <!-- <app-org-unit-filter
                   (onOrgUnitClose)="closeFilter($event)"
                   (onOrgUnitUpdate)="updateOrgUnit($event)"
-                ></app-org-unit-filter>
+                ></app-org-unit-filter> -->
               </div>
             </div>
           </div>
@@ -50,11 +71,17 @@
         <!--Data-filter button card-->
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
-            <button class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
-                    (click)="openDataFilter($event)">
+            <button
+              class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
+              (click)="openDataFilter($event)"
+            >
               Select Data
             </button>
-            <div class="collapse data-menu-collapse animated zoomIn" id="selectData" [ngStyle]="{'display': dataToggle}">
+            <div
+              class="collapse data-menu-collapse animated zoomIn"
+              id="selectData"
+              [ngStyle]="{ display: dataToggle }"
+            >
               <div class="card card-body">
                 <app-data-filter
                   (updatedListToTable)="updateData($event)"
@@ -69,11 +96,18 @@
         <!--Layout-filter button card-->
         <div class="col-md-4 col-sm-4">
           <div class="selection-block">
-            <button disabled class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
-                    (click)="openLayoutFilter($event)">
+            <button
+              disabled
+              class="btn btn-outline-secondary btn-sm btn-block filter-btn on-mobile-my"
+              (click)="openLayoutFilter($event)"
+            >
               Layout Design
             </button>
-            <div class="collapse data-menu-collapse animated zoomIn" id="changeLayout" [ngStyle]="{'display': layoutToggle}">
+            <div
+              class="collapse data-menu-collapse animated zoomIn"
+              id="changeLayout"
+              [ngStyle]="{ display: layoutToggle }"
+            >
               <div class="card card-body">
                 <app-layout
                   (onLayoutUpdate)="updateLayout($event)"
@@ -84,19 +118,26 @@
           </div>
         </div>
         <!--End of Layout-filter button card-->
-
       </div>
     </div>
   </div>
 </div>
 
 <div class="container-fluid my-4">
-
-<div class="card my-4 table-card">
+  <div class="card my-4 table-card">
     <table class="table table-bordered table-hover table-sm text-sm mb-0">
       <!--table row head for the loading animation-->
       <tr *ngIf="(selectedData$ | async).length < 1">
-        <th *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length : 8)" style="height: 60px">
+        <th
+          *ngFor="
+            let i of getArrayOfnItems(
+              (selectedData$ | async).length > 0
+                ? (selectedData$ | async).length
+                : 8
+            )
+          "
+          style="height: 60px"
+        >
           <app-progressive-loader [height]="'60px'"></app-progressive-loader>
         </th>
       </tr>
@@ -106,49 +147,97 @@
         <th>Organisation unit</th>
         <!-- <th class="assignment-table-header back-grey" title="Programs count assigned to organisation unit">Program</th>
         <th class="assignment-table-header back-grey" title="DataSets count assigned to organisation unit">DataSet</th> -->
-        <th *ngFor="let form of ((selectedData$ | async))" class="assignment-table-header">
-          {{form.name}}
+        <th
+          *ngFor="let form of selectedData$ | async"
+          class="assignment-table-header"
+        >
+          {{ form.name }}
 
           <div class="quick-assignment-holder">
-            <img class="circular-checkbox" src="./assets/icons/tick.png" alt=""
-                 title="Assign all orgunits to {{form.name}}" (click)="assignAll(form)">
-            <img class="circular-checkbox mx-2" src="./assets/icons/cross.png" alt=""
-                 title="Remove all orgunits to {{form.name}}" (click)="removeAll(form)">
+            <img
+              class="circular-checkbox"
+              src="./assets/icons/tick.png"
+              alt=""
+              title="Assign all orgunits to {{ form.name }}"
+              (click)="assignAll(form)"
+            />
+            <img
+              class="circular-checkbox mx-2"
+              src="./assets/icons/cross.png"
+              alt=""
+              title="Remove all orgunits to {{ form.name }}"
+              (click)="removeAll(form)"
+            />
           </div>
-
         </th>
       </tr>
 
-        <!--Table body with loading animations-->
-      <tbody *ngIf="((selectedOgunits$ | async).length < 1)">
-      <tr *ngFor="let i of [1,2,4,5,6,7,8,9,10,11,12,13,14,15]">
-        <td *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length + 1: 8)">
-          <app-progressive-loader></app-progressive-loader>
-        </td>
-      </tr>
+      <!--Table body with loading animations-->
+      <tbody *ngIf="(selectedOgunits$ | async).length < 1">
+        <tr *ngFor="let i of [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]">
+          <td
+            *ngFor="
+              let i of getArrayOfnItems(
+                (selectedData$ | async).length > 0
+                  ? (selectedData$ | async).length + 1
+                  : 8
+              )
+            "
+          >
+            <app-progressive-loader></app-progressive-loader>
+          </td>
+        </tr>
       </tbody>
       <!--End of Table body with loading animations-->
 
       <!--Table body with loading animations for unloaded dataSets-->
-      <tbody *ngIf="((selectedOgunits$ | async).length > 0 && (selectedData$ | async).length < 1)">
-      <tr *ngFor="let orgunit of ((selectedOgunits$ | async) |
-      filterBy: ['name'] : searchText |
-      paginate: {itemsPerPage: itemsPerPage, currentPage: page })">
-        <td class="animated fadeInLeft"> {{orgunit.name}} </td>
-        <td *ngFor="let i of getArrayOfnItems(((selectedData$ | async).length > 0)? (selectedData$ | async).length + 1: 7)">
-          <app-progressive-loader></app-progressive-loader>
-        </td>
-      </tr>
+      <tbody
+        *ngIf="
+          (selectedOgunits$ | async).length > 0 &&
+          (selectedData$ | async).length < 1
+        "
+      >
+        <tr
+          *ngFor="
+            let orgunit of selectedOgunits$
+              | async
+              | filterBy : ['name'] : searchText
+              | paginate : { itemsPerPage: itemsPerPage, currentPage: page }
+          "
+        >
+          <td class="animated fadeInLeft">{{ orgunit.name }}</td>
+          <td
+            *ngFor="
+              let i of getArrayOfnItems(
+                (selectedData$ | async).length > 0
+                  ? (selectedData$ | async).length + 1
+                  : 7
+              )
+            "
+          >
+            <app-progressive-loader></app-progressive-loader>
+          </td>
+        </tr>
       </tbody>
       <!--End of Table body with loading animations for unloaded dataSets-->
 
       <!--Assignment table body-->
-      <tbody *ngIf="((selectedOgunits$ | async).length > 0 && (selectedData$ | async).length > 0)">
-      <tr *ngFor="let orgunit of ((selectedOgunits$ | async) |
-      filterBy: ['name'] : searchText |
-      paginate: {itemsPerPage: itemsPerPage, currentPage: page })">
-        <td> {{orgunit.name}} </td>
-        <!-- <td class="animated fadeInRight back-grey"
+      <tbody
+        *ngIf="
+          (selectedOgunits$ | async).length > 0 &&
+          (selectedData$ | async).length > 0
+        "
+      >
+        <tr
+          *ngFor="
+            let orgunit of selectedOgunits$
+              | async
+              | filterBy : ['name'] : searchText
+              | paginate : { itemsPerPage: itemsPerPage, currentPage: page }
+          "
+        >
+          <td>{{ orgunit.name }}</td>
+          <!-- <td class="animated fadeInRight back-grey"
         title="{{orgunit.programs ? orgunit.programs.length : 0}} programs are currently assigned on {{orgunit.name}}">
           {{orgunit.programs ? orgunit.programs.length : 0}}
         </td>
@@ -156,59 +245,87 @@
         title="{{orgunit.dataSets ? orgunit.dataSets.length : 0}} dataSets are currently assigned on {{orgunit.name}}">
           {{orgunit.dataSets ? orgunit.dataSets.length : 0}}
         </td> -->
-        <td class="animated fadeInRight" *ngFor="let form of ((selectedData$ | async))">
-        <app-assignemt-input
-          [assignmentObject]="(assignmentFiltersEntities$ | async)[orgunit.id + '-' + form.id]"
-        ></app-assignemt-input>
-        </td>
-      </tr>
+          <td
+            class="animated fadeInRight"
+            *ngFor="let form of selectedData$ | async"
+          >
+            <app-assignemt-input
+              [assignmentObject]="
+                (assignmentFiltersEntities$ | async)[orgunit.id + '-' + form.id]
+              "
+            ></app-assignemt-input>
+          </td>
+        </tr>
       </tbody>
       <!--End of Assignment table body-->
 
       <!--Footer for Assignment Table-->
-      <tfoot  *ngIf="((selectedOgunits$ | async).length > 0)">
-      <tr  *ngIf="((selectedOgunits$ | async).length > 0)">
-        <td [attr.colspan]="(selectedData$ | async).length + 8"
-        style="padding-top: 1% !important;">
-          <app-pagination
-            [itemsPerPage]="itemsPerPage"
-            [pageInterval]="15"
-            [currentPage]="page"
-            [dataArray]="(selectedOgunits$ | async)"
-            (changeCurrentPage)="onCurrentPageUpdate($event)"
-            (updateItemsPerPage)="onUpdatePageSize($event)"
-          ></app-pagination>
-        </td>
-      </tr>
+      <tfoot *ngIf="(selectedOgunits$ | async).length > 0">
+        <tr *ngIf="(selectedOgunits$ | async).length > 0">
+          <td
+            [attr.colspan]="(selectedData$ | async).length + 8"
+            style="padding-top: 1% !important"
+          >
+            <app-pagination
+              [itemsPerPage]="itemsPerPage"
+              [pageInterval]="15"
+              [currentPage]="page"
+              [dataArray]="selectedOgunits$ | async"
+              (changeCurrentPage)="onCurrentPageUpdate($event)"
+              (updateItemsPerPage)="onUpdatePageSize($event)"
+            ></app-pagination>
+          </td>
+        </tr>
       </tfoot>
       <!--End of Footer for Assignment Table-->
-
     </table>
   </div>
 
-  <div class="card my-2" *ngIf="((selectedOgunits$ | async).length > 0 && (selectedData$ | async).length > 0)">
+  <div
+    class="card my-2"
+    *ngIf="
+      (selectedOgunits$ | async).length > 0 &&
+      (selectedData$ | async).length > 0
+    "
+  >
     <div class="card-body">
       <div class="row w-100 ml-0 mr-0">
         <div class="col-sm d-flex justify-content-center">
-          <img class="circular-checkbox-key" src="./assets/icons/tick.png" alt="">
+          <img
+            class="circular-checkbox-key"
+            src="./assets/icons/tick.png"
+            alt=""
+          />
           <label class="ml-2"> Form/Program is already assigned</label>
         </div>
         <div class="col-sm d-flex justify-content-center">
-          <img class="circular-checkbox-key" src="./assets/icons/yellow.png" alt="">
-          <label class="ml-2"> Processing Form/Program assignment request</label>
+          <img
+            class="circular-checkbox-key"
+            src="./assets/icons/yellow.png"
+            alt=""
+          />
+          <label class="ml-2">
+            Processing Form/Program assignment request</label
+          >
         </div>
         <div class="col-sm d-flex justify-content-center">
-          <img class="circular-checkbox-key" src="./assets/icons/cross.png" alt="">
+          <img
+            class="circular-checkbox-key"
+            src="./assets/icons/cross.png"
+            alt=""
+          />
           <label class="ml-2"> Form/Program is not assigned</label>
         </div>
       </div>
     </div>
-    
   </div>
-
 </div>
 
-<div *ngIf="showNotificationPopup && showNotificationContents.notificationProperties">
+<div
+  *ngIf="
+    showNotificationPopup && showNotificationContents.notificationProperties
+  "
+>
   <app-notification
     [notificationProperties]="showNotificationContents.notificationProperties"
     [isSuccessful]="showNotificationContents.isSuccessful"

@@ -1,10 +1,12 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { AssignmentDataFilters } from '../models/assignment-data-filters.model';
+import { EntityState, EntityAdapter, createEntityAdapter } from "@ngrx/entity";
+import { AssignmentDataFilters } from "../models/assignment-data-filters.model";
 import {
   AssignmentDataFiltersActions,
-  AssignmentDataFiltersActionTypes, AssignmentNotification,
-  RemovingAssignmentDataFilters, UploadOfflineAssignmentDataFilters
-} from '../actions/assignment-data-filters.actions';
+  AssignmentDataFiltersActionTypes,
+  AssignmentNotification,
+  RemovingAssignmentDataFilters,
+  UploadOfflineAssignmentDataFilters,
+} from "../actions/assignment-data-filters.actions";
 
 export interface State extends EntityState<AssignmentDataFilters> {
   // additional entities state properties
@@ -14,14 +16,15 @@ export interface State extends EntityState<AssignmentDataFilters> {
   notificationStatus: string;
 }
 
-export const adapter: EntityAdapter<AssignmentDataFilters> = createEntityAdapter<AssignmentDataFilters>();
+export const adapter: EntityAdapter<AssignmentDataFilters> =
+  createEntityAdapter<AssignmentDataFilters>();
 
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   selectedOrgunits: [],
   orgunitTodisplay: [],
   selectedData: [],
-  notificationStatus: ''
+  notificationStatus: "",
 });
 
 export function reducer(
@@ -29,20 +32,23 @@ export function reducer(
   action: AssignmentDataFiltersActions
 ): State {
   switch (action.type) {
-
     case AssignmentDataFiltersActionTypes.TriggerAssignmentDataFiltersOrgunits: {
-      return { ...state, selectedOrgunits: [] , orgunitTodisplay: [] };
+      return { ...state, selectedOrgunits: [], orgunitTodisplay: [] };
     }
 
     case AssignmentDataFiltersActionTypes.AddAssignmentDataFiltersOrgunits: {
-      return {...state,
+      return {
+        ...state,
         selectedOrgunits: action.payload,
-        orgunitTodisplay: (action.payload.length > 1) ? action.payload : action.payload[0].children
+        orgunitTodisplay:
+          action.payload.length > 1
+            ? action.payload
+            : action.payload[0].children,
       };
     }
 
     case AssignmentDataFiltersActionTypes.AddAssignmentDataFiltersData: {
-      return {...state, selectedData: action.payload};
+      return { ...state, selectedData: action.payload };
     }
 
     case AssignmentDataFiltersActionTypes.UpsertAssignmentDataFilters: {
@@ -54,10 +60,12 @@ export function reducer(
     }
 
     case AssignmentDataFiltersActionTypes.UpdateAssignmentDataFilters: {
-      const stateEntities = {...state.entities};
-      stateEntities[action.payload.assignmentObject.id] = action.payload.assignmentObject;
-      return {...state,
-        entities : stateEntities,
+      const stateEntities = { ...state.entities };
+      stateEntities[action.payload.assignmentObject.id] =
+        action.payload.assignmentObject;
+      return {
+        ...state,
+        entities: stateEntities,
         notificationStatus: action.payload.notificationStatus,
         selectedData: action.payload.selectedData,
         // selectedOrgunits: action.payload.selectedOrgunits,
@@ -70,7 +78,8 @@ export function reducer(
         ...state,
         // selectedOrgunits: action.payload.selectedOrgunits,
         orgunitTodisplay: action.payload.orgunitTodisplay,
-        notificationStatus: action.payload.notificationStatus});
+        notificationStatus: action.payload.notificationStatus,
+      });
     }
 
     case AssignmentDataFiltersActionTypes.RemoveAssignAllData: {
@@ -86,7 +95,7 @@ export function reducer(
     }
 
     case AssignmentDataFiltersActionTypes.LoadAssignmentDataFilterss: {
-      return adapter.addAll(action.payload.assignmentDataFilterss, state);
+      return adapter.setAll(action.payload.assignmentDataFilterss, state);
     }
 
     case AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters: {
@@ -94,7 +103,7 @@ export function reducer(
     }
 
     case AssignmentDataFiltersActionTypes.AssignmentNotification: {
-      return {...state, notificationStatus: action.payload};
+      return { ...state, notificationStatus: action.payload };
     }
 
     default: {
@@ -103,14 +112,12 @@ export function reducer(
   }
 }
 
-export const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal,
-} = adapter.getSelectors();
+export const { selectIds, selectEntities, selectAll, selectTotal } =
+  adapter.getSelectors();
 
 export const getAssignmentEntitiesState = (state: State) => state.entities;
-export const getselectedOrgunitsState = (state: State) => state.orgunitTodisplay;
+export const getselectedOrgunitsState = (state: State) =>
+  state.orgunitTodisplay;
 export const getselectedDataState = (state: State) => state.selectedData;
-export const getAssingmentNotificationState = (state: State) => state.notificationStatus;
+export const getAssingmentNotificationState = (state: State) =>
+  state.notificationStatus;

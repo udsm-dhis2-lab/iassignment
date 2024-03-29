@@ -1,15 +1,13 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { sharedLoaders } from "./loaders";
-import { sharedComponents } from "./components";
-import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { DragulaService } from "ng2-dragula";
-import { services } from "./services";
 import { NgPipesModule } from "ngx-pipes";
-import { NgxPaginationModule } from "ngx-pagination";
-import { NotificationComponent } from "./components/notification/notification.component";
+import { sharedComponents } from "./components";
+import { sharedLoaders } from "./loaders";
+import { services } from "./services";
 
 @NgModule({
   imports: [
@@ -18,7 +16,6 @@ import { NotificationComponent } from "./components/notification/notification.co
     RouterModule,
     NgPipesModule,
     HttpClientModule,
-    NgxPaginationModule,
   ],
   declarations: [...sharedComponents, ...sharedLoaders],
   exports: [...sharedComponents, ...sharedLoaders],

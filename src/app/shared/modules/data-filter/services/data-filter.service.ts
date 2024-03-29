@@ -1,29 +1,23 @@
-import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import { Injectable } from "@angular/core";
 
-import { DataSet } from '../model/dataset';
-import { DataelementGroup } from '../model/dataelement-group';
-import { IndicatorGroup } from '../model/indicator-group';
-import { CategoryCombo } from '../model/category-combo';
-import { Indicator } from '../model/indicator';
-import { DataElement } from '../model/data-element';
-import {NgxDhis2HttpClientService} from 'ngx-dhis2-http-client';
-import {forkJoin, from, interval, Observable, of, throwError} from 'rxjs';
-import {flatMap, map, mergeMap, retryWhen} from 'rxjs/operators';
-export const DATAELEMENT_KEY = 'data-elements';
-export const DATASET_KEY = 'data-sets';
+import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
+import { Observable, forkJoin, of } from "rxjs";
+import { DataSet } from "../model/dataset";
+import { map } from "rxjs/operators";
+
+export const DATAELEMENT_KEY = "data-elements";
+export const DATASET_KEY = "data-sets";
 // export const ORGANISATION_UNIT_KEY = 'organisation-units';
-export const INDICATOR_KEY = 'indicators';
-export const CATEGORY_COMBOS_KEY = 'category-options';
-export const DATAELEMENT_GROUP_KEY = 'data-element-groups';
-export const INDICATOR_GROUP_KEY = 'indicator-groups';
-export const PROGRAM_KEY = 'programs';
-export const PROGRAM_INDICATOR_KEY = 'programIndicators';
-export const FUNCTIONS = 'functions';
+export const INDICATOR_KEY = "indicators";
+export const CATEGORY_COMBOS_KEY = "category-options";
+export const DATAELEMENT_GROUP_KEY = "data-element-groups";
+export const INDICATOR_GROUP_KEY = "indicator-groups";
+export const PROGRAM_KEY = "programs";
+export const PROGRAM_INDICATOR_KEY = "programIndicators";
+export const FUNCTIONS = "functions";
 
 @Injectable()
 export class DataFilterService {
-
   metaData = {
     organisationUnits: [],
     dataElements: [],
@@ -32,13 +26,12 @@ export class DataFilterService {
     indicatorGroups: [],
     categoryOptions: [],
     dataSets: [],
-    functions: []
+    functions: [],
   };
 
   private _dataItems: any[] = [];
 
-  constructor(private http: NgxDhis2HttpClientService) {
-  }
+  constructor(private http: NgxDhis2HttpClientService) {}
 
   // getIndicators(): Observable<Indicator[]> {
   //   return this.http.get('indicators.json?fields=id,name,dataSets[periodType]&paging=false').
@@ -52,8 +45,11 @@ export class DataFilterService {
   // }
 
   getDataSets(): Observable<DataSet[]> {
-    return this.http.get('dataSets.json?fields=[name,displayName,id,organisationUnits]&paging=false')
-      .pipe(map(res => res.dataSets || []));
+    return this.http
+      .get(
+        "dataSets.json?fields=[name,displayName,id,organisationUnits]&paging=false"
+      )
+      .pipe(map((res) => res.dataSets || []));
     // return this.http.get('dataSets.json?fields=[*]&paging=false').map(res => res.dataSets || []);
   }
 
@@ -64,8 +60,11 @@ export class DataFilterService {
   // }
 
   getOrganisationUnits(): Observable<any[]> {
-    return this.http.get('organisationUnits.json?fields=id,name,children,parent,path&paging=false')
-      .pipe(map(res => res.organisationUnits || []));
+    return this.http
+      .get(
+        "organisationUnits.json?fields=id,name,children,parent,path&paging=false"
+      )
+      .pipe(map((res) => res.organisationUnits || []));
   }
 
   // getDataElementGroups(): Observable<DataelementGroup[]> {
@@ -79,9 +78,11 @@ export class DataFilterService {
   // }
 
   getPrograms(): Observable<any[]> {
-    return this.http.get('programs.json?fields=[name,displayName,id,organisationUnits]&paging=false')
-      .pipe(map(res => res.programs || []));
-
+    return this.http
+      .get(
+        "programs.json?fields=[name,displayName,id,organisationUnits]&paging=false"
+      )
+      .pipe(map((res) => res.programs || []));
   }
 
   // getProgramIndicators(): Observable<any[]> {
@@ -99,9 +100,8 @@ export class DataFilterService {
   //   ;
   // }
 
-
   initiateData() {
-    return Observable.create(observer => {
+    return Observable.create((observer) => {
       if (this._dataItems.length > 0) {
         observer.next(this._dataItems);
         observer.complete();
@@ -113,7 +113,7 @@ export class DataFilterService {
           // this.getDataFromLocalDatabase(DATAELEMENT_GROUP_KEY),
           this.getDataFromLocalDatabase(DATASET_KEY),
           // this.getDataFromLocalDatabase(CATEGORY_COMBOS_KEY),
-          this.getDataFromLocalDatabase(PROGRAM_KEY),
+          this.getDataFromLocalDatabase(PROGRAM_KEY)
           // this.getDataFromLocalDatabase(PROGRAM_INDICATOR_KEY),
           // this.getDataFromLocalDatabase(FUNCTIONS)
         ).subscribe((dataItems: any[]) => {
@@ -123,7 +123,6 @@ export class DataFilterService {
         });
       }
     });
-
   }
 
   /**
@@ -132,8 +131,8 @@ export class DataFilterService {
    * @returns {any}
    */
   getDataFromLocalDatabase(key: string): Observable<any> {
-    return Observable.create(observer => {
-      let dataStream$ = of(null);
+    return Observable.create((observer) => {
+      let dataStream$: Observable<any> = of(null);
       switch (key) {
         // case DATAELEMENT_KEY:
         //   dataStream$ = this.getDataElements();
@@ -166,18 +165,16 @@ export class DataFilterService {
         //   dataStream$ = this.getFunctions();
         //   break;
         default:
-          console.error('The key passed is not recognized');
+          console.error("The key passed is not recognized");
           break;
-
       }
       dataStream$.subscribe(
         (data) => {
           observer.next(data);
           observer.complete();
-        }, (error) => observer.error(error)
+        },
+        (error) => observer.error(error)
       );
     });
   }
-
-
 }

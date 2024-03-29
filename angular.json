@@ -18,21 +18,12 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webapp"
-            ],
+            "assets": ["src/favicon.ico", "src/assets", "src/manifest.webapp"],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ],
+            "scripts": [],
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
@@ -91,10 +82,7 @@
               "src/styles.css"
             ],
             "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ]
+            "assets": ["src/favicon.ico", "src/assets"]
           }
         }
       }
@@ -119,8 +107,7 @@
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@ngrx/schematics"
-    ]
+    "schematicCollections": ["@ngrx/schematics"],
+    "analytics": "680e4c6f-5c23-4311-a971-33b7ec11fd52"
   }
 }

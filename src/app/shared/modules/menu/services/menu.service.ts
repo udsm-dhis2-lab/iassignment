@@ -1,19 +1,23 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import * as fromConstants from '../constants';
-import { BehaviorSubject, forkJoin } from 'rxjs/index';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import * as fromConstants from "../constants";
+import { BehaviorSubject, forkJoin, Observable } from "rxjs";
 
 @Injectable()
 export class MenuService {
-  private _menuModules$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  private _menuModules$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+    []
+  );
   constructor(private httpClient: HttpClient) {}
 
   getSystemSettings(rootUrl: string): Observable<any> {
-    return Observable.create(observer => {
-      forkJoin(this.httpClient.get(rootUrl + 'api/systemSettings.json'), this.httpClient.get(rootUrl + 'api/system/info.json')).subscribe(
+    return Observable.create((observer) => {
+      forkJoin(
+        this.httpClient.get(rootUrl + "api/systemSettings.json"),
+        this.httpClient.get(rootUrl + "api/system/info.json")
+      ).subscribe(
         (settings: any[]) => {
-          observer.next({...settings[0], ...settings[1]});
+          observer.next({ ...settings[0], ...settings[1] });
           observer.complete();
         },
         () => observer.error(null)
@@ -22,16 +26,17 @@ export class MenuService {
   }
 
   getMenuModules(rootUrl: string): Observable<any> {
-    return Observable.create(observer => {
+    return Observable.create((observer) => {
       this.httpClient
-        .get(rootUrl + 'dhis-web-commons/menu/getModules.action')
+        .get(rootUrl + "dhis-web-commons/menu/getModules.action")
         .subscribe(
           (menuModuleResult: any) => {
-            const sanitizedMenu = this._sanitizeMenuItems(menuModuleResult.modules, rootUrl);
-            this._menuModules$.next(sanitizedMenu)
-            observer.next(
-              sanitizedMenu
+            const sanitizedMenu = this._sanitizeMenuItems(
+              menuModuleResult.modules,
+              rootUrl
             );
+            this._menuModules$.next(sanitizedMenu);
+            observer.next(sanitizedMenu);
             observer.complete();
           },
           () => {
@@ -47,8 +52,8 @@ export class MenuService {
   }
 
   getUserInfo(rootUrl: string): Observable<any> {
-    return Observable.create(observer => {
-      this.httpClient.get(rootUrl + 'api/me.json').subscribe(
+    return Observable.create((observer) => {
+      this.httpClient.get(rootUrl + "api/me.json").subscribe(
         (userInfo: any) => {
           observer.next(userInfo);
           observer.complete();
@@ -65,18 +70,18 @@ export class MenuService {
     const sanitizedMenuItems = menuItems.map((item: any) => {
       const newItem: any = { ...item };
       if (
-        !newItem.hasOwnProperty('displayName') ||
-        newItem.displayName === ''
+        !newItem.hasOwnProperty("displayName") ||
+        newItem.displayName === ""
       ) {
         newItem.displayName = newItem.name;
       }
 
-      if (newItem.defaultAction.indexOf('http') === -1) {
-        newItem.defaultAction = '../../' + newItem.defaultAction;
+      if (newItem.defaultAction.indexOf("http") === -1) {
+        newItem.defaultAction = "../../" + newItem.defaultAction;
       }
 
-      if (newItem.icon.indexOf('http') === -1) {
-        newItem.icon = '../../' + newItem.icon;
+      if (newItem.icon.indexOf("http") === -1) {
+        newItem.icon = "../../" + newItem.icon;
       }
 
       newItem.onlyShowOnSearch = false;

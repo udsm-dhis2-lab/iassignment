@@ -4,26 +4,26 @@ import {
   Input,
   OnInit,
   Output,
-  OnDestroy
-} from '@angular/core';
-import { DataFilterService } from './services/data-filter.service';
-import * as _ from 'lodash';
-import { DATA_FILTER_OPTIONS } from './data-filter.model';
-import {Observable, of, Subscription} from 'rxjs';
-import {AddAssignmentDataFiltersData} from '../../../store/actions/assignment-data-filters.actions';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../store/reducers';
+  OnDestroy,
+} from "@angular/core";
+import { DataFilterService } from "./services/data-filter.service";
+import * as _ from "lodash";
+import { DATA_FILTER_OPTIONS } from "./data-filter.model";
+import { Observable, of, Subscription } from "rxjs";
+import { AddAssignmentDataFiltersData } from "../../../store/actions/assignment-data-filters.actions";
+import { Store } from "@ngrx/store";
+import { AppState } from "../../../store/reducers";
 
 @Component({
-  selector: 'app-data-filter',
-  templateUrl: './data-filter.component.html',
-  styleUrls: ['./data-filter.component.css']
+  selector: "app-data-filter",
+  templateUrl: "./data-filter.component.html",
+  styleUrls: ["./data-filter.component.css"],
 })
 export class DataFilterComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   availableItems: any[] = [];
   dataGroups: any[] = [];
-  selectedGroup: any = { id: 'ALL', name: '[ All ]' };
+  selectedGroup: any = { id: "ALL", name: "[ All ]" };
   @Input() selectedItems: any[] = [];
   @Input() functionMappings: any[] = [];
   @Input() hiddenDataElements: any[] = [];
@@ -47,12 +47,12 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     programs: [],
     programIndicators: [],
     dataSetGroups: [
-      { id: '', name: 'Reporting Rate' },
-      { id: '.REPORTING_RATE_ON_TIME', name: 'Reporting Rate on time' },
-      { id: '.ACTUAL_REPORTS', name: 'Actual Reports Submitted' },
-      { id: '.ACTUAL_REPORTS_ON_TIME', name: 'Reports Submitted on time' },
-      { id: '.EXPECTED_REPORTS', name: 'Expected Reports' }
-    ]
+      { id: "", name: "Reporting Rate" },
+      { id: ".REPORTING_RATE_ON_TIME", name: "Reporting Rate on time" },
+      { id: ".ACTUAL_REPORTS", name: "Actual Reports Submitted" },
+      { id: ".ACTUAL_REPORTS_ON_TIME", name: "Reports Submitted on time" },
+      { id: ".EXPECTED_REPORTS", name: "Expected Reports" },
+    ],
   };
   loading: boolean;
   p = 1;
@@ -68,9 +68,10 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   dataSetsFromServer = [];
   programsFromServer = [];
 
-
-  constructor(private dataFilterService: DataFilterService,
-              private store: Store<AppState>) {
+  constructor(
+    private dataFilterService: DataFilterService,
+    private store: Store<AppState>
+  ) {
     this.dataFilterOptions = DATA_FILTER_OPTIONS;
     this.showGroups = false;
     this.need_groups = true;
@@ -89,42 +90,45 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   }
 
   initiateData() {
-    this.subscription = this.dataFilterService.initiateData().subscribe(items => {
-      this.dataSetsFromServer = items[0];
-      this.programsFromServer = items[1];
-      this.dataItems = Object.assign(
-        {},
-        {
-          dataSets: items[0],
-          programs: items[2],
-          dataSetGroups: [
-            { id: '', name: 'Reporting Rate' },
-            { id: '.REPORTING_RATE_ON_TIME', name: 'Reporting Rate on time' },
-            { id: '.ACTUAL_REPORTS', name: 'Actual Reports Submitted' },
-            { id: '.ACTUAL_REPORTS_ON_TIME', name: 'Reports Submitted on time' },
-            { id: '.EXPECTED_REPORTS', name: 'Expected Reports' }
-          ]
-        }
-      );
-      this.loading = false;
-      this.dataGroups = this.groupList();
-      // this.availableItems = this.dataItemList(this._selectedItems, this.selectedGroup);
-      // this.availableItems = this.dataSetsFromServer;
-      this.dataSetsFromServer.forEach((dataSets) => {
-        dataSets.formType = 'dataSets';
-        this.availableItems.push(dataSets);
-      });
+    this.subscription = this.dataFilterService
+      .initiateData()
+      .subscribe((items) => {
+        this.dataSetsFromServer = items[0];
+        this.programsFromServer = items[1];
+        this.dataItems = Object.assign(
+          {},
+          {
+            dataSets: items[0],
+            programs: items[2],
+            dataSetGroups: [
+              { id: "", name: "Reporting Rate" },
+              { id: ".REPORTING_RATE_ON_TIME", name: "Reporting Rate on time" },
+              { id: ".ACTUAL_REPORTS", name: "Actual Reports Submitted" },
+              {
+                id: ".ACTUAL_REPORTS_ON_TIME",
+                name: "Reports Submitted on time",
+              },
+              { id: ".EXPECTED_REPORTS", name: "Expected Reports" },
+            ],
+          }
+        );
+        this.loading = false;
+        this.dataGroups = this.groupList();
+        // this.availableItems = this.dataItemList(this._selectedItems, this.selectedGroup);
+        // this.availableItems = this.dataSetsFromServer;
+        this.dataSetsFromServer.forEach((dataSets) => {
+          this.availableItems.push({ ...dataSets, formType: "dataSets" });
+        });
         // this function to update Store with initial data
-      this.autoCollectItems(this.dataSetsFromServer);
+        this.autoCollectItems(this.dataSetsFromServer);
         // End of function to update Store with initial data
-      this.programsFromServer.forEach((programs) => {
-        programs.formType = 'programs';
-        this.availableItems.push(programs);
+        this.programsFromServer.forEach((programs) => {
+          programs.formType = "programs";
+          this.availableItems.push({ programs, formType: "programs" });
+        });
+        this.availableItems = this.removeDuplicates(this.availableItems, "id");
       });
-      this.availableItems = this.removeDuplicates(this.availableItems, 'id');
-    });
   }
-
 
   // MyOwn functions working for me only
 
@@ -137,13 +141,13 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
   toggleDataFilterOption(toggledOption, event) {
     event.stopPropagation();
-     const multipleSelection = event.ctrlKey ? true : false;
+    const multipleSelection = event.ctrlKey ? true : false;
 
-    this.dataFilterOptions = this.dataFilterOptions.map(option => {
+    this.dataFilterOptions = this.dataFilterOptions.map((option) => {
       const newOption: any = { ...option };
 
-      if (toggledOption.prefix === 'ALL') {
-        if (newOption.prefix !== 'ALL') {
+      if (toggledOption.prefix === "ALL") {
+        if (newOption.prefix !== "ALL") {
           newOption.selected = false;
         } else {
           newOption.selected = !toggledOption.selected;
@@ -153,12 +157,12 @@ export class DataFilterComponent implements OnInit, OnDestroy {
           newOption.selected = !newOption.selected;
         }
 
-        if (toggledOption.prefix === 'ALL') {
-          if (newOption.prefix !== 'ALL' && toggledOption.selected) {
+        if (toggledOption.prefix === "ALL") {
+          if (newOption.prefix !== "ALL" && toggledOption.selected) {
             newOption.selected = false;
           }
         } else {
-          if (newOption.prefix === 'ALL') {
+          if (newOption.prefix === "ALL") {
             newOption.selected = false;
           }
         }
@@ -171,28 +175,26 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       return newOption;
     });
 
-    if (toggledOption.prefix === 'ALL') {
+    if (toggledOption.prefix === "ALL") {
       this.dataSetsFromServer.forEach((dataSets) => {
         this.availableItems.push(dataSets);
       });
       this.programsFromServer.forEach((programs) => {
         this.availableItems.push(programs);
       });
-      this.availableItems = this.removeDuplicates(this.availableItems, 'id');
-    } else if (toggledOption.prefix === 'ds') {
+      this.availableItems = this.removeDuplicates(this.availableItems, "id");
+    } else if (toggledOption.prefix === "ds") {
       this.availableItems = this.dataSetsFromServer;
-      this.availableItems = this.removeDuplicates(this.availableItems, 'id');
-    } else if (toggledOption.prefix === 'pr') {
+      this.availableItems = this.removeDuplicates(this.availableItems, "id");
+    } else if (toggledOption.prefix === "pr") {
       this.availableItems = this.programsFromServer;
-      this.availableItems = this.removeDuplicates(this.availableItems, 'id');
+      this.availableItems = this.removeDuplicates(this.availableItems, "id");
     }
   }
 
-
   updateSelectedToTable() {
-    this.updatedListToTable.emit(this.selectedItems$['value']);
+    this.updatedListToTable.emit(this.selectedItems$["value"]);
   }
-
 
   removeDataArraysInObject(selectedObject) {
     selectedObject.forEach((objectToRemove) => {
@@ -202,12 +204,11 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         }
       });
     });
-
   }
 
   removeDuplicates(originalArray, key) {
     const newArray = [];
-    const lookupObject  = {};
+    const lookupObject = {};
 
     for (var i in originalArray) {
       lookupObject[originalArray[i][key]] = originalArray[i];
@@ -218,15 +219,11 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     return newArray;
   }
 
-
-
-
   // MyOwn functions working for me only
-
 
   setSelectedGroup(group, listArea, event) {
     event.stopPropagation();
-    this.listchanges = '';
+    this.listchanges = "";
     this.selectedGroup = { ...group };
     this.availableItems = this.dataItemList(this._selectedItems, group);
     this.showGroups = false;
@@ -236,18 +233,18 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
   getSelectedOption(): any[] {
     const someArr = [];
-    this.dataFilterOptions.forEach(val => {
+    this.dataFilterOptions.forEach((val) => {
       if (val.selected) {
         someArr.push(val);
       }
     });
-    return _.map(someArr, 'prefix');
+    return _.map(someArr, "prefix");
   }
 
   // get data Items data_element, indicators, dataSets
   getDataItems() {
     const dataElements = [];
-    this.dataItems.dataElements.forEach(dataelement => {
+    this.dataItems.dataElements.forEach((dataelement) => {
       dataElements.push(...this.getDetailedDataElements(dataelement));
     });
     return {
@@ -256,20 +253,20 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       ds: this.dataItems.dataSets,
       pi: this.dataItems.programIndicators,
       rl: _.flatten(
-        _.map(this.dataItems.functions, functionObject =>
+        _.map(this.dataItems.functions, (functionObject) =>
           _.map(functionObject.rules || [], (rule: any) => {
             return {
               id: rule.id,
               name: rule.name,
               functionObject: {
                 functionString: functionObject.function,
-                ruleDefinition: rule
+                ruleDefinition: rule,
               },
-              type: 'FUNCTION_RULE'
+              type: "FUNCTION_RULE",
             };
           })
         )
-      )
+      ),
     };
   }
 
@@ -281,17 +278,17 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     dataElements.push({
       dataElementId: dataElement.id,
       id: dataElement.id,
-      name: dataElement.name + '',
-      dataSetElements: dataElement.dataSetElements
+      name: dataElement.name + "",
+      dataSetElements: dataElement.dataSetElements,
     });
 
-    categoryCombo.categoryOptionCombos.forEach(option => {
-      if (option.name !== 'default') {
+    categoryCombo.categoryOptionCombos.forEach((option) => {
+      if (option.name !== "default") {
         dataElements.push({
           dataElementId: dataElement.id,
-          id: dataElement.id + '.' + option.id,
-          name: dataElement.name + ' ' + option.name,
-          dataSetElements: dataElement.dataSetElements
+          id: dataElement.id + "." + option.id,
+          name: dataElement.name + " " + option.name,
+          dataSetElements: dataElement.dataSetElements,
         });
       }
     });
@@ -302,7 +299,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   // Helper to get the data elements option
   getCategoryCombo(uid): any {
     let category = null;
-    this.dataItems.categoryOptions.forEach(val => {
+    this.dataItems.categoryOptions.forEach((val) => {
       if (val.id === uid) {
         category = val;
       }
@@ -356,62 +353,82 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     // }
 
     // check if data data sets are in a selected group
-    if (_.includes(selectedOptions, 'ALL') || _.includes(selectedOptions, 'ds')) {
-      if (group.id === 'ALL') {
-        this.dataItems.dataSetGroups.forEach(groupObject => {
+    if (
+      _.includes(selectedOptions, "ALL") ||
+      _.includes(selectedOptions, "ds")
+    ) {
+      if (group.id === "ALL") {
+        this.dataItems.dataSetGroups.forEach((groupObject) => {
           currentList.push(
-            ...data.ds.map(datacv => {
-              return { id: datacv.id + groupObject.id, name: groupObject.name + ' ' + datacv.name };
+            ...data.ds.map((datacv) => {
+              return {
+                id: datacv.id + groupObject.id,
+                name: groupObject.name + " " + datacv.name,
+              };
             })
           );
         });
-      } else if (!group.hasOwnProperty('indicators') && !group.hasOwnProperty('dataElements')) {
+      } else if (
+        !group.hasOwnProperty("indicators") &&
+        !group.hasOwnProperty("dataElements")
+      ) {
         currentList.push(
-          ...data.ds.map(datacv => {
-            return { id: datacv.id + group.id, name: group.name + ' ' + datacv.name };
+          ...data.ds.map((datacv) => {
+            return {
+              id: datacv.id + group.id,
+              name: group.name + " " + datacv.name,
+            };
           })
         );
       }
     }
 
-
     // check if program
-    if (_.includes(selectedOptions, 'ALL') || _.includes(selectedOptions, 'pr')) {
-      if (group.id === 'ALL') {
+    if (
+      _.includes(selectedOptions, "ALL") ||
+      _.includes(selectedOptions, "pr")
+    ) {
+      if (group.id === "ALL") {
         currentList.push(...data.pi);
       } else {
-        if (group.hasOwnProperty('programIndicators')) {
-          const newArray = _.filter(data.pi, indicator => {
-            return _.includes(_.map(group.programIndicators, 'id'), indicator['id']);
+        if (group.hasOwnProperty("programIndicators")) {
+          const newArray = _.filter(data.pi, (indicator) => {
+            return _.includes(
+              _.map(group.programIndicators, "id"),
+              indicator["id"]
+            );
           });
           currentList.push(...newArray);
         }
       }
     }
 
-    if (_.includes(selectedOptions, 'ALL') || _.includes(selectedOptions, 'fn')) {
-      if (group.id === 'ALL') {
+    if (
+      _.includes(selectedOptions, "ALL") ||
+      _.includes(selectedOptions, "fn")
+    ) {
+      if (group.id === "ALL") {
         currentList.push(...data.rl);
       } else {
-        if (group.hasOwnProperty('rules')) {
-          const newArray = _.filter(data.rl, functionRule => {
-            return _.includes(_.map(group.rules, 'id'), functionRule['id']);
+        if (group.hasOwnProperty("rules")) {
+          const newArray = _.filter(data.rl, (functionRule) => {
+            return _.includes(_.map(group.rules, "id"), functionRule["id"]);
           });
           currentList.push(...newArray);
         }
       }
     }
 
-    const currentListWithOutHiddenItems = _.filter(currentList, item => {
-      return !_.includes(this.hiddenDataElements, item['id']);
+    const currentListWithOutHiddenItems = _.filter(currentList, (item) => {
+      return !_.includes(this.hiddenDataElements, item["id"]);
     });
 
     return _.sortBy(
       _.filter(
         currentListWithOutHiddenItems,
-        (item: any) => !_.find(selectedItems, ['id', item.id])
+        (item: any) => !_.find(selectedItems, ["id", item.id])
       ),
-      ['name']
+      ["name"]
     );
   }
 
@@ -427,38 +444,41 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     // }
 
     // if (_.includes(options, 'ALL') || _.includes(options, 'in')) {
-      // if (options.length === 1 && _.includes(options, 'in')) {
-      //   currentGroupList.push(...data.in);
-      // } else {
-      //   currentGroupList.push(
-      //     ...data.in.map(indicatorGroup => {
-      //       return {
-      //         id: indicatorGroup.id,
-      //         name: indicatorGroup.name + ' - Computed',
-      //         indicators: indicatorGroup.indicators
-      //       };
-      //     })
-      //   );
-      // }
+    // if (options.length === 1 && _.includes(options, 'in')) {
+    //   currentGroupList.push(...data.in);
+    // } else {
+    //   currentGroupList.push(
+    //     ...data.in.map(indicatorGroup => {
+    //       return {
+    //         id: indicatorGroup.id,
+    //         name: indicatorGroup.name + ' - Computed',
+    //         indicators: indicatorGroup.indicators
+    //       };
+    //     })
+    //   );
+    // }
     // }
 
-    if (_.includes(options, 'ALL') || _.includes(options, 'pr')) {
-      currentGroupList.push(...data.pr);
+    if (_.includes(options, "ALL") || _.includes(options, "pr")) {
+      currentGroupList.push(...(data.pr || []));
     }
 
-    if (_.includes(options, 'ALL') || _.includes(options, 'ds')) {
-      currentGroupList.push(...data.ds);
+    if (_.includes(options, "ALL") || _.includes(options, "ds")) {
+      currentGroupList.push(...(data.ds || []));
     }
 
     // if (_.includes(options, 'ALL') || _.includes(options, 'fn')) {
     //   currentGroupList.push(...data.fn);
     // }
 
-    if (_.includes(options, 'ds')) {
+    if (_.includes(options, "ds")) {
       this.need_groups = false;
     }
 
-    return [{ id: 'ALL', name: '[ All ]' }, ..._.sortBy(currentGroupList, ['name'])];
+    return [
+      { id: "ALL", name: "[ All ]" },
+      ..._.sortBy(currentGroupList, ["name"]),
+    ];
   }
 
   // this will add a selected item in a list function
@@ -471,10 +491,10 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
     this.availableItems = [
       ...this.availableItems.slice(0, itemIndex),
-      ...this.availableItems.slice(itemIndex + 1)
+      ...this.availableItems.slice(itemIndex + 1),
     ];
 
-    if (!_.find(this._selectedItems, ['id', item.id])) {
+    if (!_.find(this._selectedItems, ["id", item.id])) {
       this._selectedItems = [...this._selectedItems, item];
     }
 
@@ -488,10 +508,10 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
     this._selectedItems = [
       ...this._selectedItems.slice(0, itemIndex),
-      ...this._selectedItems.slice(itemIndex + 1)
+      ...this._selectedItems.slice(itemIndex + 1),
     ];
 
-    if (!_.find(this.availableItems, ['id', item.id])) {
+    if (!_.find(this.availableItems, ["id", item.id])) {
       this.availableItems = [...this.availableItems, item];
     }
 
@@ -500,8 +520,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
   getAutogrowingTables(selections) {
     const autogrowings = [];
-    selections.forEach(value => {
-      if (value.hasOwnProperty('programType')) {
+    selections.forEach((value) => {
+      if (value.hasOwnProperty("programType")) {
         autogrowings.push(value);
       }
     });
@@ -510,10 +530,10 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
   getFunctions(selections) {
     const mappings = [];
-    selections.forEach(value => {
-      const dataElementId = value.id.split('.');
-      this.functionMappings.forEach(mappedItem => {
-        const mappedId = mappedItem.split('_');
+    selections.forEach((value) => {
+      const dataElementId = value.id.split(".");
+      this.functionMappings.forEach((mappedItem) => {
+        const mappedId = mappedItem.split("_");
         if (dataElementId[0] === mappedId[0]) {
           mappings.push({ id: value.id, func: mappedId[1] });
         }
@@ -526,8 +546,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   selectAllItems(event) {
     event.stopPropagation();
 
-    this.availableItems.forEach(item => {
-      if (!_.find(this._selectedItems, ['id', item.id])) {
+    this.availableItems.forEach((item) => {
+      if (!_.find(this._selectedItems, ["id", item.id])) {
         this._selectedItems = [...this._selectedItems, item];
       }
     });
@@ -540,8 +560,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   // selecting all items
   deselectAllItems(e) {
     e.stopPropagation();
-    this._selectedItems.forEach(item => {
-      if (!_.find(this.availableItems, ['id', item.id])) {
+    this._selectedItems.forEach((item) => {
+      if (!_.find(this.availableItems, ["id", item.id])) {
         this.availableItems = [...this.availableItems, item];
       }
     });
@@ -565,10 +585,13 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   // action that will fire when the sorting of selected data is done
   transferDataSuccess(data, current) {
     if (data.dragData.id === current.id) {
-      console.log('Droping in the same area');
+      console.log("Droping in the same area");
     } else {
       const number =
-        this.getDataPosition(data.dragData.id) > this.getDataPosition(current.id) ? 0 : 1;
+        this.getDataPosition(data.dragData.id) >
+        this.getDataPosition(current.id)
+          ? 0
+          : 1;
       this.deleteData(data.dragData);
       this.insertData(data.dragData, current, number);
     }
@@ -580,9 +603,12 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       itemList: this._selectedItems,
       need_functions: this.getFunctions(this._selectedItems),
       auto_growing: this.getAutogrowingTables(this._selectedItems),
-      selectedData: { name: 'dx', value: this.getDataForAnalytics(this._selectedItems) },
+      selectedData: {
+        name: "dx",
+        value: this.getDataForAnalytics(this._selectedItems),
+      },
       hideQuarter: this.hideQuarter,
-      hideMonth: this.hideMonth
+      hideMonth: this.hideMonth,
     });
   }
 
@@ -634,22 +660,22 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   }
 
   getDataForAnalytics(selectedData) {
-    let dataForAnalytics = '';
+    let dataForAnalytics = "";
     let counter = 0;
-    selectedData.forEach(dataValue => {
-      const dataElementId = dataValue.id.split('.');
-      if (dataValue.hasOwnProperty('programType')) {
+    selectedData.forEach((dataValue) => {
+      const dataElementId = dataValue.id.split(".");
+      if (dataValue.hasOwnProperty("programType")) {
       } else {
         let mapped = false;
-        this.functionMappings.forEach(mappedItem => {
-          const mappedId = mappedItem.split('_');
+        this.functionMappings.forEach((mappedItem) => {
+          const mappedId = mappedItem.split("_");
           if (dataElementId[0] === mappedId[0]) {
             mapped = true;
           }
         });
         if (mapped) {
         } else {
-          dataForAnalytics += counter === 0 ? dataValue.id : ';' + dataValue.id;
+          dataForAnalytics += counter === 0 ? dataValue.id : ";" + dataValue.id;
           counter++;
         }
       }

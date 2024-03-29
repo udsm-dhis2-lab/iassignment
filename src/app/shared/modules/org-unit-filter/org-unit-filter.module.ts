@@ -1,21 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { OrgUnitFilterComponent } from './org-unit-filter.component';
-import { TreeModule } from 'angular-tree-component';
-import { OrgUnitService } from './org-unit.service';
-import { MultiselectComponent } from './multiselect/multiselect.component';
-import { ClickOutsideDirective } from './directives/click-outside.directive';
-import { FilterLevelPipe } from './pipes/filter-level.pipe';
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { ClickOutsideDirective } from "./directives/click-outside.directive";
+import { MultiselectComponent } from "./multiselect/multiselect.component";
+import { OrgUnitFilterComponent } from "./org-unit-filter.component";
+import { OrgUnitService } from "./org-unit.service";
+import { FilterLevelPipe } from "./pipes/filter-level.pipe";
 
 @NgModule({
-  imports: [CommonModule, TreeModule.forRoot()],
+  imports: [CommonModule],
   declarations: [
     OrgUnitFilterComponent,
     MultiselectComponent,
     ClickOutsideDirective,
-    FilterLevelPipe
+    FilterLevelPipe,
   ],
   exports: [OrgUnitFilterComponent],
-  providers: [OrgUnitService]
+  providers: [OrgUnitService],
 })
 export class OrgUnitFilterModule {}

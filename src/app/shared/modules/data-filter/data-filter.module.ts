@@ -1,26 +1,17 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { DataFilterComponent } from "./data-filter.component";
-import { ClickOutsideDirective } from "./click-outside.directive";
+import { HttpClientModule } from "@angular/common/http";
+import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { DragulaModule } from "ng2-dragula";
+import { ClickOutsideDirective } from "./click-outside.directive";
+import { DataFilterComponent } from "./data-filter.component";
+import { AddUnderscorePipe } from "./pipes/add-underscore.pipe";
 import { FilterByNamePipe } from "./pipes/filter-by-name.pipe";
 import { OrderPipe } from "./pipes/order-by.pipe";
-import { NgxPaginationModule } from "ngx-pagination";
-import { AddUnderscorePipe } from "./pipes/add-underscore.pipe";
-import { DragulaModule } from "ng2-dragula";
 import { DataFilterService } from "./services/data-filter.service";
-import { DndModule } from "ng2-dnd";
-import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    DragulaModule,
-    NgxPaginationModule,
-    DndModule.forRoot(),
-  ],
+  imports: [CommonModule, FormsModule, HttpClientModule, DragulaModule],
   declarations: [
     DataFilterComponent,
     ClickOutsideDirective,

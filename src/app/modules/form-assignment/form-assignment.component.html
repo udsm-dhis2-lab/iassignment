@@ -1,0 +1,13 @@
+<div class="form-assignment-container">
+  <h1 class="page-title">Form Assignment</h1>
+
+  <!-- loading -->
+  <ng-container *ngIf="loadingForms()">
+    <ng-dhis2-ui-wrapper [component]="Loader"></ng-dhis2-ui-wrapper>
+  </ng-container>
+
+  <!-- assignment table -->
+  <ng-container *ngIf="forms$ | async as forms">
+    <app-form-assignment-table [forms]="forms"></app-form-assignment-table
+  ></ng-container>
+</div>

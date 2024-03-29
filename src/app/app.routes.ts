@@ -26,8 +26,7 @@ export const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
     useHash: true,
-    preloadingStrategy: PreloadAllModules,
-    relativeLinkResolution: 'legacy'
+    preloadingStrategy: PreloadAllModules
 })
   ],
   exports: [RouterModule]

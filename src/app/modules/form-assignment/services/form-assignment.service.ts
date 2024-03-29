@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { NgxDhis2HttpClientService, User } from "@iapps/ngx-dhis2-http-client";
-import { Observable, map, switchMap, zip } from "rxjs";
+import { Observable, catchError, map, of, switchMap, zip } from "rxjs";
 import {
+  AssignmentRequestObject,
   CollectionForm,
   OrgUnitAssignment,
   OrgUnitAssignmentResponse,
@@ -37,6 +38,25 @@ export class FormAssignmentService {
             (program) => new CollectionForm({ ...program, type: "PROGRAM" })
           ),
         ];
+      })
+    );
+  }
+
+  saveAssignments(assignmentRequests: AssignmentRequestObject[]) {
+    return zip(
+      assignmentRequests.map((request) =>
+        this.httpClient.post(request.url, request.payload)
+      )
+    ).pipe(
+      map((responses: any[]) => {
+        return (responses || []).map((response, responseIndex) => {
+          const requestObject = assignmentRequests[responseIndex];
+          return {
+            httpStatus: response.httpStatus,
+            isSavedSuccessful: response?.response?.status === "OK",
+            requestObject,
+          };
+        });
       })
     );
   }

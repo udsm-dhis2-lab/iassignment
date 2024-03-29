@@ -10,3 +10,4 @@ export const sharedModules: any[] = [
   MenuModule,
 ];
 export * from "./shared.module";
+export * from "./models";

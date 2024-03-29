@@ -30,7 +30,7 @@ export class AppComponentContent {
             this.router.navigate([`/${event.value}`]);
           }}
         />
-        <MenuItem
+        {/* <MenuItem
           active={activeMenu === "user"}
           className="side-bar-item"
           label="User Assignment"
@@ -39,7 +39,7 @@ export class AppComponentContent {
             setActiveMenu(event.value);
             this.router.navigate([`/${event.value}`]);
           }}
-        />
+        /> */}
       </Menu>
     );
   };

@@ -1,21 +1,21 @@
 {
-    "version": "1.0.0",
-    "name": "Interactive Assignments",
-    "description": "Interactive Assignments v1.0.0",
-    "launch_path": "index.html",
-    "icons": {
-        "16": "favicon.ico",
-        "48": "favicon.ico",
-        "128": "favicon.ico"
-    },
-    "developer": {
-        "name": "HISPTZ",
-        "url": "https://hisptanzania.org"
-    },
-    "default_locale": "en",
-    "activities": {
-        "dhis": {
-            "href": "../../../"
-        }
+  "version": "2.0.0",
+  "name": "Assignment",
+  "description": "An interactive assignment app",
+  "launch_path": "index.html",
+  "icons": {
+    "16": "assets/icon/icon-16x16.png",
+    "48": "assets/icon/icon-48x48.png",
+    "128": "assets/icon/icon-128x128.png"
+  },
+  "developer": {
+    "name": "UDSM DHIS2 Lab",
+    "url": "https://dhis2.udsm.ac.tz"
+  },
+  "default_locale": "en",
+  "activities": {
+    "dhis": {
+      "href": "../../../"
     }
+  }
 }

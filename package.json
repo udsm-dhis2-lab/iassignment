@@ -4,9 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "build-lib": "ng build --configuration production i-assignments",
-    "build-lib-dev": "npm run build-lib && cd dist/i-assignments && npm pack && cd ../../ && npm install dist/i-assignments/*.tgz",
+    "build": "ng build && cd dist/i-assignments && zip -r -D iassignment.zip .",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

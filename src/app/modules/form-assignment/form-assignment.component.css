@@ -4,14 +4,5 @@
  * license that can be found in the LICENSE file.
  */
 .form-assignment-container {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--colors-grey800);
-  margin: var(--spacers-dp12) 0;
-  line-height: 20px;
+  padding: 16px;
 }

@@ -243,10 +243,18 @@ body {
   animation-name: fadeInDown;
 }
 
-::ng-deep .page-title {
+.page-title {
   font-size: 24px;
   font-weight: 700;
   color: var(--colors-grey800);
   margin: var(--spacers-dp12) 0;
   line-height: 20px;
+}
+
+.page-description {
+  color: var(--colors-grey700);
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+  margin-bottom: 16px;
 }

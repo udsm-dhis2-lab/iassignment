@@ -27,3 +27,14 @@
 ::ng-deep .form-label {
   margin-left: 8px;
 }
+
+::ng-deep .collection-form-header-filter {
+  width: 260px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+
+  input {
+    width: 200px;
+  }
+}

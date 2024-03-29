@@ -28,18 +28,34 @@ export class FormAssignmentService {
     return zip(
       this.httpClient.get("dataSets.json?fields=id,name&pageSize=10"),
       this.httpClient.get("programs.json?fields=id,name&pageSize=10")
-    ).pipe(
-      map(([dataSetResponse, programResponse]) => {
-        return [
-          ...(dataSetResponse.dataSets || []).map(
-            (dataSet) => new CollectionForm({ ...dataSet, type: "DATASET" })
-          ),
-          ...(programResponse.programs || []).map(
-            (program) => new CollectionForm({ ...program, type: "PROGRAM" })
-          ),
-        ];
-      })
-    );
+    ).pipe(map(this.#getFormResponse));
+  }
+
+  searchForms(searchTerm: string) {
+    if (searchTerm?.length === 0) {
+      return this.getForms();
+    }
+
+    return zip(
+      this.httpClient.get(
+        `dataSets.json?fields=id,name&filter=name:ilike:${searchTerm}`
+      ),
+      this.httpClient.get(
+        `programs.json?fields=id,name&filter=name:ilike:${searchTerm}`
+      )
+    ).pipe(map(this.#getFormResponse));
+  }
+
+  #getFormResponse(responses: any[]) {
+    const [dataSetResponse, programResponse] = responses;
+    return [
+      ...(dataSetResponse.dataSets || []).map(
+        (dataSet) => new CollectionForm({ ...dataSet, type: "DATASET" })
+      ),
+      ...(programResponse.programs || []).map(
+        (program) => new CollectionForm({ ...program, type: "PROGRAM" })
+      ),
+    ];
   }
 
   saveAssignments(assignmentRequests: AssignmentRequestObject[]) {

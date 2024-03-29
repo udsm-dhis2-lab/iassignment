@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
 import {AppState} from '../reducers';
 import {
@@ -30,8 +30,8 @@ export class AssignmentDataFiltersEffects {
     private assignmentService: AssignmentServiceService,
     private localStorage: LocalStorageService) {}
 
-  @Effect({dispatch: false})
-  triggerOrgunitsAdditional$ = this.actions$.pipe(
+  
+  triggerOrgunitsAdditional$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.TriggerAssignmentDataFiltersOrgunits),
     map((action: fromAssignmentActions.TriggerAssignmentDataFiltersOrgunits) => {
       const ouPayload = action.payload ? action.payload : [];
@@ -56,10 +56,10 @@ export class AssignmentDataFiltersEffects {
         this.store.dispatch(new AddAssignmentDataFiltersOrgunits(selectedOrgunits));
       }
     })
-  );
+  ), {dispatch: false});
 
-  @Effect({dispatch: false})
-  loadingAssignmentsOrgunits$ = this.actions$.pipe(
+  
+  loadingAssignmentsOrgunits$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AddAssignmentDataFiltersOrgunits),
     withLatestFrom(
       this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit),
@@ -71,10 +71,10 @@ export class AssignmentDataFiltersEffects {
         this.store.dispatch(new UpsertAssignmentDataFilters(assignmentArray));
       }
     })
-  );
+  ), {dispatch: false});
 
-  @Effect({dispatch: false})
-  loadingAssignmentsData$ = this.actions$.pipe(
+  
+  loadingAssignmentsData$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AddAssignmentDataFiltersData),
     withLatestFrom(
       this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedOrgunit),
@@ -87,10 +87,10 @@ export class AssignmentDataFiltersEffects {
         this.store.dispatch(new UpsertAssignmentDataFilters(assignmentArray));
       }
     })
-  );
+  ), {dispatch: false});
 
-  @Effect()
-  addingAssignmentProp$ = this.actions$.pipe(
+  
+  addingAssignmentProp$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AddingAssignmentDataFilters),
     withLatestFrom(
       this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
@@ -130,10 +130,10 @@ export class AssignmentDataFiltersEffects {
             selectedOrgunits: orgunitsCollections.selectedOrgunits,
             notificationStatus: notificationStatus});
     })
-  );
+  ));
 
-  @Effect()
-  removingAssignmentProp$ = this.actions$.pipe(
+  
+  removingAssignmentProp$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.RemovingAssignmentDataFilters),
     withLatestFrom(
       this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
@@ -173,7 +173,7 @@ export class AssignmentDataFiltersEffects {
           selectedOrgunits: orgunitsCollections.selectedOrgunits,
         });
     })
-  );
+  ));
 
   // @Effect({dispatch: false})
   // assigningAllData$ = this.actions$.pipe(
@@ -207,8 +207,8 @@ export class AssignmentDataFiltersEffects {
   //
   // );
 
-  @Effect({dispatch: false})
-  assigningAllData$ = this.actions$.pipe(
+  
+  assigningAllData$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.AssignAllData),
     withLatestFrom(
       this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
@@ -272,10 +272,10 @@ export class AssignmentDataFiltersEffects {
       }));
     }),
     catchError(error => of(this.store.dispatch(new AssignmentNotification(error))))
-  );
+  ), {dispatch: false});
 
-  @Effect({dispatch: false})
-  removingingAllData$ = this.actions$.pipe(
+  
+  removingingAllData$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.RemoveAssignAllData),
     withLatestFrom(
       this.store.select(fromAssignmentDataFilterSelectors.getAssingmentDataFilterSelectedData),
@@ -338,10 +338,10 @@ export class AssignmentDataFiltersEffects {
       }));
     }),
     catchError(error => of(this.store.dispatch(new AssignmentNotification(error))))
-  );
+  ), {dispatch: false});
 
-  @Effect({dispatch: false})
-  uploadingOfflineAssignments$ = this.actions$.pipe(
+  
+  uploadingOfflineAssignments$ = createEffect(() => this.actions$.pipe(
     ofType(AssignmentDataFiltersActionTypes.UploadOfflineAssignmentDataFilters),
     mergeMap(() => this.localStorage.getAll(OFFLINE_DATA)),
     map((offlineData: any) => {
@@ -373,6 +373,6 @@ export class AssignmentDataFiltersEffects {
     }),
     switchMap(() => this.assignmentService.assignOfflineAssignments(this.assignmentUploadPayload)),
     catchError(error => of())
-  );
+  ), {dispatch: false});
 
 }

@@ -118,8 +118,9 @@
       }
     }
   },
-  "defaultProject": "i-assignments",
   "cli": {
-    "defaultCollection": "@ngrx/schematics"
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   }
 }

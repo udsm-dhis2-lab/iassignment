@@ -60,7 +60,7 @@ export class FormAssignmentService {
       .filter(
         (orgUnitSelection: any) =>
           orgUnitSelection.id?.indexOf("LEVEL") === -1 &&
-          orgUnitSelection.id?.indexOf("GROUP")
+          orgUnitSelection.id?.indexOf("OU_GROUP") === -1
       )
       .map((orgUnit) => orgUnit.id);
 
@@ -70,11 +70,12 @@ export class FormAssignmentService {
       )
       .map((orgUnit) => orgUnit.id?.replace("LEVEL-", ""));
 
-    const orgUnitGroups = orgUnitsSelections
+    const orgUnitGroupIds = orgUnitsSelections
       .filter(
-        (orgUnitSelection: any) => orgUnitSelection.id?.indexOf("GROUP") !== -1
+        (orgUnitSelection: any) =>
+          orgUnitSelection.id?.indexOf("OU_GROUP") !== -1
       )
-      .map((orgUnit) => orgUnit.id?.replace("GROUP-", ""));
+      .map((orgUnit) => orgUnit.id?.replace("OU_GROUP-", ""));
 
     let assignmentRequest;
 
@@ -110,6 +111,22 @@ export class FormAssignmentService {
             );
           })
         );
+    }
+
+    if (orgUnitGroupIds.length > 0) {
+      assignmentRequest = this.httpClient.get(
+        `${this.#orgUnitUrlSegment}${
+          orgUnitIds.length > 0
+            ? `&filter=path:ilike:${orgUnitIds.join(",")}`
+            : ""
+        }&filter=organisationUnitGroups.id:in:[${orgUnitGroupIds.join(
+          ","
+        )}]&rootJunction=AND`
+      );
+    }
+
+    if (!assignmentRequest) {
+      return this.getAssignments();
     }
 
     return assignmentRequest.pipe(

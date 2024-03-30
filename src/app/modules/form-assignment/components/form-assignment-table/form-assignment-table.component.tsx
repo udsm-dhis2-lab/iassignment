@@ -25,10 +25,12 @@ import {
   switchMap,
 } from "rxjs";
 import { CollectionForm } from "../../models";
-import { FormAssignmentService } from "../../services";
+import { CollectionFormService, FormAssignmentService } from "../../services";
 import { CollectionFormItem } from "./collection-form-item.component";
 import { FormAssignmentBody } from "./form-assignment-body.component";
 import { CollectionFormHeader } from "./collection-form-header.component";
+import { OrgUnitHeader } from "./org-unit-header.component";
+import { useDebounce } from "../../../../shared";
 
 @Component({
   selector: "app-form-assignment-table",
@@ -37,6 +39,7 @@ import { CollectionFormHeader } from "./collection-form-header.component";
 })
 export class FormAssignmentTableComponent implements OnInit {
   formAssignmentService = inject(FormAssignmentService);
+  collectionFormService = inject(CollectionFormService);
 
   #showOrgUnit: WritableSignal<boolean> = signal(false);
   // TODO: A hack to force change detection
@@ -54,14 +57,18 @@ export class FormAssignmentTableComponent implements OnInit {
       const [loadingForms, setLoadingForms] = React.useState<boolean>(true);
       const [initiateLoading, setInitiateLoading] =
         React.useState<boolean>(true);
-      const [searchTerm, setSearchTerm] = React.useState<string>(undefined);
+      const [formSearchQuery, setFormSearchQuery] =
+        React.useState<string>(undefined);
+      const [orgUnitSearchQuery, setOrgUnitSearchQuery] =
+        React.useState<string>(undefined);
+
       const searchTerm$ = new Subject();
       let searchRequest$: any;
 
       React.useEffect(() => {
         if (initiateLoading) {
           setInitiateLoading(false);
-          this.formAssignmentService.getForms().subscribe({
+          this.collectionFormService.getForms().subscribe({
             next: (forms) => {
               setForms(forms);
               setLoadingForms(false);
@@ -79,7 +86,7 @@ export class FormAssignmentTableComponent implements OnInit {
             debounceTime(300),
             distinctUntilChanged(),
             switchMap((query: string) =>
-              this.formAssignmentService.searchForms(query)
+              this.collectionFormService.searchForms(query)
             )
           )
           .subscribe({
@@ -90,7 +97,7 @@ export class FormAssignmentTableComponent implements OnInit {
             },
             error: () => {},
           });
-      }, [searchTerm]);
+      }, [formSearchQuery]);
 
       return (
         <Box width="calc(100vw - 240px)">
@@ -100,38 +107,24 @@ export class FormAssignmentTableComponent implements OnInit {
           >
             <TableHead>
               <DataTableRow>
-                <DataTableColumnHeader
-                  fixed
-                  showFilter={false}
-                  top="0"
-                  left="0"
-                  width="250px"
-                  filter={<></>}
-                  onFilterIconClick={() => {
+                <OrgUnitHeader
+                  onOpenOrgUnitSelection={() => {
                     this.#showOrgUnit.set(true);
                   }}
-                >
-                  Organisation unit
-                </DataTableColumnHeader>
+                  onSearchOrgUnit={(event) => {
+                    setOrgUnitSearchQuery(event.value);
+                  }}
+                />
+
                 <CollectionFormHeader
                   formHeaderSpan={formHeaderSpan}
                   onSearchForm={(event) => {
-                    setSearchTerm(event.value);
+                    setFormSearchQuery(event.value);
                     searchTerm$.next(event.value);
                   }}
                 />
               </DataTableRow>
               <DataTableRow>
-                <DataTableCell
-                  fixed
-                  top="0"
-                  left="0"
-                  bordered
-                  className="search-header-cell"
-                >
-                  <FormInput placeholder="Filter organisation unit in list" />
-                </DataTableCell>
-
                 {loadingForms ? (
                   <DataTableCell
                     fixed
@@ -160,6 +153,7 @@ export class FormAssignmentTableComponent implements OnInit {
                 forms={forms}
                 formHeaderSpan={formHeaderSpan}
                 formAssignmentService={this.formAssignmentService}
+                orgUnitSearchQuery={orgUnitSearchQuery}
               />
             ) : (
               <></>

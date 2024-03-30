@@ -9,7 +9,7 @@
 }
 
 ::ng-deep th.search-header-cell {
-  min-width: 250px !important;
+  min-width: 280px !important;
 }
 
 ::ng-deep th.form-header-cell {
@@ -28,13 +28,19 @@
   margin-left: 8px;
 }
 
-::ng-deep .collection-form-header-filter {
-  width: 260px;
+::ng-deep .header-filter {
+  margin-top: 8px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 16px;
 
   input {
     width: 200px;
   }
+}
+
+::ng-deep .collection-form-header-filter {
+  width: 240px;
 }

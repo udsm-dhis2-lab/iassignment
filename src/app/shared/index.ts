@@ -11,3 +11,4 @@ export const sharedModules: any[] = [
 ];
 export * from "./shared.module";
 export * from "./models";
+export * from "./hooks";

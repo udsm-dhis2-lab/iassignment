@@ -12,50 +12,51 @@ import {
 export class FormAssignmentService {
   constructor(private httpClient: NgxDhis2HttpClientService) {}
 
+  #orgUnitUrlSegment =
+    "organisationUnits.json?fields=id,name,level,dataSets,programs&order=name:ASC";
+
   getAssignments(): Observable<OrgUnitAssignmentResponse> {
     return this.httpClient.me().pipe(
       switchMap((user: User) => {
-        console.log(user.organisationUnits);
-        return this.httpClient.get(
-          "organisationUnits.json?fields=id,name,level,dataSets,programs"
+        const userOrgUnitIds = user.organisationUnits.map(
+          (userOrgUnit) => userOrgUnit.id
+        );
+
+        return zip(
+          this.httpClient.get(
+            `${this.#orgUnitUrlSegment}&filter=id:in:[${userOrgUnitIds.join(
+              ","
+            )}]`
+          ),
+          this.httpClient.get(
+            `${
+              this.#orgUnitUrlSegment
+            }&filter=parent.id:in:[${userOrgUnitIds.join(",")}]`
+          )
         );
       }),
-      map((response) => new OrgUnitAssignmentResponse(response))
+      map((responses: any[]) => {
+        const [userOrgUnitResponse, userChildrenOrgUnitResponse] = responses;
+
+        return new OrgUnitAssignmentResponse({
+          pager: userChildrenOrgUnitResponse.pager,
+          organisationUnits: [
+            ...userOrgUnitResponse.organisationUnits,
+            ...userChildrenOrgUnitResponse.organisationUnits,
+          ],
+        });
+      })
     );
   }
 
-  getForms(): Observable<CollectionForm[]> {
-    return zip(
-      this.httpClient.get("dataSets.json?fields=id,name&pageSize=10"),
-      this.httpClient.get("programs.json?fields=id,name&pageSize=10")
-    ).pipe(map(this.#getFormResponse));
-  }
-
-  searchForms(searchTerm: string) {
-    if (searchTerm?.length === 0) {
-      return this.getForms();
+  searchAssignment(searchTerm) {
+    if (!searchTerm || searchTerm.length === 0) {
+      return this.getAssignments();
     }
 
-    return zip(
-      this.httpClient.get(
-        `dataSets.json?fields=id,name&filter=name:ilike:${searchTerm}`
-      ),
-      this.httpClient.get(
-        `programs.json?fields=id,name&filter=name:ilike:${searchTerm}`
-      )
-    ).pipe(map(this.#getFormResponse));
-  }
-
-  #getFormResponse(responses: any[]) {
-    const [dataSetResponse, programResponse] = responses;
-    return [
-      ...(dataSetResponse.dataSets || []).map(
-        (dataSet) => new CollectionForm({ ...dataSet, type: "DATASET" })
-      ),
-      ...(programResponse.programs || []).map(
-        (program) => new CollectionForm({ ...program, type: "PROGRAM" })
-      ),
-    ];
+    return this.httpClient
+      .get(`${this.#orgUnitUrlSegment}&filter=name:ilike:${searchTerm}`)
+      .pipe(map((response) => new OrgUnitAssignmentResponse(response)));
   }
 
   saveAssignments(assignmentRequests: AssignmentRequestObject[]) {

@@ -6,32 +6,41 @@ import {
   Input,
   Button,
   IconDimensionData16,
+  IconDimensionOrgUnit16,
 } from "@dhis2/ui";
 import * as React from "react";
-
-export function CollectionFormHeader(props: {
-  formHeaderSpan: number;
-  onSearchForm;
+export function OrgUnitHeader(props: {
+  onOpenOrgUnitSelection: Function;
+  onSearchOrgUnit: Function;
 }) {
-  const { formHeaderSpan, onSearchForm } = props;
+  const { onOpenOrgUnitSelection, onSearchOrgUnit } = props;
   const [showFilter, setShowFilter] = React.useState(false);
   return (
     <DataTableColumnHeader
       fixed
       showFilter={showFilter}
       top="0"
-      colSpan={formHeaderSpan.toString()}
+      left="0"
+      width="290px"
+      rowSpan="2"
+      className="search-header-cell"
       filter={
-        <div className="header-filter collection-form-header-filter">
+        <div className="header-filter">
           <Input
-            placeholder="Search forms by name"
+            placeholder="Search organisation unit"
             dense
             onChange={(event) => {
-              onSearchForm({ value: event.value });
+              onSearchOrgUnit({ value: event.value });
             }}
           />
-          <Button small>
-            <IconDimensionData16 />
+          <Button
+            title="Click to open organisation unit selection"
+            small
+            onClick={() => {
+              onOpenOrgUnitSelection();
+            }}
+          >
+            <IconDimensionOrgUnit16 />
           </Button>
         </div>
       }
@@ -39,7 +48,7 @@ export function CollectionFormHeader(props: {
         setShowFilter(event.show);
       }}
     >
-      Collection forms
+      Organisation unit
     </DataTableColumnHeader>
   );
 }

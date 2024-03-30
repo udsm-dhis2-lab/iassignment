@@ -8,7 +8,7 @@ import {
   IconDimensionEventDataItem16,
 } from "@dhis2/ui";
 import * as React from "react";
-import { CollectionForm } from "../../models";
+import { CollectionForm } from "../models";
 
 export function CollectionFormItem(props: { form: CollectionForm }) {
   const { form } = props;

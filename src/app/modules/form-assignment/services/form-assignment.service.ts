@@ -15,7 +15,13 @@ export class FormAssignmentService {
   #orgUnitUrlSegment =
     "organisationUnits.json?fields=id,name,level,dataSets,programs&order=name:ASC";
 
-  getAssignments(): Observable<OrgUnitAssignmentResponse> {
+  getAssignments(
+    orgUnitsSelections?: any[]
+  ): Observable<OrgUnitAssignmentResponse> {
+    if (orgUnitsSelections) {
+      return this.filterAssignments(orgUnitsSelections);
+    }
+
     return this.httpClient.me().pipe(
       switchMap((user: User) => {
         const userOrgUnitIds = user.organisationUnits.map(
@@ -46,6 +52,68 @@ export class FormAssignmentService {
           ],
         });
       })
+    );
+  }
+
+  filterAssignments(orgUnitsSelections: any[]) {
+    const orgUnitIds = orgUnitsSelections
+      .filter(
+        (orgUnitSelection: any) =>
+          orgUnitSelection.id?.indexOf("LEVEL") === -1 &&
+          orgUnitSelection.id?.indexOf("GROUP")
+      )
+      .map((orgUnit) => orgUnit.id);
+
+    const orgUnitLevelIds = orgUnitsSelections
+      .filter(
+        (orgUnitSelection: any) => orgUnitSelection.id?.indexOf("LEVEL") !== -1
+      )
+      .map((orgUnit) => orgUnit.id?.replace("LEVEL-", ""));
+
+    const orgUnitGroups = orgUnitsSelections
+      .filter(
+        (orgUnitSelection: any) => orgUnitSelection.id?.indexOf("GROUP") !== -1
+      )
+      .map((orgUnit) => orgUnit.id?.replace("GROUP-", ""));
+
+    let assignmentRequest;
+
+    if (orgUnitIds.length > 0) {
+      assignmentRequest = this.httpClient.get(
+        `${this.#orgUnitUrlSegment}&filter=id:in:[${orgUnitIds.join(",")}]`
+      );
+    }
+
+    if (orgUnitLevelIds.length > 0) {
+      assignmentRequest = this.httpClient
+        .get(
+          `organisationUnitLevels.json?fields=id,level&filter=id:in:[${orgUnitLevelIds.join(
+            ","
+          )}]`
+        )
+        .pipe(
+          switchMap((orgUnitLevelResponse) => {
+            const levels = (
+              orgUnitLevelResponse.organisationUnitLevels || []
+            ).map((orgUnitLevel) => orgUnitLevel.level);
+
+            if (levels.length === 0) {
+              return of(null);
+            }
+
+            return this.httpClient.get(
+              `${this.#orgUnitUrlSegment}${
+                orgUnitIds.length > 0
+                  ? `&filter=path:ilike:${orgUnitIds.join(",")}`
+                  : ""
+              }&filter=level:in:[${levels.join(",")}]&rootJunction=AND`
+            );
+          })
+        );
+    }
+
+    return assignmentRequest.pipe(
+      map((response: any) => new OrgUnitAssignmentResponse(response))
     );
   }
 

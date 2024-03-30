@@ -9,10 +9,10 @@ import {
   TableBody,
   TableCell,
 } from "@dhis2/ui";
-import { CollectionForm, OrgUnitAssignmentResponse } from "../../models";
+import { CollectionForm, OrgUnitAssignmentResponse } from "../models";
 import * as React from "react";
 import { FormAssigmentCell } from "./form-assignment-cell.component";
-import { FormAssignmentService } from "../../services";
+import { FormAssignmentService } from "../services";
 import {
   Subject,
   debounceTime,
@@ -20,7 +20,7 @@ import {
   of,
   switchMap,
 } from "rxjs";
-import { useDebounce } from "../../../../shared";
+import { useDebounce } from "../../../shared";
 import { isUndefined } from "lodash";
 
 export function FormAssignmentBody(props: {
@@ -28,26 +28,30 @@ export function FormAssignmentBody(props: {
   formHeaderSpan: number;
   formAssignmentService: FormAssignmentService;
   orgUnitSearchQuery?: string;
+  selectedOrgUnits?: any[];
 }) {
-  const { forms, formHeaderSpan, formAssignmentService, orgUnitSearchQuery } =
-    props;
+  const {
+    forms,
+    formHeaderSpan,
+    formAssignmentService,
+    orgUnitSearchQuery,
+    selectedOrgUnits,
+  } = props;
   const [data, setData] = React.useState<OrgUnitAssignmentResponse>(null);
   const [loadingAssignments, setLoadingAssignments] = React.useState(true);
 
   const searchValue = useDebounce(orgUnitSearchQuery);
 
   React.useEffect(() => {
-    if (isUndefined(searchValue)) {
-      setLoadingAssignments(true);
-      formAssignmentService.getAssignments().subscribe({
-        next: (data) => {
-          setData(data);
-          setLoadingAssignments(false);
-        },
-        error: () => {},
-      });
-    }
-  }, []);
+    setLoadingAssignments(true);
+    formAssignmentService.getAssignments(selectedOrgUnits).subscribe({
+      next: (data) => {
+        setData(data);
+        setLoadingAssignments(false);
+      },
+      error: () => {},
+    });
+  }, [selectedOrgUnits]);
 
   React.useEffect(() => {
     if (!isUndefined(searchValue)) {

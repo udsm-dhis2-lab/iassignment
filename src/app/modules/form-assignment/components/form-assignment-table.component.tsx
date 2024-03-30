@@ -6,31 +6,23 @@ import {
   signal,
 } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
-import {
-  Box,
-  CircularLoader,
-  DataTable,
-  DataTableCell,
-  DataTableColumnHeader,
-  DataTableRow,
-  Input as FormInput,
-  TableHead,
-} from "@dhis2/ui";
+import { Box, DataTable, DataTableRow, TableHead } from "@dhis2/ui";
 import * as React from "react";
 import {
   Observable,
   Subject,
   debounceTime,
   distinctUntilChanged,
+  filter,
   switchMap,
+  take,
 } from "rxjs";
-import { CollectionForm } from "../../models";
-import { CollectionFormService, FormAssignmentService } from "../../services";
-import { CollectionFormItem } from "./collection-form-item.component";
-import { FormAssignmentBody } from "./form-assignment-body.component";
+import { CollectionForm } from "../models";
+import { CollectionFormService, FormAssignmentService } from "../services";
 import { CollectionFormHeader } from "./collection-form-header.component";
+import { CollectionFormRow } from "./collection-form-row.component";
+import { FormAssignmentBody } from "./form-assignment-body.component";
 import { OrgUnitHeader } from "./org-unit-header.component";
-import { useDebounce } from "../../../../shared";
 
 @Component({
   selector: "app-form-assignment-table",
@@ -44,6 +36,9 @@ export class FormAssignmentTableComponent implements OnInit {
   #showOrgUnit: WritableSignal<boolean> = signal(false);
   // TODO: A hack to force change detection
   showOrgUnit$: Observable<boolean> = toObservable(this.#showOrgUnit);
+
+  #orgUnitSelections: WritableSignal<any> = signal(null);
+  orgUnitSelections$: Observable<any> = toObservable(this.#orgUnitSelections);
   FormAssignmentTable: any;
 
   async ngOnInit() {
@@ -61,9 +56,10 @@ export class FormAssignmentTableComponent implements OnInit {
         React.useState<string>(undefined);
       const [orgUnitSearchQuery, setOrgUnitSearchQuery] =
         React.useState<string>(undefined);
+      const [selectedOrgUnits, setSelectedOrgUnits] = React.useState(undefined);
 
       const searchTerm$ = new Subject();
-      let searchRequest$: any;
+      const orgUnitSelections$ = this.orgUnitSelections$;
 
       React.useEffect(() => {
         if (initiateLoading) {
@@ -81,7 +77,7 @@ export class FormAssignmentTableComponent implements OnInit {
 
       React.useEffect(() => {
         setLoadingForms(true);
-        searchRequest$ = searchTerm$
+        searchTerm$
           .pipe(
             debounceTime(300),
             distinctUntilChanged(),
@@ -98,6 +94,14 @@ export class FormAssignmentTableComponent implements OnInit {
             error: () => {},
           });
       }, [formSearchQuery]);
+
+      React.useEffect(() => {
+        orgUnitSelections$
+          .pipe(filter((orgUnitSelections) => orgUnitSelections))
+          .subscribe((selections) => {
+            setSelectedOrgUnits(selections);
+          });
+      }, []);
 
       return (
         <Box width="calc(100vw - 240px)">
@@ -124,28 +128,11 @@ export class FormAssignmentTableComponent implements OnInit {
                   }}
                 />
               </DataTableRow>
-              <DataTableRow>
-                {loadingForms ? (
-                  <DataTableCell
-                    fixed
-                    top="0"
-                    bordered
-                    colSpan={formHeaderSpan.toString()}
-                  >
-                    <CircularLoader small />
-                  </DataTableCell>
-                ) : (
-                  <></>
-                )}
-
-                {!loadingForms && forms ? (
-                  forms.map((form) => (
-                    <CollectionFormItem key={form.id} form={form} />
-                  ))
-                ) : (
-                  <></>
-                )}
-              </DataTableRow>
+              <CollectionFormRow
+                loading={loadingForms}
+                formHeaderSpan={formHeaderSpan}
+                forms={forms}
+              />
             </TableHead>
 
             {!loadingForms && forms ? (
@@ -154,6 +141,7 @@ export class FormAssignmentTableComponent implements OnInit {
                 formHeaderSpan={formHeaderSpan}
                 formAssignmentService={this.formAssignmentService}
                 orgUnitSearchQuery={orgUnitSearchQuery}
+                selectedOrgUnits={selectedOrgUnits}
               />
             ) : (
               <></>
@@ -169,7 +157,7 @@ export class FormAssignmentTableComponent implements OnInit {
   }
 
   onSelectOrgUnit(selectedOrgUnits) {
-    console.log(selectedOrgUnits);
     this.#showOrgUnit.set(false);
+    this.#orgUnitSelections.set(selectedOrgUnits);
   }
 }

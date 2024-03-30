@@ -2,6 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import { FormAssignmentTableComponent } from "./form-assignment-table/form-assignment-table.component";
+import { FormAssignmentTableComponent } from "./form-assignment-table.component";
 
 export const formAssignmentComponents: any[] = [FormAssignmentTableComponent];

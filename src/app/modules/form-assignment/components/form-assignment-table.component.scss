@@ -4,8 +4,8 @@
  * license that can be found in the LICENSE file.
  */
 
-::ng-deep .layer.translucent {
-  z-index: 4 !important;
+::ng-deep .layer.fixed {
+  z-index: 5 !important;
 }
 
 ::ng-deep th.search-header-cell {

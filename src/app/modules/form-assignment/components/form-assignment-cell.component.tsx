@@ -14,9 +14,9 @@ import {
   CollectionForm,
   OrgUnitAssignment,
   OrgUnitAssignmentRequest,
-} from "../../models";
+} from "../models";
 import { inject } from "@angular/core";
-import { FormAssignmentService } from "../../services";
+import { FormAssignmentService } from "../services";
 
 export function FormAssigmentCell(props: {
   orgUnitAssignment: OrgUnitAssignment;

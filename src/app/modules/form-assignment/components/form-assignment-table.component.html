@@ -6,6 +6,7 @@
   <ng-dhis2-ui-org-unit-selector-modal
     class="org-unit-modal"
     *ngIf="showOrgUnit$ | async"
+    [selectedOrgUnits]="(orgUnitSelections$ | async) || []"
     (cancel)="onCloseOrgUnit()"
     (confirm)="onSelectOrgUnit($event)"
   ></ng-dhis2-ui-org-unit-selector-modal>

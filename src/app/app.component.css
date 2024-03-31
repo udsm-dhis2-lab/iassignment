@@ -1,0 +1,30 @@
+/**
+ * Copyright 2024 UDSM DHIS2 Lab. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+.app-container {
+  position: relative;
+  display: flex;
+}
+.app-side-bar {
+  position: sticky;
+  width: 220px;
+  height: calc(100vh - 48px);
+  background-color: #f2f5f7;
+}
+
+::ng-deep .side-bar-item {
+  background-color: #f2f5f7 !important;
+}
+
+::ng-deep .side-bar-item:hover {
+  background-color: rgb(232, 237, 242) !important;
+}
+
+::ng-deep .active {
+  background-color: #d4dde5 !important;
+}
+
+.app-content {
+}

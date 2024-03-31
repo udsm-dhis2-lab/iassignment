@@ -1,0 +1,96 @@
+/**
+ * Copyright 2024 UDSM DHIS2 Lab. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
+::ng-deep .layer.fixed {
+  z-index: 5 !important;
+}
+
+::ng-deep th.search-header-cell {
+  min-width: 280px !important;
+}
+
+::ng-deep th.form-header-cell {
+  min-width: 100px !important;
+}
+
+::ng-deep .form-label-container {
+  display: flex;
+}
+
+::ng-deep .form-label-icon {
+  width: 20px;
+}
+
+::ng-deep .form-label {
+  margin-left: 8px;
+}
+
+::ng-deep .header-filter {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  input {
+    width: 200px;
+  }
+}
+
+::ng-deep .collection-form-header-filter {
+  width: 240px;
+}
+
+::ng-deep .selected-icon {
+  background-color: rgb(77, 182, 172);
+  height: 8px;
+  width: 8px;
+  border-radius: 4px;
+  margin-left: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+::ng-deep .selection-notice {
+  background-color: rgb(178, 223, 219);
+  border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 280px;
+
+  .selection-notice-label {
+    padding: 1px 2px 1px 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(33, 41, 52);
+    min-height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+
+    align-items: center;
+  }
+
+  .selection-notice-button {
+    padding: 1px 2px 1px 2px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(33, 41, 52);
+    cursor: pointer;
+    min-height: 24px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    &:hover {
+      background-color: #9cc4c0;
+    }
+  }
+}

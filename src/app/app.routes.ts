@@ -1,34 +1,36 @@
-import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
-import {AppComponent} from './app.component';
-import {DataAssignmentsModule} from './modules/data-assignments/data-assignments.module';
-import {NgModule} from '@angular/core';
-import {HomeComponent} from './shared/components/home/home.component';
-import {DataAssignmentsRoutingModule} from './modules/data-assignments/data-assignments-routing.module';
-import {MetaDataAssignComponent} from './modules/data-assignments/pages/meta-data-assign/meta-data-assign.component';
+import { NgModule } from "@angular/core";
+import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'data',
-    pathMatch: 'full'
+    path: "",
+    redirectTo: "form-assignment",
+    pathMatch: "full",
+  },
+
+  {
+    path: "form-assignment",
+    loadChildren: () =>
+      import("./modules/form-assignment/form-assignment.module").then(
+        (m) => m.FormAssignmentModule
+      ),
   },
   {
-    path: 'home',
-    component: HomeComponent
+    path: "user-assignment",
+    loadChildren: () =>
+      import("./modules/user-assignment/user-assignment.module").then(
+        (m) => m.UserAssignmentModule
+      ),
   },
-  {
-    path: 'data',
-    loadChildren: './modules/data-assignments/data-assignments.module#DataAssignmentsModule'
-  }
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       useHash: true,
-      preloadingStrategy: PreloadAllModules
-    })
+      preloadingStrategy: PreloadAllModules,
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class RoutingModule {}

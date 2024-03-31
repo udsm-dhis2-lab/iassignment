@@ -1,40 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~angular-tree-component/dist/angular-tree-component.css';
-.logo-picture{
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.logo-picture {
   width: 5%;
 }
-.centerfy-contents{
+.centerfy-contents {
   margin-right: auto;
   margin-left: auto;
 }
-.on-mobile-block{}
-.on-mobile-my{}
-.meta-search{
+.on-mobile-block {
+}
+.on-mobile-my {
+}
+.meta-search {
   width: 30%;
 }
-.pagination-margin-left{
+.pagination-margin-left {
   margin-right: 20%;
 }
 @media only screen and (max-width: 900px) {
-  .on-mobile-block{
+  .on-mobile-block {
     display: block;
   }
-  .on-mobile-my{
+  .on-mobile-my {
     margin-top: 2%;
   }
-  .meta-search{
+  .meta-search {
     width: 100%;
     display: -webkit-box;
   }
-  .input-search{
+  .input-search {
     width: 95% !important;
   }
-  .table-card{
+  .table-card {
     overflow-x: scroll;
     display: block;
   }
 }
-
 
 /**
  * Change animation duration
@@ -139,8 +144,6 @@
   animation-name: zoomIn;
 }
 
-
-
 @-webkit-keyframes fadeInUp {
   from {
     opacity: 0;
@@ -207,7 +210,6 @@
   animation-name: fadeInUpBig;
 }
 
-
 @-webkit-keyframes fadeInDown {
   from {
     opacity: 0;
@@ -239,4 +241,20 @@
 .fadeInDown {
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--colors-grey800);
+  margin: var(--spacers-dp12) 0;
+  line-height: 20px;
+}
+
+.page-description {
+  color: var(--colors-grey700);
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+  margin-bottom: 16px;
 }

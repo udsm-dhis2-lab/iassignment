@@ -1,5 +1,9 @@
-<app-menu></app-menu>
-<div style="margin-top: 50px">
-  <router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->
+<div class="app-container">
+  <div class="app-side-bar">
+    <ng-dhis2-ui-wrapper [component]="SideMenu"></ng-dhis2-ui-wrapper>
+  </div>
+  <div class="app-content">
+    <router-outlet></router-outlet>
+  </div>
 </div>
-

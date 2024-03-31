@@ -1,44 +1,94 @@
-[![Build Status](https://travis-ci.org/interactive-apps/iassignments.svg?branch=master)](https://travis-ci.org/interactive-apps/iassignments)
-[![Greenkeeper badge](https://badges.greenkeeper.io/interactive-apps/iassignments.svg)](https://greenkeeper.io/)  [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/interactive-apps/iassignments/maintainability)  [![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/interactive-apps/iassignments/test_coverage)
+# Assignment App
 
-# INTERACTIVE ASSIGNMENTS
+DHIS2 application built for assigning various metadata including organisation units, data sets, programs etc. Aiming in simplifying the activity of assigning multiple metadata at once.
 
-A utility tool custom built for DHIS2 environment tasks on assigning various metadata including organisation units, data sets, programs etc. Aiming in simplifying the activity of assigning multiple metadata at once.   
+## Prerequisites
 
-### Prerequisites
->- Node Js v8 or later
->- npm
->- Angular CLI v6 or later
->- git
+Make sure your environment has the following
 
-### Installation
+> 1. [NodeJs (16 or higher)](https://nodejs.org)
+> 2. [Angular CLI v17 or higher](https://github.com/angular/angular-cli)
+> 3. [git](https://git-scm.com/downloads)
 
-> * Clone the repository from Git
+## Installation
+
+1. Clone the repository from Git
+
 ```bash
-$ git clone https://github.com/hisptz/iassignments.git
+git clone https://github.com/dhis2-club-tanzania/iassignments.git
 ```
-> * Go into iassignements directory then xecute the following npm command to install the application to your computer.
+
+2. Navigate to application root folder
+
 ```bash
-$ npm install
+cd iassignment
 ```
-> * Once the application is installed and all its dependency hence execute the next command to run the application. 
+
+3. Install all required dependencies for the app.
+
 ```bash
-$ npm start
+npm install
 ```
-> * NOTE: If you are required to proxy to remote server, create a json file 'proxy-config.json' inside root application folder and add the following lines( change the localhost port based on ports used by the app or change target to the server url to proxy data).
+
+OR
+
+```bash
+yarn install
+```
+
+## Development server
+
+Execute the following command to run the application.
+
+```bash
+npm start
+```
+
+OR
+
+```bash
+yarn start
+```
+
+Navigate to [http://localhost:4200](http://localhost:4200).
+
+> **NOTE**: This command will require proxy-config.json file available in the root of your source code, usually this file has this format.
+
 ```json
- {
-       "/api": {
-                  "target": "http://localhost:4200/dhis/",
-                   "secure": "false",
-                   "auth":"username:password",
-                   "changeOrigin": true
-                },
-         "/": {
-                   "target": "http://localhost:4200/dhis/",
-                   "secure": "false",
-                   "auth":"username:password",
-                   "changeOrigin": true
-               }
-     }
+{
+  "/api": {
+    "target": "http://localhost:4200/dhis/",
+    "secure": "false",
+    "auth": "username:password",
+    "changeOrigin": true
+  },
+  "/": {
+    "target": "http://localhost:4200/dhis/",
+    "secure": "false",
+    "auth": "username:password",
+    "changeOrigin": true
+  }
+}
 ```
+
+We have provided `proxy-config.example.json` file as an example, make a copy and rename to `proxy-config.json`
+
+## Build
+
+To build the application, run
+
+```bash
+npm run build
+```
+
+OR
+
+```bash
+yarn build
+```
+
+The build artifacts will be stored in the dist/, this will include a zip file ready for deploying to any DHIS2 instance..
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

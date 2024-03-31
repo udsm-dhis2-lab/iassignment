@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "name": "Assignment",
-  "description": "An interactive assignment app",
+  "description": "DHIS2 application built for assigning various metadata including organisation units, data sets, programs etc. Aiming in simplifying the activity of assigning multiple metadata at once",
   "launch_path": "index.html",
   "icons": {
     "16": "assets/icons/icon-16x16.png",

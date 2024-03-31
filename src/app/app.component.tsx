@@ -1,9 +1,7 @@
-import { ComponentPortal } from "@angular/cdk/portal";
-import { Component, OnInit, inject } from "@angular/core";
-import { NgDhis2ShellWrapper } from "@iapps/ng-dhis2-shell";
+import { Component, inject } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Menu, MenuItem } from "@dhis2/ui";
 import * as React from "react";
-import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-root-content",
@@ -24,7 +22,7 @@ export class AppComponentContent {
           active={activeMenu === "form"}
           className="side-bar-item"
           label="Form Assignment"
-          value="form"
+          value="form-assignment"
           onClick={(event) => {
             setActiveMenu(event.value);
             this.router.navigate([`/${event.value}`]);
@@ -34,7 +32,7 @@ export class AppComponentContent {
           active={activeMenu === "user"}
           className="side-bar-item"
           label="User Assignment"
-          value="user"
+          value="user-assignment"
           onClick={(event) => {
             setActiveMenu(event.value);
             this.router.navigate([`/${event.value}`]);

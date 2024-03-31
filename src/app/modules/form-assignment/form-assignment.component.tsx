@@ -18,18 +18,5 @@ import { CollectionForm } from "./models";
   styleUrl: "./form-assignment.component.css",
 })
 export class FormAssignmentComponent implements OnInit {
-  formAssignmentService = inject(FormAssignmentService);
-  loadingForms: WritableSignal<boolean> = signal(true);
-
-  forms$: Observable<CollectionForm[]> = this.formAssignmentService
-    .getForms()
-    .pipe(
-      tap(() => {
-        this.loadingForms.set(false);
-      })
-    );
-
-  Loader = () => <CircularLoader small />;
-
   ngOnInit(): void {}
 }

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "i-assignments": {
+    "iassignment": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/i-assignments",
+            "outputPath": "dist/iassignment",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -24,7 +24,6 @@
               "src/styles.css"
             ],
             "scripts": [],
-            "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -44,7 +43,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
@@ -56,18 +54,18 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "proxyConfig": "proxy-config.json",
-            "buildTarget": "i-assignments:build"
+            "buildTarget": "iassignment:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "i-assignments:build:production"
+              "buildTarget": "iassignment:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "i-assignments:build"
+            "buildTarget": "iassignment:build"
           }
         },
         "test": {
@@ -87,7 +85,7 @@
         }
       }
     },
-    "i-assignments-e2e": {
+    "iassignments-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -95,11 +93,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "i-assignments:serve"
+            "devServerTarget": "iassignment:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "i-assignments:serve:production"
+              "devServerTarget": "iassignment:serve:production"
             }
           }
         }

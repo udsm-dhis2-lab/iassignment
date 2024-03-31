@@ -15,7 +15,7 @@ Make sure your environment has the following
 1. Clone the repository from Git
 
 ```bash
-git clone https://github.com/dhis2-club-tanzania/iassignments.git
+git clone https://github.com/udsm-dhis2-lab/iassignment.git
 ```
 
 2. Navigate to application root folder

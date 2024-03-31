@@ -1,12 +1,7 @@
 // Copyright 2024 UDSM DHIS2 Lab. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
-import {
-  DataTableColumnHeader,
-  Input,
-  Button,
-  IconDimensionData16,
-} from "@dhis2/ui";
+import { DataTableColumnHeader, Input } from "@dhis2/ui";
 import * as React from "react";
 
 export function CollectionFormHeader(props: {
@@ -30,9 +25,9 @@ export function CollectionFormHeader(props: {
               onSearchForm({ value: event.value });
             }}
           />
-          <Button small>
+          {/* <Button small>
             <IconDimensionData16 />
-          </Button>
+          </Button> */}
         </div>
       }
       onFilterIconClick={(event) => {

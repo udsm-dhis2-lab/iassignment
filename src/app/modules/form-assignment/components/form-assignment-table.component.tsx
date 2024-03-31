@@ -112,11 +112,16 @@ export class FormAssignmentTableComponent implements OnInit {
             <TableHead>
               <DataTableRow>
                 <OrgUnitHeader
+                  selectedOrgUnits={selectedOrgUnits}
                   onOpenOrgUnitSelection={() => {
                     this.#showOrgUnit.set(true);
                   }}
                   onSearchOrgUnit={(event) => {
                     setOrgUnitSearchQuery(event.value);
+                  }}
+                  onClearSelections={() => {
+                    setSelectedOrgUnits(null);
+                    this.#orgUnitSelections.set(undefined);
                   }}
                 />
 

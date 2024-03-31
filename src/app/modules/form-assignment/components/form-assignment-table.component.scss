@@ -44,3 +44,53 @@
 ::ng-deep .collection-form-header-filter {
   width: 240px;
 }
+
+::ng-deep .selected-icon {
+  background-color: rgb(77, 182, 172);
+  height: 8px;
+  width: 8px;
+  border-radius: 4px;
+  margin-left: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+::ng-deep .selection-notice {
+  background-color: rgb(178, 223, 219);
+  border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 280px;
+
+  .selection-notice-label {
+    padding: 1px 2px 1px 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(33, 41, 52);
+    min-height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+
+    align-items: center;
+  }
+
+  .selection-notice-button {
+    padding: 1px 2px 1px 2px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(33, 41, 52);
+    cursor: pointer;
+    min-height: 24px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    &:hover {
+      background-color: #9cc4c0;
+    }
+  }
+}

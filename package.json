@@ -31,7 +31,7 @@
     "@ngrx/entity": "^17.1.1",
     "@ngrx/store": "^17.1.1",
     "@ngrx/store-devtools": "^17.1.1",
-    "core-js": "^2.5.4",
+    "core-js": "^3.36.1",
     "dexie": "^4.0.1",
     "html-react-parser": "^5.1.10",
     "lodash": "^4.17.11",

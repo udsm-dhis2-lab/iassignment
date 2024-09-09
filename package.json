@@ -28,7 +28,7 @@
     "@iapps/ng-dhis2-ui": "^1.0.5",
     "@iapps/ngx-dhis2-http-client": "^3.0.0",
     "@ngrx/effects": "^17.1.1",
-    "@ngrx/entity": "^17.1.1",
+    "@ngrx/entity": "^18.0.2",
     "@ngrx/store": "^17.1.1",
     "@ngrx/store-devtools": "^17.1.1",
     "core-js": "^3.36.1",

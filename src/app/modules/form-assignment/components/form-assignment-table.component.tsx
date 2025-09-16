@@ -25,9 +25,10 @@ import { FormAssignmentBody } from "./form-assignment-body.component";
 import { OrgUnitHeader } from "./org-unit-header.component";
 
 @Component({
-  selector: "app-form-assignment-table",
-  templateUrl: "./form-assignment-table.component.html",
-  styleUrls: ["./form-assignment-table.component.scss"],
+    selector: "app-form-assignment-table",
+    templateUrl: "./form-assignment-table.component.html",
+    styleUrls: ["./form-assignment-table.component.scss"],
+    standalone: false
 })
 export class FormAssignmentTableComponent implements OnInit {
   formAssignmentService = inject(FormAssignmentService);

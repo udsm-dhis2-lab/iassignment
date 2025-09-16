@@ -5,7 +5,6 @@ import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppShellModule } from "@iapps/ng-dhis2-shell";
 import { ReactWrapperModule } from "@iapps/ng-dhis2-ui";
-import { NgxDhis2HttpClientModule } from "@iapps/ngx-dhis2-http-client";
 import { environment } from "../environments/environment";
 import { AppWrapper } from "./app-wrapper";
 import { AppComponentContent } from "./app.component";
@@ -17,11 +16,6 @@ import { RoutingModule } from "./app.routes";
     BrowserModule,
     BrowserAnimationsModule,
     ReactWrapperModule,
-    NgxDhis2HttpClientModule.forRoot({
-      namespace: "iassignment",
-      version: 1,
-      models: [],
-    }),
     FormsModule,
     RoutingModule,
     AppShellModule.forRoot({

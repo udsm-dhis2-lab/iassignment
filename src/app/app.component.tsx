@@ -4,9 +4,10 @@ import { Menu, MenuItem } from "@dhis2/ui";
 import * as React from "react";
 
 @Component({
-  selector: "app-root-content",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+    selector: "app-root-content",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.css"],
+    standalone: false
 })
 export class AppComponentContent {
   activeRoute = inject(ActivatedRoute);

@@ -13,9 +13,10 @@ import { FormAssignmentService } from "./services";
 import { CollectionForm } from "./models";
 
 @Component({
-  selector: "app-form-assignment",
-  templateUrl: "./form-assignment.component.html",
-  styleUrl: "./form-assignment.component.css",
+    selector: "app-form-assignment",
+    templateUrl: "./form-assignment.component.html",
+    styleUrl: "./form-assignment.component.css",
+    standalone: false
 })
 export class FormAssignmentComponent implements OnInit {
   ngOnInit(): void {}

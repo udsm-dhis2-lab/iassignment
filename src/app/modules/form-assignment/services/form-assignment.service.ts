@@ -1,16 +1,11 @@
 import { Injectable } from "@angular/core";
-import { NgxDhis2HttpClientService, User } from "@iapps/ngx-dhis2-http-client";
-import { Observable, catchError, map, of, switchMap, zip } from "rxjs";
-import {
-  AssignmentRequestObject,
-  CollectionForm,
-  OrgUnitAssignment,
-  OrgUnitAssignmentResponse,
-} from "../models";
+import { D2Window, User } from "@iapps/d2-web-sdk";
+import { Observable, from, map, of, switchMap, zip } from "rxjs";
+import { AssignmentRequestObject, OrgUnitAssignmentResponse } from "../models";
 
 @Injectable()
 export class FormAssignmentService {
-  constructor(private httpClient: NgxDhis2HttpClientService) {}
+  constructor() {}
 
   #orgUnitUrlSegment =
     "organisationUnits.json?fields=id,name,level,dataSets,programs&order=name:ASC";
@@ -22,23 +17,29 @@ export class FormAssignmentService {
       return this.filterAssignments(orgUnitsSelections);
     }
 
-    return this.httpClient.me().pipe(
+    const d2 = (window as unknown as D2Window)?.d2Web;
+
+    return of(d2?.currentUser).pipe(
       switchMap((user: User) => {
         const userOrgUnitIds = user.organisationUnits.map(
           (userOrgUnit) => userOrgUnit.id
         );
 
         return zip(
-          this.httpClient.get(
-            `${this.#orgUnitUrlSegment}&filter=id:in:[${userOrgUnitIds.join(
-              ","
-            )}]`
-          ),
-          this.httpClient.get(
-            `${
-              this.#orgUnitUrlSegment
-            }&filter=parent.id:in:[${userOrgUnitIds.join(",")}]`
-          )
+          from(
+            d2.httpInstance?.get(
+              `${this.#orgUnitUrlSegment}&filter=id:in:[${userOrgUnitIds.join(
+                ","
+              )}]`
+            )
+          ).pipe(map((response) => response.data)),
+          from(
+            d2.httpInstance?.get(
+              `${
+                this.#orgUnitUrlSegment
+              }&filter=parent.id:in:[${userOrgUnitIds.join(",")}]`
+            )
+          ).pipe(map((response) => response.data))
         );
       }),
       map((responses: any[]) => {
@@ -56,6 +57,7 @@ export class FormAssignmentService {
   }
 
   filterAssignments(orgUnitsSelections: any[]) {
+    const d2 = (window as unknown as D2Window)?.d2Web;
     const orgUnitIds = orgUnitsSelections
       .filter(
         (orgUnitSelection: any) =>
@@ -80,49 +82,58 @@ export class FormAssignmentService {
     let assignmentRequest;
 
     if (orgUnitIds.length > 0) {
-      assignmentRequest = this.httpClient.get(
-        `${this.#orgUnitUrlSegment}&filter=id:in:[${orgUnitIds.join(",")}]`
-      );
+      assignmentRequest = from(
+        d2.httpInstance?.get(
+          `${this.#orgUnitUrlSegment}&filter=id:in:[${orgUnitIds.join(",")}]`
+        )
+      ).pipe(map((response) => response.data));
     }
 
     if (orgUnitLevelIds.length > 0) {
-      assignmentRequest = this.httpClient
-        .get(
+      assignmentRequest = from(
+        d2.httpInstance?.get(
           `organisationUnitLevels.json?fields=id,level&filter=id:in:[${orgUnitLevelIds.join(
             ","
           )}]`
         )
-        .pipe(
-          switchMap((orgUnitLevelResponse) => {
-            const levels = (
-              orgUnitLevelResponse.organisationUnitLevels || []
-            ).map((orgUnitLevel) => orgUnitLevel.level);
+      ).pipe(
+        switchMap(({ data: orgUnitLevelResponse }) => {
+          const levels = (
+            (orgUnitLevelResponse.organisationUnitLevels as unknown as Record<
+              string,
+              unknown
+            >[]) || []
+          ).map((orgUnitLevel) => orgUnitLevel.level);
 
-            if (levels.length === 0) {
-              return of(null);
-            }
+          if (levels.length === 0) {
+            return of(null);
+          }
 
-            return this.httpClient.get(
+          return from(
+            d2?.httpInstance?.get(
               `${this.#orgUnitUrlSegment}${
                 orgUnitIds.length > 0
                   ? `&filter=path:ilike:${orgUnitIds.join(",")}`
                   : ""
               }&filter=level:in:[${levels.join(",")}]&rootJunction=AND`
-            );
-          })
-        );
+            )
+          ).pipe(map((response) => response.data));
+        })
+      );
     }
 
     if (orgUnitGroupIds.length > 0) {
-      assignmentRequest = this.httpClient.get(
-        `${this.#orgUnitUrlSegment}${
-          orgUnitIds.length > 0
-            ? `&filter=path:ilike:${orgUnitIds.join(",")}`
-            : ""
-        }&filter=organisationUnitGroups.id:in:[${orgUnitGroupIds.join(
-          ","
-        )}]&rootJunction=AND`
-      );
+      assignmentRequest = from(
+        d2?.httpInstance?.get(
+          `${this.#orgUnitUrlSegment}${
+            orgUnitIds.length > 0
+              ? `&filter=path:ilike:${orgUnitIds.join(",")}`
+              : ""
+          }&filter=organisationUnitGroups.id:in:[${orgUnitGroupIds.join(
+            ","
+          )}]&rootJunction=AND`
+        )
+      ).pipe(map((response) => response.data));
     }
 
     if (!assignmentRequest) {
@@ -139,15 +150,21 @@ export class FormAssignmentService {
       return this.getAssignments();
     }
 
-    return this.httpClient
-      .get(`${this.#orgUnitUrlSegment}&filter=name:ilike:${searchTerm}`)
-      .pipe(map((response) => new OrgUnitAssignmentResponse(response)));
+    const d2 = (window as unknown as D2Window)?.d2Web;
+    return from(
+      d2?.httpInstance?.get(
+        `${this.#orgUnitUrlSegment}&filter=name:ilike:${searchTerm}`
+      )
+    ).pipe(map(({ data }) => new OrgUnitAssignmentResponse(data)));
   }
 
   saveAssignments(assignmentRequests: AssignmentRequestObject[]) {
+    const d2 = (window as unknown as D2Window)?.d2Web;
     return zip(
       assignmentRequests.map((request) =>
-        this.httpClient.post(request.url, request.payload)
+        from(d2?.httpInstance?.post(request.url, request.payload)).pipe(
+          map((response) => response.data)
+        )
       )
     ).pipe(
       map((responses: any[]) => {

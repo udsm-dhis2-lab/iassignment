@@ -1,16 +1,21 @@
 import { Injectable } from "@angular/core";
-import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
-import { Observable, map, zip } from "rxjs";
+import { D2Window } from "@iapps/d2-web-sdk";
+import { Observable, from, map, zip } from "rxjs";
 import { CollectionForm } from "../models";
 
 @Injectable()
 export class CollectionFormService {
-  constructor(private httpClient: NgxDhis2HttpClientService) {}
+  constructor() {}
 
   getForms(): Observable<CollectionForm[]> {
+    const d2 = (window as unknown as D2Window)?.d2Web;
     return zip(
-      this.httpClient.get("dataSets.json?fields=id,name&pageSize=10"),
-      this.httpClient.get("programs.json?fields=id,name&pageSize=10")
+      from(
+        d2?.httpInstance?.get("dataSets.json?fields=id,name&pageSize=10")
+      ).pipe(map((response) => response.data)),
+      from(
+        d2?.httpInstance?.get("programs.json?fields=id,name&pageSize=10")
+      ).pipe(map((response) => response.data))
     ).pipe(map(this.#getFormResponse));
   }
 
@@ -19,13 +24,19 @@ export class CollectionFormService {
       return this.getForms();
     }
 
+    const d2 = (window as unknown as D2Window)?.d2Web;
+
     return zip(
-      this.httpClient.get(
-        `dataSets.json?fields=id,name&filter=name:ilike:${searchTerm}`
-      ),
-      this.httpClient.get(
-        `programs.json?fields=id,name&filter=name:ilike:${searchTerm}`
-      )
+      from(
+        d2?.httpInstance?.get(
+          `dataSets.json?fields=id,name&filter=name:ilike:${searchTerm}`
+        )
+      ).pipe(map((response) => response.data)),
+      from(
+        d2?.httpInstance?.get(
+          `programs.json?fields=id,name&filter=name:ilike:${searchTerm}`
+        )
+      ).pipe(map((response) => response))
     ).pipe(map(this.#getFormResponse));
   }
 

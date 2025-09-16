@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production && cd dist/iassignment && zip -r -D iassignment.zip .",
+    "build": "ng build --configuration production && cd dist/iassignment && zip -r -D metadata-assignment.zip .",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
